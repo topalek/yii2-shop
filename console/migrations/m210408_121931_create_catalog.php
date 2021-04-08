@@ -12,7 +12,7 @@ class m210408_121931_create_catalog extends Migration
     public function up()
     {
         $this->createTable(
-            'category',
+            '{{%category}}',
             [
                 'id'             => $this->primaryKey(),
                 'title_uk'       => $this->string()->comment('Название'),
@@ -33,7 +33,7 @@ class m210408_121931_create_catalog extends Migration
         );
 
         $this->createTable(
-            'property_category',
+            '{{%property_category}}',
             [
                 'id'         => $this->primaryKey(),
                 'title_uk'   => $this->string()->comment('Название'),
@@ -49,7 +49,7 @@ class m210408_121931_create_catalog extends Migration
         );
 
         $this->createTable(
-            'property_category_catalog_category',
+            '{{%property_category_catalog_category}}',
             [
                 'id'                   => $this->primaryKey(),
                 'property_category_id' => $this->integer()->notNull(),
@@ -64,7 +64,7 @@ class m210408_121931_create_catalog extends Migration
         );
 
         $this->createTable(
-            'property',
+            '{{%property}}',
             [
                 'id'                   => $this->primaryKey(),
                 'title_uk'             => $this->string()->comment('Название'),
@@ -81,7 +81,7 @@ class m210408_121931_create_catalog extends Migration
         );
 
         $this->createTable(
-            'product',
+            '{{%product}}',
             [
                 'id'             => $this->primaryKey(),
                 'title_uk'       => $this->string()->comment('Название'),
@@ -104,7 +104,7 @@ class m210408_121931_create_catalog extends Migration
         );
 
         $this->createTable(
-            'product_property',
+            '{{%product_property}}',
             [
                 'id'                   => $this->primaryKey(),
                 'product_id'           => $this->integer()->notNull(),
@@ -123,59 +123,75 @@ class m210408_121931_create_catalog extends Migration
         );
 
 
-        $this->createIndex('category_updated_at', 'category', 'updated_at');
-        $this->createIndex('property_category_updated_at', 'property_category', 'updated_at');
+        $this->createIndex('category_updated_at', '{{%category}}', 'updated_at');
+        $this->createIndex('property_category_updated_at', '{{%property_category}}', 'updated_at');
         $this->createIndex(
             'property_category_catalog_category_updated_at',
-            'property_category_catalog_category',
+            '{{%property_category_catalog_category}}',
             'updated_at'
         );
-        $this->createIndex('property_updated_at', 'property', 'updated_at');
-        $this->createIndex('product_updated_at', 'product', 'updated_at');
-        $this->createIndex('product_property_updated_at', 'product_property', 'updated_at');
+        $this->createIndex('property_updated_at', '{{%property}}', 'updated_at');
+        $this->createIndex('product_updated_at', '{{%product}}', 'updated_at');
+        $this->createIndex('product_property_updated_at', '{{%product_property}}', 'updated_at');
 
         $this->addForeignKey(
             'fk_product_category',
-            'product',
+            '{{%product}}',
             'category_id',
-            'category',
+            '{{%category}}',
             'id'
         );
         $this->addForeignKey(
             'fk_property_category_catalog_category',
-            'property_category_catalog_category',
+            '{{%property_category_catalog_category}}',
             'category_id',
-            'category',
+            '{{%category}}',
             'id'
         );
         $this->addForeignKey(
             'fk_property_category',
-            'property',
+            '{{%property}}',
             'property_category_id',
-            'property_category',
+            '{{%property_category}}',
             'id'
         );
         $this->addForeignKey(
             'fk_product_properties',
-            'product_property',
+            '{{%product_property}}',
             'product_id',
-            'product',
+            '{{%product}}',
             'id'
         );
         $this->addForeignKey(
             'fk_product_properties_property',
-            'product_property',
+            '{{%product_property}}',
             'property_id',
-            'property',
+            '{{%property}}',
             'id'
         );
     }
 
     public function down()
     {
-        echo "m210408_121931_create_catalog cannot be reverted.\n";
+        $this->dropForeignKey('fk_product_properties_property', '{{%product_property}}');
+        $this->dropForeignKey('fk_property_category_catalog_category', '{{%property_category_catalog_category}}');
+        $this->dropForeignKey('fk_product_properties', '{{%product_property}}');
+        $this->dropForeignKey('fk_product_category', '{{%property}}');
+        $this->dropForeignKey('fk_property_category', '{{%product}}');
 
-        return false;
+        $this->dropIndex('category_updated_at', '{{%category}}');
+        $this->dropIndex('property_category_updated_at', '{{%property_category}}');
+        $this->dropIndex('property_updated_at', '{{%property}}');
+        $this->dropIndex('product_updated_at', '{{%product}}');
+        $this->dropIndex('product_property_updated_at', '{{%product_property}}');
+        $this->dropIndex('property_category_catalog_category_updated_at', '{{%property_category_catalog_category}}');
+
+        $this->dropTable('{{%product_property}}');
+        $this->dropTable('{{%product}}');
+        $this->dropTable('{{%property}}');
+        $this->dropTable('{{%property_category_catalog_category}}');
+        $this->dropTable('{{%property_category}}');
+        $this->dropTable('{{%category}}');
     }
 
 }
