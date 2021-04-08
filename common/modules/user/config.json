@@ -1,0 +1,11 @@
+{
+  "title": "Пользователи",
+  "class": "app\\modules\\user\\UserModule",
+  "description": "Пользователи сайта з RBAC",
+  "system": 1,
+  "ordering": 15,
+  "href": "/user/admin",
+  "icon": "fa fa-user",
+  "menu": {
+  }
+}

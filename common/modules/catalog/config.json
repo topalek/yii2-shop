@@ -1,0 +1,33 @@
+{
+  "title": "Магазин",
+  "class": "app\\modules\\catalog\\CatalogModule",
+  "description": "Управление каталогом",
+  "system": 1,
+  "ordering": 1,
+  "version": "0.1",
+  "icon": "fa fa-folder-open",
+  "menu": {
+    "catalog": [
+      {
+        "title": "Категории каталога",
+        "href": "/catalog/catalog-category",
+        "icon": ""
+      },
+      {
+        "title": "Товары",
+        "href": "/catalog/item-admin",
+        "icon": ""
+      },
+      {
+        "title": "Категории характеристик",
+        "href": "/catalog/property-category",
+        "icon": ""
+      },
+      {
+        "title": "Характеристики",
+        "href": "/catalog/property",
+        "icon": ""
+      }
+    ]
+  }
+}

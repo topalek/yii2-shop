@@ -1,5 +1,13 @@
 <?php
-
+if (strpos($_SERVER['REQUEST_URI'], '/thumbs/') !== false) {
+    try {
+        require_once(dirname(dirname(__DIR__)) . '/common/components/DynamicImgThumbMaker.php');
+        new DynamicImgThumbMaker();
+    } catch (Exception $exception) {
+        print_r($exception);
+    }
+    exit;
+}
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 

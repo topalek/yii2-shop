@@ -5,7 +5,7 @@
  * Time: 23:12
  */
 
-use yii\bootstrap4\Nav;
+use hail812\adminlte3\widgets\Menu;
 use yii\helpers\Url;
 
 ?>
@@ -34,11 +34,13 @@ use yii\helpers\Url;
     <div class="sidebar-heading">
         Interface
     </div>
-    <?= Nav::widget(
+    <?= Menu::widget(
         [
-            'items' => [
+            'labelTemplate' => '{label} {treeFlag} {badge}',
+            'items'         => [
                 [
                     'url'   => Url::to(['/product/index']),
+                    'icon'  => 'fas fa-store',
                     'label' => 'Product',
                 ],
                 [

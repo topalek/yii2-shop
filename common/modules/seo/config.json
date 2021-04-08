@@ -1,0 +1,13 @@
+{
+  "title": "SEO",
+  "class": "app\\modules\\seo\\Module",
+  "description": "Управление SEO",
+  "system": 1,
+  "ordering": 18,
+  "icon": "fa fa-line-chart",
+  "href": "/seo/admin",
+  "menu": {
+    "seo": [
+    ]
+  }
+}

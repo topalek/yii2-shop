@@ -1,0 +1,13 @@
+{
+  "title": "Страницы",
+  "class": "app\\modules\\page\\Module",
+  "description": "Страницы",
+  "system": 0,
+  "ordering": 97,
+  "icon": "fa fa-file-text",
+  "href": "/page/admin",
+  "menu": {
+    "page": [
+    ]
+  }
+}

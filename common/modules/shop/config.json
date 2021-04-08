@@ -1,0 +1,12 @@
+{
+  "title": "Заказы",
+  "class": "app\\modules\\shop\\ShopModule",
+  "description": "Корзина, Заказы",
+  "system": 0,
+  "ordering": 98,
+  "icon": "fa fa-file-text",
+  "href": "/shop/order-admin",
+  "menu": {
+    "shop": []
+  }
+}

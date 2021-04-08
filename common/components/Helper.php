@@ -46,17 +46,6 @@ function searchHighlighter($text, $word, $trim = false, $length = 0, $points = f
     return $highlighted;
 }
 
-function dump($data, $num = 10, $highlight = true)
-{
-    yii\helpers\VarDumper::dump($data, $num, $highlight);
-}
-
-function dd($data, $num = 10, $highlight = true)
-{
-    dump($data, $num, $highlight);
-    die;
-}
-
 /**
  * @param      $original_path
  * @param      $original_file_name

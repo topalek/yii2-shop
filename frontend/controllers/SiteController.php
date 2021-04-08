@@ -2,8 +2,8 @@
 
 namespace frontend\controllers;
 
-use common\models\LoginForm;
-use common\models\Product;
+use common\models\forms\LoginForm;
+use common\modules\catalog\models\Product;
 use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
@@ -30,7 +30,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only'  => ['logout', 'signup'],
                 'rules' => [
                     [
@@ -46,7 +46,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs'  => [
-                'class'   => VerbFilter::className(),
+                'class'   => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],

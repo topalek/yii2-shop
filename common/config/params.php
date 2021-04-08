@@ -11,7 +11,8 @@ return [
     'cookieValidationKey'           => 'atLZmoeGMMh5tNSZtSpxIm6W903bNvHs',
 
     //домен для кук
-    'cookieDomain'                  => '.yiitest.loc',
-    'frontendUrl'                   => 'http://yiitest.loc',
-    'backendUrl'                    => 'http://admin.yiitest.loc',
+    'cookieDomain'                  => '.magaz.loc',
+
+    'frontendUrl' => 'http://magaz.loc',
+    'backendUrl'  => 'http://admin.magaz.loc',
 ];

@@ -1,0 +1,12 @@
+{
+  "title": "Html блоки",
+  "class": "app\\modules\\htmlBlock\\Module",
+  "description": "Текстовые блоки",
+  "system": 0,
+  "ordering": 98,
+  "icon": "fa fa-code",
+  "href": "/htmlBlock/admin",
+  "menu": {
+    "htmlBlock": []
+  }
+}

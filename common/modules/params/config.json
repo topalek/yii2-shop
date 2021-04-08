@@ -1,0 +1,13 @@
+{
+  "title": "Параметры сайта",
+  "class": "app\\modules\\params\\Module",
+  "description": "Управление параметрами сайта",
+  "system": 1,
+  "ordering": 99,
+  "version": "0.1",
+  "href": "/params/admin",
+  "icon": "fa fa-cogs",
+  "menu": {
+    "params": []
+  }
+}

@@ -13,6 +13,7 @@ return [
     'basePath'            => dirname(__DIR__),
     'bootstrap'           => ['log'],
     'language'            => 'ru',
+    'sourceLanguage'      => 'ru-RU',
     'controllerNamespace' => 'frontend\controllers',
     'components'          => [
         'request'      => [
@@ -20,16 +21,16 @@ return [
             'cookieValidationKey' => $params['cookieValidationKey'],
         ],
         'user'         => [
-            'identityClass'   => 'common\models\User',
+            'identityClass'   => 'common\modules\user\models\User',
             'enableAutoLogin' => true,
             'identityCookie'  => [
-                'name'     => '_identity-ecommerce',
+                'name'     => '_identity-shop_',
                 'httpOnly' => true,
                 'domain'   => $params['cookieDomain'],
             ],
         ],
         'session'      => [
-            'name'         => 'ecommerce_session',
+            'name'         => 'shop_session',
             'cookieParams' => [
                 'httpOnly' => true,
                 'domain'   => $params['cookieDomain'],

@@ -1,0 +1,13 @@
+{
+  "title": "Перевод",
+  "class": "app\\modules\\translate\\TranslateModule",
+  "description": "Переводы сайта",
+  "system": 1,
+  "ordering": 19,
+  "icon": "fa fa-globe",
+  "href": "/translate/admin-translate",
+  "menu": {
+    "translate": [
+    ]
+  }
+}
