@@ -49,6 +49,21 @@ class Category extends BaseModel
         return new CategoryQuery(get_called_class());
     }
 
+    public static function roots()
+    {
+        return Category::find()->where(['parent_id' => null])->all();
+    }
+
+    public function isRoot(): bool
+    {
+        return !$this->parent_id;
+    }
+
+    public function children()
+    {
+        return Category::find()->where(['parent_id' => $this->id])->all();
+    }
+
     /**
      * @inheritdoc
      */
@@ -58,7 +73,7 @@ class Category extends BaseModel
             [['title_ru'], 'required'],
             ['main_img', 'required', 'on' => 'create'],
             [['description_uk', 'description_ru', 'description_en'], 'string'],
-            [['parentId'], 'integer'],
+            [['parent_id'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
             [['title_uk', 'title_ru', 'title_en', 'main_img'], 'string', 'max' => 255],
         ];

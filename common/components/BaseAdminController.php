@@ -62,11 +62,7 @@ class BaseAdminController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'forgot-password'],
-                        'allow'   => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
+                        'actions' => [],
                         'allow'   => true,
                         'roles'   => ['@'],
                     ],

@@ -1,24 +1,20 @@
 <?php
 /**
- * Created by Yatskanych Oleksandr.
- * User: Yatskanych Oleksandr
- * Date: 26.01.17
- * Time: 16:45
  *
- * @var $this  \yii\web\View
- * @var $model \common\modules\catalog\models\Category
+ * @var $this  yii\web\View
+ * @var $model common\modules\catalog\models\Category
  */
 
 use yii\helpers\Html;
 
-$subCategories = $model->children(1)->all();
-$parent = $model->getParent();
+$subCategories = $model->children();
+$parent = $model->parent;
 $class = ($subCategories) ? 'has-sub-category open ' : '';
 if ($parent) {
     $class .= 'sub-category-for-' . $parent->id;
 }
 
-$paddingLeft = 25 * $model->depth;
+$paddingLeft = 25;
 if ($paddingLeft == 0) {
     $paddingLeft = '10';
 }

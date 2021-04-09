@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "b281fdf98ecea2dd61061a07e5156aac",
+  "content-hash": "cdbd81fcf3de635fab48249104bc2bb0",
   "packages": [
     {
       "name": "2amigos/yii2-ckeditor-widget",
@@ -821,16 +821,16 @@
     },
     {
       "name": "kartik-v/yii2-krajee-base",
-      "version": "v2.0.5",
+      "version": "v2.0.6",
       "source": {
         "type": "git",
         "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-        "reference": "9ddb662bdf49fdb671a90853912a40418a26a0dd"
+        "reference": "9b6bc8335e8e561e3953826efefd57b1df7bdce0"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/9ddb662bdf49fdb671a90853912a40418a26a0dd",
-        "reference": "9ddb662bdf49fdb671a90853912a40418a26a0dd",
+        "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/9b6bc8335e8e561e3953826efefd57b1df7bdce0",
+        "reference": "9b6bc8335e8e561e3953826efefd57b1df7bdce0",
         "shasum": ""
       },
       "suggest": {
@@ -871,9 +871,9 @@
       ],
       "support": {
         "issues": "https://github.com/kartik-v/yii2-krajee-base/issues",
-        "source": "https://github.com/kartik-v/yii2-krajee-base/tree/master"
+        "source": "https://github.com/kartik-v/yii2-krajee-base/tree/v2.0.6"
       },
-      "time": "2019-03-13T17:14:54+00:00"
+      "time": "2021-04-08T18:07:22+00:00"
     },
     {
       "name": "kartik-v/yii2-money",
@@ -1572,22 +1572,23 @@
     },
     {
       "name": "kartik-v/yii2-widget-select2",
-      "version": "v2.2.0",
+      "version": "dev-master",
       "source": {
         "type": "git",
         "url": "https://github.com/kartik-v/yii2-widget-select2.git",
-        "reference": "ee9d54f9af745c0ad7b3578bf640c12d800479e3"
+        "reference": "05ed365ea5ed3555646db27dfb9beea79757a054"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/ee9d54f9af745c0ad7b3578bf640c12d800479e3",
-        "reference": "ee9d54f9af745c0ad7b3578bf640c12d800479e3",
+        "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/05ed365ea5ed3555646db27dfb9beea79757a054",
+        "reference": "05ed365ea5ed3555646db27dfb9beea79757a054",
         "shasum": ""
       },
       "require": {
         "kartik-v/yii2-krajee-base": ">=1.9",
         "select2/select2": ">=4.0"
       },
+      "default-branch": true,
       "type": "yii2-extension",
       "extra": {
         "branch-alias": {
@@ -1624,7 +1625,7 @@
       ],
       "support": {
         "issues": "https://github.com/kartik-v/yii2-widget-select2/issues",
-        "source": "https://github.com/kartik-v/yii2-widget-select2/tree/v2.2.0"
+        "source": "https://github.com/kartik-v/yii2-widget-select2/tree/master"
       },
       "funding": [
         {
@@ -1632,26 +1633,31 @@
           "type": "open_collective"
         }
       ],
-      "time": "2020-09-28T15:15:52+00:00"
+      "time": "2020-12-15T14:53:54+00:00"
     },
     {
       "name": "kartik-v/yii2-widget-sidenav",
-      "version": "v1.0.0",
+      "version": "v1.0.1",
       "source": {
         "type": "git",
         "url": "https://github.com/kartik-v/yii2-widget-sidenav.git",
-        "reference": "02ee4f142d7dfbb316f878e538cc7b946f4502d2"
+        "reference": "87e9c815624aa966d70bb4507b3d53c158db0d43"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/kartik-v/yii2-widget-sidenav/zipball/02ee4f142d7dfbb316f878e538cc7b946f4502d2",
-        "reference": "02ee4f142d7dfbb316f878e538cc7b946f4502d2",
+        "url": "https://api.github.com/repos/kartik-v/yii2-widget-sidenav/zipball/87e9c815624aa966d70bb4507b3d53c158db0d43",
+        "reference": "87e9c815624aa966d70bb4507b3d53c158db0d43",
         "shasum": ""
       },
       "require": {
         "kartik-v/yii2-krajee-base": "*"
       },
       "type": "yii2-extension",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "1.0.x-dev"
+        }
+      },
       "autoload": {
         "psr-4": {
           "kartik\\sidenav\\": ""
@@ -1659,7 +1665,7 @@
       },
       "notification-url": "https://packagist.org/downloads/",
       "license": [
-        "BSD 3-Clause"
+        "BSD-3-Clause"
       ],
       "authors": [
         {
@@ -1683,9 +1689,15 @@
       ],
       "support": {
         "issues": "https://github.com/kartik-v/yii2-widget-sidenav/issues",
-        "source": "https://github.com/kartik-v/yii2-widget-sidenav/tree/master"
+        "source": "https://github.com/kartik-v/yii2-widget-sidenav/tree/v1.0.1"
       },
-      "time": "2014-11-09T08:07:23+00:00"
+      "funding": [
+        {
+          "url": "https://opencollective.com/yii2-widget-sidenav",
+          "type": "open_collective"
+        }
+      ],
+      "time": "2021-04-08T17:49:26+00:00"
     },
     {
       "name": "kartik-v/yii2-widget-spinner",
@@ -7075,12 +7087,13 @@
   "minimum-stability": "stable",
   "stability-flags": {
     "asofter/yii2-imperavi-redactor": 20,
-    "kartik-v/yii2-widgets": 20
+    "kartik-v/yii2-widgets": 20,
+    "kartik-v/yii2-widget-select2": 20
   },
   "prefer-stable": false,
   "prefer-lowest": false,
   "platform": {
-    "php": ">=5.6.0"
+    "php": ">=7.4"
   },
   "platform-dev": [],
   "plugin-api-version": "2.0.0"

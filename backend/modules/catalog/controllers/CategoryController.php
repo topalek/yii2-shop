@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\catalog\controllers;
+namespace backend\modules\catalog\controllers;
 
 use common\components\BaseAdminController;
 use common\extensions\fileapi\actions\DeleteAction;
@@ -62,7 +62,7 @@ class CategoryController extends BaseAdminController
         return $this->render(
             'index',
             [
-                'roots' => Category::getRoots()
+                'roots' => Category::roots()
                 //            'searchModel'  => $searchModel,
                 //            'dataProvider' => $dataProvider,
             ]
@@ -119,12 +119,6 @@ class CategoryController extends BaseAdminController
         $model->parentId = $parent;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->parentId != null) {
-                $parent = Category::findOne($model->parentId);
-                $model->appendTo($parent);
-            } else {
-                $model->makeRoot();
-            }
             Yii::$app->session->setFlash('humane', 'Сохранено');
             return $this->redirect(['update', 'id' => $model->id]);
         } else {

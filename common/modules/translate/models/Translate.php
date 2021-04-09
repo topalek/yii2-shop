@@ -25,7 +25,7 @@ class Translate extends \yii\db\ActiveRecord
     {
         return [
             'ru' => 'Русский',
-            //            'uk' => 'Українська',
+            'uk' => 'Українська',
             //            'en' => 'English',
         ];
     }

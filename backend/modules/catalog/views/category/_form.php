@@ -30,10 +30,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'parentId')->widget(
         Select2::class,
         [
-            'data'          => Category::getTreeForList(
-                $model->isNewRecord ? false : $model
-            ),
-            'options'       => ['placeholder' => 'Перший рівень'],
+            'data'          => Category::roots(),
+            'options'       => ['placeholder' => 'Первый уровень'],
             'pluginOptions' => [
                 'allowClear' => true,
             ],

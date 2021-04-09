@@ -5,8 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\catalog\models\CategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $roots common\modules\catalog\models\Category[] */
 
-$this->title = 'Категорії каталогу';
+$this->title = 'Категории каталога';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catalog-category-index">
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Создать катагорію', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать категорию', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <div id="categories-ajax-container">
@@ -24,8 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr>
-                    <td>Назва</td>
-                    <td>Посилання</td>
+                    <td>Название</td>
+                    <td>Ссылка</td>
                     <td></td>
                 </tr>
                 </thead>

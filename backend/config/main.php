@@ -1,5 +1,7 @@
 <?php
 
+use backend\modules\catalog\CatalogModule;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -13,7 +15,11 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap'           => ['log'],
     'language'            => 'ru',
-    'modules'             => [],
+    'modules'             => [
+        'catalog' => [
+            'class' => CatalogModule::class,
+        ],
+    ],
     'components'          => [
         'request'      => [
             'csrfParam'           => '_csrf',
