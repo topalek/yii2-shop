@@ -22,6 +22,7 @@
     "php": ">=7.4",
     "yiisoft/yii2": "~2.0.14",
     "yiisoft/yii2-bootstrap4": "~2.0.6",
+    "yiisoft/yii2-bootstrap": "dev-master",
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "rmrevin/yii2-fontawesome": "~2.12",
     "kartik-v/yii2-money": "*",

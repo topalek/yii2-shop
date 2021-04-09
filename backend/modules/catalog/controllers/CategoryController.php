@@ -2,9 +2,9 @@
 
 namespace backend\modules\catalog\controllers;
 
+use backend\extensions\fileapi\actions\DeleteAction;
+use backend\extensions\fileapi\actions\UploadAction;
 use common\components\BaseAdminController;
-use common\extensions\fileapi\actions\DeleteAction;
-use common\extensions\fileapi\actions\UploadAction;
 use common\modules\catalog\models\Category;
 use Yii;
 use yii\filters\VerbFilter;

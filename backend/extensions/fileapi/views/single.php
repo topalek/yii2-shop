@@ -5,7 +5,7 @@
  * @var yii\base\View $this Представление
  */
 
-use common\extensions\fileapi\FileAPIAdvanced;
+use backend\extensions\fileapi\FileAPIAdvanced;
 
 ?>
 <div id="uploader<?= $selector; ?>" class="uploader">

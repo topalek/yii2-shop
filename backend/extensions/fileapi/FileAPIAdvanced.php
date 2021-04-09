@@ -1,9 +1,9 @@
 <?php
 
-namespace common\extensions\fileapi;
+namespace backend\extensions\fileapi;
 
-use common\extensions\fileapi\assets\FileAPIAdvancedAsset;
-use common\extensions\fileapi\assets\FileAPIAdvancedCropAsset;
+use backend\extensions\fileapi\assets\FileAPIAdvancedAsset;
+use backend\extensions\fileapi\assets\FileAPIAdvancedCropAsset;
 use yii\helpers\Html;
 use yii\web\JsExpression;
 

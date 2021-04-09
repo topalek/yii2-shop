@@ -1,6 +1,6 @@
 <?php
 
-namespace common\extensions\fileapi\assets;
+namespace backend\extensions\fileapi\assets;
 
 use yii\web\AssetBundle;
 
@@ -19,6 +19,6 @@ class FileAPIAdvancedCropAsset extends AssetBundle
         'vendor/jquery.fileapi/the-modal/jquery.modal.js',
     ];
     public $depends = [
-        'common\extensions\fileapi\assets\FileAPIAdvancedAsset',
+        'backend\extensions\fileapi\assets\FileAPIAdvancedAsset',
     ];
 }

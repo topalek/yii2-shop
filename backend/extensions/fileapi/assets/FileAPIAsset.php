@@ -1,6 +1,6 @@
 <?php
 
-namespace common\extensions\fileapi\assets;
+namespace backend\extensions\fileapi\assets;
 
 use yii\web\AssetBundle;
 

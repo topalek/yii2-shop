@@ -40,7 +40,12 @@ $this->beginBody() ?>
         <?= Alert::widget() ?>
         <!-- Main Content -->
         <div id="content" class="p-4">
-            <?= $content ?>
+            <div class="row">
+                <div class="col-10">
+                    <?= $content ?>
+                </div>
+            </div>
+
         </div>
         <!-- End of Main Content -->
 

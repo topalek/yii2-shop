@@ -1,9 +1,9 @@
 <?php
 
-namespace common\extensions\fileapi;
+namespace backend\extensions\fileapi;
 
-use common\extensions\fileapi\assets\FileAPIMultipleAsset;
-use common\extensions\fileapi\assets\FileAPISingleAsset;
+use backend\extensions\fileapi\assets\FileAPIMultipleAsset;
+use backend\extensions\fileapi\assets\FileAPISingleAsset;
 use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;

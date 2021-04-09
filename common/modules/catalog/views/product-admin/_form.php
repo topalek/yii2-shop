@@ -1,6 +1,6 @@
 <?php
 
-use common\extensions\fileapi\FileAPIAdvanced;
+use backend\extensions\fileapi\FileAPIAdvanced;
 use common\modules\catalog\models\Category;
 use common\modules\image\widgets\InputWidget;
 use common\modules\seo\widgets\SeoWidget;

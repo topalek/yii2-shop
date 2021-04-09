@@ -1,6 +1,6 @@
 <?php
 
-namespace common\extensions\fileapi\assets;
+namespace backend\extensions\fileapi\assets;
 
 use yii\web\AssetBundle;
 
@@ -14,6 +14,6 @@ class FileAPISingleAsset extends AssetBundle
         'css/single.css',
     ];
     public $depends = [
-        'common\extensions\fileapi\assets\FileAPIAsset',
+        'backend\extensions\fileapi\assets\FileAPIAsset',
     ];
 }

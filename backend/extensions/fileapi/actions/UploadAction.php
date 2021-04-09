@@ -1,8 +1,8 @@
 <?php
 
-namespace common\extensions\fileapi\actions;
+namespace backend\extensions\fileapi\actions;
 
-use common\extensions\fileapi\models\Upload;
+use backend\extensions\fileapi\models\Upload;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;

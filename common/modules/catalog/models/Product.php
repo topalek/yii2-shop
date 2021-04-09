@@ -2,8 +2,8 @@
 
 namespace common\modules\catalog\models;
 
+use backend\extensions\fileapi\behaviors\UploadBehavior;
 use common\components\BaseModel;
-use common\extensions\fileapi\behaviors\UploadBehavior;
 use common\modules\image\behaviors\ImagesBehavior;
 use common\modules\search\behaviors\SearchBehavior;
 use common\modules\seo\behaviors\SeoBehavior;
@@ -60,9 +60,9 @@ class Product extends BaseModel
             'catalogItem' . $id,
             function () use ($id) {
                 return self::find()
-                           ->with(['properties', 'properties.property', 'properties.propertyCategory'])
-                           ->where(['product.id' => $id])
-                           ->one();
+                    ->with(['properties', 'properties.property', 'properties.propertyCategory'])
+                    ->where(['product.id' => $id])
+                    ->one();
             }
         );
     }

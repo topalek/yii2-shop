@@ -10,7 +10,7 @@
  * @var $this  \yii\web\View
  */
 
-use common\extensions\fileapi\FileAPIAdvanced;
+use backend\extensions\fileapi\FileAPIAdvanced;
 use common\modules\catalog\models\Property;
 use yii\helpers\Html;
 use yii\helpers\Url;

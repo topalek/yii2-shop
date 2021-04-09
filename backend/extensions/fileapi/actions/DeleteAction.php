@@ -1,6 +1,6 @@
 <?php
 
-namespace common\extensions\fileapi\actions;
+namespace backend\extensions\fileapi\actions;
 
 use Yii;
 use yii\base\Action;

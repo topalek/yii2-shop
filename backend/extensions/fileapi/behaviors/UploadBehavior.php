@@ -1,6 +1,6 @@
 <?php
 
-namespace common\extensions\fileapi\behaviors;
+namespace backend\extensions\fileapi\behaviors;
 
 use ReflectionClass;
 use yii\base\Behavior;
@@ -12,7 +12,7 @@ use yii\helpers\Security;
 /**
  * Class UploadBehavior
  *
- * @package common\extensions\fileapi\behaviors
+ * @package backend\extensions\fileapi\behaviors
  * Поведение для загрузки файлов.
  *
  * Пример использования:

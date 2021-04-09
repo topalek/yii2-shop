@@ -2,8 +2,8 @@
 
 namespace common\modules\catalog\models;
 
+use backend\extensions\fileapi\behaviors\UploadBehavior;
 use common\components\BaseModel;
-use common\extensions\fileapi\behaviors\UploadBehavior;
 use common\modules\search\behaviors\SearchBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -12,8 +12,8 @@ use yii\helpers\Html;
 /**
  * This is the model class for table "category".
  *
- * @property integer            $id
- * @property string             $title_uk
+ * @property integer $id
+ * @property string  $title_uk
  * @property string             $title_ru
  * @property string             $title_en
  * @property string             $description_uk
@@ -221,7 +221,7 @@ class Category extends BaseModel
     public function getPropertyCategories()
     {
         return $this->hasMany(PropertyCategory::class, ['id' => 'property_category_id'])
-                    ->viaTable('property_category_catalog_category', ['category_id' => 'id']);
+            ->viaTable('property_category_catalog_category', ['category_id' => 'id']);
     }
 
     public function transactions()

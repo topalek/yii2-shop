@@ -2,8 +2,8 @@
 
 namespace common\modules\catalog\models;
 
+use backend\extensions\fileapi\behaviors\UploadBehavior;
 use common\components\BaseModel;
-use common\extensions\fileapi\behaviors\UploadBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -11,9 +11,9 @@ use yii\helpers\Html;
 /**
  * This is the model class for table "product_property".
  *
- * @property integer          $id
- * @property integer          $product_id
- * @property integer          $property_id
+ * @property integer $id
+ * @property integer $product_id
+ * @property integer $property_id
  * @property integer          $property_category_id
  * @property string           $photo
  * @property string           $price
@@ -94,8 +94,7 @@ class ProductProperty extends BaseModel
             }
             $check = self::getDb()->createCommand($sql)->queryScalar();
             if ($check) {
-                self::getDb()->createCommand()->update(self::tableName(), ['default' => 0], ['id' => $check])->execute(
-                );
+                self::getDb()->createCommand()->update(self::tableName(), ['default' => 0], ['id' => $check])->execute();
             }
         }
         return parent::beforeSave($insert);

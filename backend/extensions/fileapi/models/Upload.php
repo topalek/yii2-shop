@@ -1,6 +1,6 @@
 <?php
 
-namespace common\extensions\fileapi\models;
+namespace backend\extensions\fileapi\models;
 
 use Yii;
 use yii\base\Model;
@@ -8,7 +8,7 @@ use yii\base\Model;
 /**
  * Class Upload
  *
- * @package common\extensions\fileapi\models
+ * @package backend\extensions\fileapi\models
  * Загрузочная модель файлов.
  */
 class Upload extends Model
