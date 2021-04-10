@@ -27,7 +27,7 @@ $userImg = '/img/undraw_profile.svg';
             <?= BaseHtml::a(
                 '<i class="fa fa-globe"></i>',
                 Yii::$app->params['frontendUrl'],
-                ['class' => 'navbar-custom-menu-link', 'title' => 'Перейти на сайт']
+                ['class' => 'navbar-custom-menu-link', 'title' => 'Перейти на сайт', 'target' => '_blank']
             ) ?>
             <?= BaseHtml::a(
                 '<i class="fa fa-sign-out"></i>',

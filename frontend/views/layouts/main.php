@@ -6,6 +6,7 @@
 
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
+use yii\bootstrap\Nav;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
@@ -37,11 +38,12 @@ $this->beginBody() ?>
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
-    <div class="offcanvas__option">
+    <!--    <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <?= $this->render('parts/_top_links') ?>
+            <?
+    /*= $this->render('parts/_top_links') */ ?>
         </div>
-    </div>
+    </div>-->
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
         <a href="#"><img src="/img/icon/heart.png" alt=""></a>
@@ -57,7 +59,7 @@ $this->beginBody() ?>
 
 <!-- Header Section Begin -->
 <header class="header">
-    <div class="header__top">
+    <!--<div class="header__top">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-7">
@@ -68,13 +70,14 @@ $this->beginBody() ?>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <?= $this->render('parts/_top_links') ?>
+                            <?
+    /*= $this->render('parts/_top_links') */ ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-3">
@@ -84,21 +87,29 @@ $this->beginBody() ?>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
-                    <ul>
-                        <li><a href="./index.html">Home</a></li>
-                        <li class="active"><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="./about.html">About Us</a></li>
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contacts</a></li>
-                    </ul>
+                    <?= Nav::widget(
+                        [
+                            'options' => ['class' => ''],
+                            'items'   => [
+                                [
+                                    'label' => Yii::t('site', 'Главная'),
+                                    'url'   => Yii::$app->homeUrl,
+                                ],
+                                [
+                                    'label' => Yii::t('site', 'Магазин'),
+                                    'url'   => ['/shop'],
+                                ],
+                                [
+                                    'label' => Yii::t('site', 'О нас'),
+                                    'url'   => ['/about'],
+                                ],
+                                [
+                                    'label' => Yii::t('site', 'Контакты'),
+                                    'url'   => ['/contacts'],
+                                ],
+                            ],
+                        ]
+                    ) ?>
                 </nav>
             </div>
             <div class="col-lg-3 col-md-3">

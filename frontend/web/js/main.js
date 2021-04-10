@@ -10,6 +10,10 @@
 'use strict';
 
 (function ($) {
+    const lazyLoadObserver = lozad('.lazy-load');
+    setTimeout(() => {
+        lazyLoadObserver.observe();
+    }, 500);
 
     /*------------------
         Preloader

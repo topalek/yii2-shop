@@ -64,6 +64,10 @@ function currUserId(): ?int
     return Yii::$app->user->getId();
 }
 
+function lazyLoadImgUrl()
+{
+    return '/img/loader.gif';
+}
 /**
  * @return string
  */

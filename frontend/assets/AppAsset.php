@@ -2,7 +2,7 @@
 
 namespace frontend\assets;
 
-use yii\bootstrap4\BootstrapPluginAsset;
+use yii\bootstrap\BootstrapPluginAsset;
 use yii\web\AssetBundle;
 
 /**
@@ -16,6 +16,8 @@ class AppAsset extends AssetBundle
         'css/style.css',
     ];
     public $js = [
+        'js/lozad.js',
+        'js/main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
