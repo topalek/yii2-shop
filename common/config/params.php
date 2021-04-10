@@ -11,8 +11,8 @@ return [
     'cookieValidationKey'           => 'atLZmoeGMMh5tNSZtSpxIm6W903bNvHs',
 
     //домен для кук
-    'cookieDomain'                  => '.magaz.loc',
+    'cookieDomain'                  => '.exampledomen.com',
 
-    'frontendUrl' => 'http://magaz.loc',
-    'backendUrl'  => 'http://admin.magaz.loc',
+    'frontendUrl' => 'http://exampledomen.com',
+    'backendUrl'  => 'http://exampledomen.com',
 ];

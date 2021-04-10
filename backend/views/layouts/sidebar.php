@@ -34,10 +34,9 @@ use yii\helpers\Url;
     <div class="sidebar-heading">
         Interface
     </div>
-    <?= Menu::widget(
+    <?= AdminMenuWidget::widget(
         [
-            'labelTemplate' => '{label} {treeFlag} {badge}',
-            'items'         => [
+            'items' => [
                 [
                     'url'   => Url::to(['/product/index']),
                     'icon'  => 'fas fa-store',

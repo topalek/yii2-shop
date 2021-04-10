@@ -1,13 +1,10 @@
 <?php
 
-use backend\assets\AppadminAsset;
 use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-
-AppadminAsset::register($this);
 dmstr\web\AdminLteAsset::register($this);
 ?>
 <?php
@@ -22,14 +19,12 @@ $this->beginPage() ?>
     <?php
     $this->head() ?>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="login-page">
+
 <?php
 $this->beginBody() ?>
-<div class="wrapper">
-    <?= $this->render('header') ?>
-    <?= $this->render('left') ?>
-    <?= $this->render('content', ['content' => $content]) ?>
-</div>
+
+<?= $content ?>
 
 <?php
 $this->endBody() ?>
@@ -37,4 +32,3 @@ $this->endBody() ?>
 </html>
 <?php
 $this->endPage() ?>
-

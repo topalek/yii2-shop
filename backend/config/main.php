@@ -1,7 +1,5 @@
 <?php
 
-use backend\modules\catalog\CatalogModule;
-
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -16,9 +14,7 @@ return [
     'bootstrap'           => ['log'],
     'language'            => 'ru',
     'modules'             => [
-        'catalog' => [
-            'class' => CatalogModule::class,
-        ],
+
     ],
     'components'          => [
         'request'      => [

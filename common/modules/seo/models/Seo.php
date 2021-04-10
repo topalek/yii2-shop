@@ -115,15 +115,15 @@ class Seo extends ActiveRecord
     {
         return [
             'id'                     => 'ID',
-            'title_uk'               => 'Title страницы',
-            'title_ru'               => 'Title страницы',
-            'title_en'               => 'Title страницы',
-            'description_uk'         => 'Meta description',
-            'description_ru'         => 'Meta description',
-            'description_en'         => 'Meta description',
-            'keywords_uk'            => 'Meta keywords',
-            'keywords_ru'            => 'Meta keywords',
-            'keywords_en'            => 'Meta keywords',
+            'title_uk'               => 'Title страницы (uk)',
+            'title_ru'               => 'Title страницы (ru)',
+            'title_en'               => 'Title страницы (en)',
+            'description_uk'         => 'Meta description (uk)',
+            'description_ru'         => 'Meta description (ru)',
+            'description_en'         => 'Meta description (en)',
+            'keywords_uk'            => 'Meta keywords (uk)',
+            'keywords_ru'            => 'Meta keywords (ru)',
+            'keywords_en'            => 'Meta keywords (en)',
             'head_block'             => 'Блок в head',
             'external_link'          => 'Внешняя ссылка',
             'external_link_with_cat' => 'Внешняя ссылка з категорією',
@@ -192,29 +192,20 @@ class Seo extends ActiveRecord
 
     public function getMlTitle()
     {
-        $lang = Yii::$app->language;
-
-        if (php_sapi_name() == 'cli') {
-            $lang = substr($lang, 0, -3);
-        }
-
-        $title = 'title_' . $lang;
-        return $this->$title;
+        return $this->getMlAttr('title');
     }
 
     public function getMlDescription()
     {
-        $lang = Yii::$app->language;
-
-        if (php_sapi_name() == 'cli') {
-            $lang = substr($lang, 0, -3);
-        }
-
-        $attr = 'description_' . $lang;
-        return $this->$attr;
+        return $this->getMlAttr('description');
     }
 
     public function getMlKeywords()
+    {
+        return $this->getMlAttr('keyword');
+    }
+
+    public function getMlAttr($attr = null)
     {
         $lang = Yii::$app->language;
 
@@ -222,7 +213,7 @@ class Seo extends ActiveRecord
             $lang = substr($lang, 0, -3);
         }
 
-        $attr = 'keywords_' . $lang;
+        $attr = $attr . '_' . $lang;
         return $this->$attr;
     }
 }

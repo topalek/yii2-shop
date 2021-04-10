@@ -1,65 +1,76 @@
 <?php
 
-/* @var $this yii\web\View */
-
-/* @var $form yii\bootstrap4\ActiveForm */
-
-/* @var $model \common\models\forms\LoginForm */
-
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
-$this->title = 'Login';
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \common\models\LoginForm */
+
+$this->title = 'Sign In';
+
+$fieldOptions1 = [
+    'options'       => ['class' => 'form-group has-feedback'],
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>",
+];
+
+$fieldOptions2 = [
+    'options'       => ['class' => 'form-group has-feedback'],
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>",
+];
 ?>
-<div class="col-xl-10 col-lg-12 col-md-9">
-    <div class="card o-hidden border-0 shadow-lg my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                <div class="col-lg-6">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                        </div>
-                        <?php
-                        $form = ActiveForm::begin(['id' => 'login-form', 'options' => ['class' => 'user']]); ?>
 
-                        <?= $form->field($model, 'username')->textInput(
-                            [
-                                'autofocus'   => true,
-                                'class'       => 'form-control form-control-user',
-                                'placeholder' => 'Enter your username',
-                            ]
-                        ) ?>
-
-                        <?= $form->field($model, 'password')->passwordInput(
-                            ['class' => 'form-control form-control-user', 'placeholder' => 'Password']
-                        ) ?>
-
-                        <?= $form->field($model, 'rememberMe')->checkbox(
-                            ['class' => "custom-control-input"]
-                        ) ?>
-
-                        <?= Html::submitButton(
-                            'Login',
-                            [
-                                'class' => 'btn btn-primary btn-block btn-user',
-                                'name'  => 'login-button',
-                            ]
-                        ) ?>
-
-                        <?php
-                        ActiveForm::end(); ?>
-                        <hr>
-                        <div class="text-center">
-                            <a class="small" href="<?= Url::to(['/site/forgot-password']) ?>">Forgot Password?</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"><b>Admin</b>LTE</a>
     </div>
-</div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start your session</p>
 
+        <?php
+        $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
+
+        <?= $form
+            ->field($model, 'username', $fieldOptions1)
+            ->label(false)
+            ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+
+        <?= $form
+            ->field($model, 'password', $fieldOptions2)
+            ->label(false)
+            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+            </div>
+            <!-- /.col -->
+            <div class="col-xs-4">
+                <?= Html::submitButton(
+                    'Sign in',
+                    ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']
+                ) ?>
+            </div>
+            <!-- /.col -->
+        </div>
+
+
+        <?php
+        ActiveForm::end(); ?>
+
+        <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in
+                using Facebook</a>
+            <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i> Sign
+                in using Google+</a>
+        </div>
+        <!-- /.social-auth-links -->
+
+        <a href="#">I forgot my password</a><br>
+        <a href="register.html" class="text-center">Register a new membership</a>
+
+    </div>
+    <!-- /.login-box-body -->
+</div><!-- /.login-box -->

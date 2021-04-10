@@ -86,12 +86,12 @@ class Category extends BaseModel
     {
         return [
             'id'             => 'ID',
-            'title_uk'       => 'Название',
-            'title_ru'       => 'Название',
-            'title_en'       => 'Название',
-            'description_uk' => 'Описание',
-            'description_ru' => 'Описание',
-            'description_en' => 'Описание',
+            'title_uk'       => 'Название (uk)',
+            'title_ru'       => 'Название (ru)',
+            'title_en'       => 'Название (en)',
+            'description_uk' => 'Описание (uk)',
+            'description_ru' => 'Описание (ru)',
+            'description_en' => 'Описание (en)',
             'main_img'       => 'Изображения',
             'parentId'       => 'Вложенность',
             'updated_at'     => 'Дата обновления',
@@ -115,8 +115,8 @@ class Category extends BaseModel
                 'seo'            => [
                     'class'         => 'common\modules\seo\behaviors\SeoBehavior',
                     'model'         => $this->getModelName(),
-                    'view_action'   => '/catalog/default/category-view',
-                    'view_category' => 'catalog/category',
+                    'view_action'   => '/default/category-view',
+                    'view_category' => '/category',
                 ],
                 'search'         => [
                     'class' => SearchBehavior::class,
