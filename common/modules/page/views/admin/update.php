@@ -5,10 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\modules\page\models\Page */
 
-$this->title = 'Радагувати сторінку: ' . ' ' . $model->title_uk;
-$this->params['breadcrumbs'][] = ['label' => 'Статичні сторінки', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title_uk, 'url' => $model->seoUrl];
-$this->params['breadcrumbs'][] = 'Радагувати';
+$this->title = 'Редактировать страницу: ' . ' ' . $model->title_ru;
+$this->params['breadcrumbs'][] = ['label' => 'Статические страницы', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page-update">
 

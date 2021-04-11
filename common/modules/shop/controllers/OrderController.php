@@ -4,6 +4,7 @@ namespace common\modules\shop\controllers;
 
 use common\components\BaseAdminController;
 use common\modules\shop\models\Order;
+use common\modules\shop\models\OrderSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -39,7 +40,7 @@ class OrderController extends BaseAdminController
      */
     public function actionIndex()
     {
-        $searchModel = new ShopOrderSearch();
+        $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render(
@@ -79,10 +80,10 @@ class OrderController extends BaseAdminController
      */
     protected function findModel($id)
     {
-        if (($model = ShopOrder::findOne($id)) !== null) {
+        if (($model = Order::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('Сторінка не існує або була видалена.');
+            throw new NotFoundHttpException('Страница не существует или была удалена.');
         }
     }
 
@@ -128,7 +129,7 @@ class OrderController extends BaseAdminController
     public function actionMarkDone($id)
     {
         $model = $this->findModel($id);
-        $model->status = ShopOrder::STATUS_CLOSED;
+        $model->status = Order::STATUS_CLOSED;
         $model->update(false, ['status']);
         Yii::$app->session->setFlash('humane', 'Сохранено');
         return $this->redirect(['view', 'id' => $id]);
@@ -137,7 +138,7 @@ class OrderController extends BaseAdminController
     public function actionMarkInProcess($id)
     {
         $model = $this->findModel($id);
-        $model->status = ShopOrder::STATUS_IN_PROCESS;
+        $model->status = Order::STATUS_IN_PROCESS;
         $model->update(false, ['status']);
         Yii::$app->session->setFlash('humane', 'Сохранено');
         return $this->redirect(['view', 'id' => $id]);

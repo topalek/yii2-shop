@@ -8,7 +8,7 @@
 
 namespace common\components;
 
-use app\modules\seo\models\Seo;
+use common\modules\seo\models\Seo;
 use Exception;
 use Yii;
 use yii\helpers\Url;

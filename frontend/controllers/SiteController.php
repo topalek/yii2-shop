@@ -12,7 +12,6 @@ use frontend\models\SignupForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
 use yii\base\InvalidArgumentException;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
@@ -77,12 +76,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider(
-            [
-                'query' => Product::find()->active(),
-            ]
-        );
-        return $this->render('index', compact('dataProvider'));
+        $products = Product::find()->active()->popular()->limit(6)->all();
+        if (count($products) < 6) {
+            $products = Product::find()->active()->limit(6)->all();
+        }
+
+        return $this->render('index', compact('products'));
     }
 
     /**

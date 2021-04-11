@@ -8,9 +8,9 @@
 
 namespace common\components;
 
-use app\modules\params\models\Params;
-use app\modules\seo\models\Seo;
-use common\models\CartItem;
+use common\modules\params\models\Params;
+use common\modules\seo\models\Seo;
+use common\modules\shop\models\Cart;
 use Yii;
 use yii\web\Controller;
 use yii\web\Cookie;
@@ -36,7 +36,7 @@ class BaseController extends Controller
         Yii::$app->params = Params::getParamsList();
 
         Yii::$app->session->open();
-        $this->view->params['cartItemCount'] = CartItem::getTotalCount();
+        $this->view->params['cartItemCount'] = Cart::getItemsCount();
         $url = ltrim(BaseUrlManager::getUrlWithoutLangPrefix(), '/');
 
         if ($url == '') {

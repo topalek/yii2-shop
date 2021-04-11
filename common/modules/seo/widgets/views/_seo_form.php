@@ -40,7 +40,7 @@ use yii\helpers\Html;
         <div class="form-group col-md-12">
             <?= Html::activeLabel($seo, 'external_link', ['class' => 'control-label']) ?>
             <div class="input-group">
-                <span class="input-group-addon">http://<?= $_SERVER['HTTP_HOST'] ?>/</span>
+                <span class="input-group-addon"><?= Yii::$app->params['frontendUrl'] ?></span>
                 <?= Html::activeTextInput($seo, 'external_link', ['class' => 'form-control']) ?>
             </div>
         </div>

@@ -13,7 +13,7 @@ use yii\helpers\Json;
  *
  * @property integer $id
  * @property string  $sid
- * @property string  $catalog_items
+ * @property string  $products
  * @property string  $updated_at
  * @property string  $created_at
  *
@@ -27,7 +27,7 @@ class Cart extends ActiveRecord
      */
     public static function tableName()
     {
-        return 'shop_cart';
+        return 'cart';
     }
 
     public static function getItemsCount()
@@ -63,7 +63,7 @@ class Cart extends ActiveRecord
     {
         return [
             [['sid'], 'required'],
-            [['catalog_items'], 'string'],
+            [['products'], 'string'],
             [['updated_at', 'created_at'], 'safe'],
             [['sid'], 'string', 'max' => 255],
         ];
@@ -75,11 +75,11 @@ class Cart extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id'            => 'ID',
-            'sid'           => 'Sid',
-            'catalog_items' => 'Товары',
-            'updated_at'    => 'Дата обновления',
-            'created_at'    => 'Дата создания',
+            'id'         => 'ID',
+            'sid'        => 'Sid',
+            'products'   => 'Товары',
+            'updated_at' => 'Дата обновления',
+            'created_at' => 'Дата создания',
         ];
     }
 
@@ -99,13 +99,13 @@ class Cart extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->catalog_items = Json::encode($this->cartItems);
+        $this->products = Json::encode($this->cartItems);
         return parent::beforeSave($insert);
     }
 
     public function afterFind()
     {
-        $this->cartItems = Json::decode($this->catalog_items);
+        $this->cartItems = Json::decode($this->products);
         parent::afterFind();
     }
 
@@ -123,7 +123,7 @@ class Cart extends ActiveRecord
             foreach ($this->cartItems as $itemKey => $cartItem) {
                 if ($itemKey == $key) {
                     unset($this->cartItems[$key]);
-                    $this->update(false, ['catalog_items']);
+                    $this->update(false, ['products']);
                 } else {
                     $totalSum += $cartItem['price'] * $cartItem['qty'];
                 }

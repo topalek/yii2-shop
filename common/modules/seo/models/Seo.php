@@ -34,7 +34,7 @@ use yii\db\Expression;
  * @property integer $status
  * @property string  $updated_at
  */
-class Seo extends ActiveRecord
+class Seo extends BaseModel
 {
     /**
      * @inheritdoc
@@ -190,30 +190,14 @@ class Seo extends ActiveRecord
         ];
     }
 
-    public function getMlTitle()
-    {
-        return $this->getMlAttr('title');
-    }
-
     public function getMlDescription()
     {
-        return $this->getMlAttr('description');
+        return $this->getMlAttribute('description');
     }
 
     public function getMlKeywords()
     {
-        return $this->getMlAttr('keyword');
+        return $this->getMlAttribute('keywords');
     }
 
-    public function getMlAttr($attr = null)
-    {
-        $lang = Yii::$app->language;
-
-        if (php_sapi_name() == 'cli') {
-            $lang = substr($lang, 0, -3);
-        }
-
-        $attr = $attr . '_' . $lang;
-        return $this->$attr;
-    }
 }

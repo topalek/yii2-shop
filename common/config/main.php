@@ -1,5 +1,6 @@
 <?php
 
+use common\components\BaseUrlManager;
 use common\modules\catalog\CatalogModule;
 use common\modules\image\ImageModule;
 
@@ -42,10 +43,13 @@ return [
         ],
     ],
     'components' => [
-        'cache' => [
+        'cache'      => [
             'class' => 'yii\caching\FileCache',
         ],
-        'i18n'  => [
+        'urlManager' => [
+            'class' => BaseUrlManager::class,
+        ],
+        'i18n'       => [
             'translations' => [
                 '*' => [
                     'class'              => 'yii\i18n\DbMessageSource',

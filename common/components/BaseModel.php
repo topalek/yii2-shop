@@ -8,8 +8,8 @@
 
 namespace common\components;
 
-use app\modules\image\models\Image;
-use app\modules\seo\models\Seo;
+use common\modules\image\models\Image;
+use common\modules\seo\models\Seo;
 use ReflectionClass;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -290,35 +290,12 @@ class BaseModel extends ActiveRecord
 
     public function getMlTitle($lang = null, $attribute = null)
     {
-        if ($lang == null) {
-            $lang = Yii::$app->language;
-        }
-
-        if (php_sapi_name() == 'cli') {
-            $lang = substr($lang, 0, -3);
-        }
-
-        if ($attribute) {
-            $title = $attribute . '_' . $lang;
-        } else {
-            $title = 'title_' . $lang;
-        }
-
-        return ($this->$title != null) ? $this->$title : $this->title_ru;
+        return $this->getMlAttribute('title');
     }
 
-    public function getMlShortContent($lang = null)
+    public function getMlShortContent()
     {
-        if ($lang == null) {
-            $lang = Yii::$app->language;
-        }
-
-        if (php_sapi_name() == 'cli') {
-            $lang = substr($lang, 0, -3);
-        }
-
-        $content = 'short_content_' . $lang;
-        return $this->$content;
+        return $this->getMlAttribute('short_content');
     }
 
     /**
@@ -327,17 +304,26 @@ class BaseModel extends ActiveRecord
      *
      * @return mixed
      */
-    public function getMlContent($lang = null, $attribute = 'content')
+    public function getMlContent()
     {
-        if ($lang == null) {
-            $lang = Yii::$app->language;
-        }
+        return $this->getMlAttribute('content');
+    }
+
+    /**
+     * @param null   $lang
+     * @param string $attribute
+     *
+     * @return mixed
+     */
+    public function getMlAttribute($attribute)
+    {
+        $lang = Yii::$app->language;
 
         if (php_sapi_name() == 'cli') {
             $lang = substr($lang, 0, -3);
         }
 
         $content = $attribute . '_' . $lang;
-        return $this->$content;
+        return $this->$content ?? '';
     }
 }

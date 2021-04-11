@@ -4,13 +4,31 @@
 
 /* @var $content string */
 
+use common\components\BaseModel;
+use common\components\BaseUrlManager;
+use common\modules\translate\models\Translate;
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
+
+$currentLang = Yii::$app->language;
+$urlWithoutLangPrefix = BaseUrlManager::getUrlWithoutLangPrefix();
+
+$langList = [];
+foreach (Translate::getLangList() as $lang => $langTitle) {
+    $langList[$lang] = [
+        'label' => $langTitle,
+        'url'   => BaseModel::DEFAULT_LANG === $lang ? '/' . ltrim(
+                $urlWithoutLangPrefix,
+                '/'
+            ) : '/' . $lang . $urlWithoutLangPrefix,
+    ];
+}
 ?>
 <?php
 $this->beginPage() ?>
@@ -29,208 +47,223 @@ $this->beginPage() ?>
 <body>
 <?php
 $this->beginBody() ?>
+<div class="wrap">
+    <!-- Page Preloder -->
+    <!--<div id="preloder">
+        <div class="loader"></div>
+    </div>-->
 
-<!-- Page Preloder -->
-<!--<div id="preloder">
-    <div class="loader"></div>
-</div>-->
-
-<!-- Offcanvas Menu Begin -->
-<div class="offcanvas-menu-overlay"></div>
-<div class="offcanvas-menu-wrapper">
-    <!--    <div class="offcanvas__option">
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <!--    <div class="offcanvas__option">
         <div class="offcanvas__links">
             <?
-    /*= $this->render('parts/_top_links') */ ?>
+        /*= $this->render('parts/_top_links') */ ?>
         </div>
     </div>-->
-    <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
-        <a href="#"><img src="/img/icon/heart.png" alt=""></a>
-        <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
-        <div class="price">$0.00</div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+            <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
+            <div class="price">$0.00</div>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Free shipping, 30-day return or refund guarantee.</p>
+        </div>
     </div>
-    <div id="mobile-menu-wrap"></div>
-    <div class="offcanvas__text">
-        <p>Free shipping, 30-day return or refund guarantee.</p>
-    </div>
-</div>
-<!-- Offcanvas Menu End -->
+    <!-- Offcanvas Menu End -->
 
-<!-- Header Section Begin -->
-<header class="header">
-    <!--<div class="header__top">
+    <!-- Header Section Begin -->
+    <header class="header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-7">
-                    <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                <div class="col-lg-2 col-md-2">
+                    <div class="header__logo">
+                        <?= Html::a(Html::img("/img/logo.png"), ['/']) ?>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-5">
-                    <div class="header__top__right">
-                        <div class="header__top__links">
-                            <?
-    /*= $this->render('parts/_top_links') */ ?>
+                <div class="col-lg-8 col-md-8">
+                    <nav class="header__menu mobile-menu">
+                        <?= Nav::widget(
+                            [
+                                'options' => ['class' => ''],
+                                'items'   => [
+                                    [
+                                        'label' => Yii::t('site', 'Главная'),
+                                        'url'   => Yii::$app->homeUrl,
+                                    ],
+                                    [
+                                        'label' => Yii::t('site', 'Магазин'),
+                                        'url'   => ['/shop'],
+                                    ],
+                                    [
+                                        'label' => Yii::t('site', 'О нас'),
+                                        'url'   => ['/o_nas'],
+                                    ],
+                                    [
+                                        'label' => Yii::t('site', 'Контакты'),
+                                        'url'   => ['/contacts'],
+                                    ],
+                                    [
+                                        'label' => Yii::t('site', 'Доставка и оплата'),
+                                        'url'   => ['/dostavka_i_oplata'],
+                                    ],
+                                ],
+                            ]
+                        ) ?>
+                    </nav>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch">
+                            <img src="/img/icon/search.png" alt="">
+                        </a>
+                        <a href="<?= Url::to(['/shop/default/view-cart']) ?>" id="cart">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            <span>0</span></a>
+                        <!--                        <div class="price">$0.00</div>-->
+                        <?php
+                        //$langList = Translate::getLangList();
+                        if (count($langList) > 1) :?>
+                            <div class="lang">
+                                <?php
+                                foreach ($langList as $langPrefix => $lang) {
+                                    if ($langPrefix == $currentLang) {
+                                        echo Html::tag(
+                                            'span',
+                                            $langPrefix,
+                                            ['class' => 'lang-item', 'title' => $lang['label']]
+                                        );
+                                    } else {
+                                        echo Html::a(
+                                            $langPrefix,
+                                            $lang['url'],
+                                            ['class' => 'lang-item', 'title' => $lang['label']]
+                                        );
+                                    }
+                                } ?>
+                            </div>
+
+                        <?php
+                        endif; ?>
+
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4><?= $this->title ?></h4>
+                        <?= Breadcrumbs::widget(
+                            [
+                                'links'              => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                'tag'                => 'div',
+                                'options'            => ['class' => 'breadcrumb__links'],
+                                'itemTemplate'       => "{link}\n",
+                                'activeItemTemplate' => '<span>{link}</span>',
+                            ]
+                        ) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <?= Alert::widget() ?>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <?= $content ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="/img/footer-logo.png" alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>-->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-3">
-                <div class="header__logo">
-                    <?= Html::a(Html::img("/img/logo.png"), ['/']) ?>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <nav class="header__menu mobile-menu">
-                    <?= Nav::widget(
-                        [
-                            'options' => ['class' => ''],
-                            'items'   => [
-                                [
-                                    'label' => Yii::t('site', 'Главная'),
-                                    'url'   => Yii::$app->homeUrl,
-                                ],
-                                [
-                                    'label' => Yii::t('site', 'Магазин'),
-                                    'url'   => ['/shop'],
-                                ],
-                                [
-                                    'label' => Yii::t('site', 'О нас'),
-                                    'url'   => ['/about'],
-                                ],
-                                [
-                                    'label' => Yii::t('site', 'Контакты'),
-                                    'url'   => ['/contacts'],
-                                ],
-                            ],
-                        ]
-                    ) ?>
-                </nav>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
-                </div>
-            </div>
-        </div>
-        <div class="canvas__open"><i class="fa fa-bars"></i></div>
-    </div>
-</header>
-<!-- Header Section End -->
-
-<!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-option">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb__text">
-                    <h4><?= $this->title ?></h4>
-                    <?= Breadcrumbs::widget(
-                        [
-                            'links'              => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                            'tag'                => 'div',
-                            'options'            => ['class' => 'breadcrumb__links'],
-                            'itemTemplate'       => "{link}\n",
-                            'activeItemTemplate' => '<span>{link}</span>',
-                        ]
-                    ) ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Breadcrumb Section End -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <?= Alert::widget() ?>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <?= $content ?>
-        </div>
-    </div>
-</div>
-
-<!-- Footer Section Begin -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="#"><img src="/img/footer-logo.png" alt=""></a>
-                    </div>
-                    <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="/img/payment.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Shopping</h6>
-                    <ul>
-                        <li><a href="#">Clothing Store</a></li>
-                        <li><a href="#">Trending Shoes</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Sale</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-6">
-                <div class="footer__widget">
-                    <h6>Shopping</h6>
-                    <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Payment Methods</a></li>
-                        <li><a href="#">Delivary</a></li>
-                        <li><a href="#">Return & Exchanges</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                <div class="footer__widget">
-                    <h6>NewLetter</h6>
-                    <div class="footer__newslatter">
-                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                        <form action="#">
-                            <input type="text" placeholder="Your email">
-                            <button type="submit"><span class="icon_mail_alt"></span></button>
-                        </form>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                                                                aria-hidden="true"></i> by <a
+                                    href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="footer__copyright__text">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    <p>Copyright ©
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
-                        2020
-                        All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i> by <a
-                                href="https://colorlib.com" target="_blank">Colorlib</a>
-                    </p>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Footer Section End -->
+    </footer>
+    <!-- Footer Section End -->
+</div>
+
 
 <!-- Search Begin -->
 <div class="search-model">
@@ -241,7 +274,13 @@ $this->beginBody() ?>
         </form>
     </div>
 </div>
-
+<?php
+foreach (Yii::$app->session->getAllFlashes() as $key => $message): ?>
+    <script type="text/javascript">
+        humane.log('<?php echo Html::encode($message);?>', {timeout: 2500});
+    </script>
+<?php
+endforeach; ?>
 <?php
 $this->endBody() ?>
 </body>

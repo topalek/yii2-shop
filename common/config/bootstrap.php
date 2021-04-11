@@ -113,3 +113,36 @@ function dynamicImageUrl($imageUrl, $width, $height = null, $crop = false): stri
     $imageUrl = implode('/', $imageUrlParts);
     return $imageUrl;
 }
+
+function getShortText($text, $width, $points = false)
+{
+    $text = strip_tags($text);
+    $parts = preg_split('/([\s\n\r]+)/', $text, null, PREG_SPLIT_DELIM_CAPTURE);
+    $parts_count = count($parts);
+    $length = 0;
+    $last_part = 0;
+    for (; $last_part < $parts_count; ++$last_part) {
+        $length += strlen($parts[$last_part]);
+        if ($length > $width) {
+            break;
+        }
+    }
+    $result = implode(array_slice($parts, 0, $last_part));
+    if ($points) {
+        if ($length > $width) {
+            $result = $result . '...';
+        }
+    }
+    return $result;
+}
+
+function searchHighlighter($text, $word, $trim = false, $length = 0, $points = false)
+{
+    if ($trim) {
+        $fragment = getShortText($text, $length, $points);
+    } else {
+        $fragment = $text;
+    }
+    $highlighted = str_ireplace($word, '<mark>' . $word . '</mark>', $fragment);
+    return $highlighted;
+}

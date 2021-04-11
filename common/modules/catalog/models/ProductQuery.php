@@ -16,6 +16,12 @@ class ProductQuery extends \yii\db\ActiveQuery
         return $this;
     }
 
+    public function popular()
+    {
+        $this->orderBy('order_count DESC');
+        return $this;
+    }
+
     /**
      * @inheritdoc
      * @return Product[]|array

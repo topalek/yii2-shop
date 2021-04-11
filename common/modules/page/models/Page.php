@@ -4,7 +4,6 @@ namespace common\modules\page\models;
 
 use common\components\BaseModel;
 use common\modules\search\behaviors\SearchBehavior;
-use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -60,9 +59,6 @@ class Page extends BaseModel
                     'view_category' => '',
                     'view_action'   => 'page/default/view',
                 ],
-                'search' => [
-                    'class' => SearchBehavior::class,
-                ],
             ]
         );
     }
@@ -105,33 +101,16 @@ class Page extends BaseModel
     {
         return [
             'id'         => 'ID',
-            'title_uk'   => 'Название uk',
-            'title_ru'   => 'Название',
-            'title_en'   => 'Название en',
-            'content_uk' => 'Контент uk',
-            'content_ru' => 'Контент',
-            'content_en' => 'Контент en',
+            'title_uk'   => 'Название (uk)',
+            'title_ru'   => 'Название (ru)',
+            'title_en'   => 'Название (en)',
+            'content_uk' => 'Контент (uk)',
+            'content_ru' => 'Контент (ru)',
+            'content_en' => 'Контент (en)',
             'status'     => 'Публиковать',
             'updated_at' => 'Дата обновления',
             'created_at' => 'Дата создания',
         ];
     }
 
-    public function getMlTitle($lang = null, $attribute = null)
-    {
-        $title = 'title_' . Yii::$app->language;
-        if ($this->$title == null) {
-            $title = 'title_ru';
-        }
-        return $this->$title;
-    }
-
-    public function getMlContent($lang = null, $attribute = 'content')
-    {
-        $content = 'content_' . Yii::$app->language;
-        if ($this->$content == null) {
-            $content = 'content_ru';
-        }
-        return $this->$content;
-    }
 }

@@ -59,7 +59,7 @@ class SeoBehavior extends Behavior
             $seo = new Seo();
         }
 
-        $title = trim(str_replace('  ', ' ', $event->sender->getMlTitle('uk')));
+        $title = trim(str_replace('  ', ' ', $event->sender->getMlTitle('ru')));
 
         $seo->load(\Yii::$app->request->post());
 
@@ -110,8 +110,8 @@ class SeoBehavior extends Behavior
             }
         }
 
-        if ($seo->title_uk == null) {
-            $seo->title_uk = $this->owner->title_uk;
+        if ($seo->title_ru == null) {
+            $seo->title_ru = $this->owner->title_ru;
         }
 
         $seo->internal_link = $this->view_action;
@@ -129,8 +129,8 @@ class SeoBehavior extends Behavior
             $string = Inflector::slug($string, $replacement);
         } else {
             $string = str_ireplace(
-                ['й', 'ц', 'у', 'ш', 'щ', 'х', 'і', 'ї', 'є', 'г', 'ґ', 'я', 'ч', 'ж', 'и', 'ю'],
-                ['y', 'ts', 'u', 'sh', 'shch', 'kh', 'i', 'yi', 'ye', 'h', 'g', 'ya', 'ch', 'zh', 'y', 'yu'],
+                ['й', 'ц', 'у', 'ш', 'щ', 'х', 'є', 'я', 'ч', 'ж', 'ю'],
+                ['y', 'ts', 'u', 'sh', 'shch', 'kh', 'ye', 'ya', 'ch', 'zh', 'yu'],
                 $string
             );
             $string = Inflector::transliterate($string);

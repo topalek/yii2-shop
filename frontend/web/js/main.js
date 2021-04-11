@@ -1,257 +1,122 @@
-/*  ---------------------------------------------------
-    Template Name: Male Fashion
-    Description: Male Fashion - ecommerce teplate
-    Author: Colorib
-    Author URI: https://www.colorib.com/
-    Version: 1.0
-    Created: Colorib
----------------------------------------------------------  */
+var cartModal;
 
-'use strict';
-
-(function ($) {
-    const lazyLoadObserver = lozad('.lazy-load');
-    setTimeout(() => {
-        lazyLoadObserver.observe();
-    }, 500);
-
-    /*------------------
-        Preloader
-    --------------------*/
-    $(window).on('load', function () {
-        $(".loader").fadeOut();
-        $("#preloder").delay(200).fadeOut("slow");
-
-        /*------------------
-            Gallery filter
-        --------------------*/
-        $('.filter__controls li').on('click', function () {
-            $('.filter__controls li').removeClass('active');
-            $(this).addClass('active');
+$(document).on('click', '.add-to-cart-btn', function (e) {
+    e.preventDefault();
+    var charId = $('.property-list .active').data('id');
+    $.get($(this).attr('href'), {
+        itemId: $(this).data('itemId'), charId: charId, price: $('.price span').text()
+    }, function (result) {
+        $('.wrap').before('<div class="modals">' + result + '</div>');
+        cartModal = $('#cart-modal');
+        $(cartModal).modal('show');
+        $(cartModal).on('hidden.bs.modal', function () {
+            $('.modals').remove();
         });
-        if ($('.product__filter').length > 0) {
-            var containerEl = document.querySelector('.product__filter');
-            var mixer = mixitup(containerEl);
+    });
+});
+
+$(document).on('click', '#cart-modal button[type=submit]', function (e) {
+    e.preventDefault();
+    $('#cart-modal').modal('hide');
+    $(cartModal).on('hidden.bs.modal', function () {
+        $('.modals').remove();
+    });
+});
+
+$(document).on('click', '#cart-modal .delete-item-btn', function (e) {
+    e.preventDefault();
+    var itemBlock = $(this).parents('.item');
+    var cartModal = $('#cart-modal');
+    $.get($(this).attr('href'), {charId: $(this).data('charId')}, function (result) {
+        if (result.status == true) {
+            itemBlock.slideUp('fast', function () {
+                $(this).remove();
+                cartModal = $('#cart-modal');
+                var container = $('.cart-items-list', cartModal);
+                $('.total span', container).text(result.totalSum);
+                updateOrderItemsCountainer();
+                if ($('.item', container).size() == 1) {
+                    $(container).remove();
+                    $('.buttons', cartModal).addClass('hide');
+                    $('.empty-cart-text', cartModal).removeClass('hide');
+                    if ($('.order-page').length == 1) {
+                        $('.form-block, .items-block').remove();
+                        $('.order-page .empty-text-block').removeClass('hide');
+                    }
+                }
+            });
         }
     });
+});
 
-    /*------------------
-        Background Set
-    --------------------*/
-    $('.set-bg').each(function () {
-        var bg = $(this).data('setbg');
-        $(this).css('background-image', 'url(' + bg + ')');
+$(document).on('click', '.order-page .cart-items-list .delete-item-btn', function (e) {
+    e.preventDefault();
+    var container = $(this).parents('.cart-items-list');
+    var itemBlock = $(this).parents('.item');
+    $.get($(this).attr('href'), {charId: $(this).data('charId')}, function (result) {
+        if (result.status == true) {
+            itemBlock.slideUp('fast', function () {
+                $(this).remove();
+                $('.total span', container).text(result.totalSum);
+                if ($('.item', container).size() == 1) {
+                    $('.form-block, .items-block').remove();
+                    $('.order-page .empty-text-block').removeClass('hide');
+                }
+            });
+        }
     });
+});
 
-    //Search Switch
-    $('.search-switch').on('click', function () {
-        $('.search-model').fadeIn(400);
-    });
 
-    $('.search-close-switch').on('click', function () {
-        $('.search-model').fadeOut(400, function () {
-            $('#search-input').val('');
-        });
-    });
-
-    /*------------------
-		Navigation
-	--------------------*/
-    $(".mobile-menu").slicknav({
-        prependTo: '#mobile-menu-wrap',
-        allowParentLinks: true
-    });
-
-    /*------------------
-        Accordin Active
-    --------------------*/
-    $('.collapse').on('shown.bs.collapse', function () {
-        $(this).prev().addClass('active');
-    });
-
-    $('.collapse').on('hidden.bs.collapse', function () {
-        $(this).prev().removeClass('active');
-    });
-
-    //Canvas Menu
-    $(".canvas__open").on('click', function () {
-        $(".offcanvas-menu-wrapper").addClass("active");
-        $(".offcanvas-menu-overlay").addClass("active");
-    });
-
-    $(".offcanvas-menu-overlay").on('click', function () {
-        $(".offcanvas-menu-wrapper").removeClass("active");
-        $(".offcanvas-menu-overlay").removeClass("active");
-    });
-
-    /*-----------------------
-        Hero Slider
-    ------------------------*/
-    $(".hero__slider").owlCarousel({
-        loop: true,
-        margin: 0,
-        items: 1,
-        dots: false,
-        nav: true,
-        navText: ["<span class='arrow_left'><span/>", "<span class='arrow_right'><span/>"],
-        animateOut: 'fadeOut',
-        animateIn: 'fadeIn',
-        smartSpeed: 1200,
-        autoHeight: false,
-        autoplay: false
-    });
-
-    /*--------------------------
-        Select
-    ----------------------------*/
-    $("select").niceSelect();
-
-    /*-------------------
-		Radio Btn
-	--------------------- */
-    $(".product__color__select label, .shop__sidebar__size label, .product__details__option__size label").on('click', function () {
-        $(".product__color__select label, .shop__sidebar__size label, .product__details__option__size label").removeClass('active');
-        $(this).addClass('active');
-    });
-
-    /*-------------------
-		Scroll
-	--------------------- */
-    $(".nice-scroll").niceScroll({
-        cursorcolor: "#0d0d0d",
-        cursorwidth: "5px",
-        background: "#e5e5e5",
-        cursorborder: "",
-        autohidemode: true,
-        horizrailenabled: false
-    });
-
-    /*------------------
-        CountDown
-    --------------------*/
-    // For demo preview start
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-
-    if (mm == 12) {
-        mm = '01';
-        yyyy = yyyy + 1;
-    } else {
-        mm = parseInt(mm) + 1;
-        mm = String(mm).padStart(2, '0');
+$(document).on('click', '#cart-modal .minus-btn, .order-page .items .minus-btn', function (e) {
+    var input = $(this).next();
+    var qty = parseInt(input.val());
+    qty--;
+    if (qty < 1) {
+        qty = 1;
     }
-    var timerdate = mm + '/' + dd + '/' + yyyy;
-    // For demo preview end
-
-
-    // Uncomment below and use your date //
-
-    /* var timerdate = "2020/12/30" */
-
-    $("#countdown").countdown(timerdate, function (event) {
-        $(this).html(event.strftime("<div class='cd-item'><span>%D</span> <p>Days</p> </div>" + "<div class='cd-item'><span>%H</span> <p>Hours</p> </div>" + "<div class='cd-item'><span>%M</span> <p>Minutes</p> </div>" + "<div class='cd-item'><span>%S</span> <p>Seconds</p> </div>"));
-    });
-
-    /*------------------
-		Magnific
-	--------------------*/
-    $('.video-popup').magnificPopup({
-        type: 'iframe'
-    });
-
-    /*-------------------
-		Quantity change
-	--------------------- */
-    var proQty = $('.pro-qty');
-    proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
-    proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
+    input.val(qty);
+    $.get(input.data('url'), {itemId: input.data('id'), charId: input.data('charId'), qty: qty}, function (result) {
+        $(input).parents('.items').find('.total span').text(result.totalPrice);
+        if ($(input).parents('#cart-modal').length == 1) {
+            updateOrderItemsCountainer();
         }
-        $button.parent().find('input').val(newVal);
     });
+});
 
-    var proQty = $('.pro-qty-2');
-    proQty.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
-    proQty.append('<span class="fa fa-angle-right inc qtybtn"></span>');
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
-        if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            // Don't allow decrementing below zero
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
+$(document).on('click', '#cart-modal .plus-btn, .order-page .items .plus-btn', function (e) {
+    var input = $(this).prev();
+    var qty = parseInt(input.val()) + 1;
+    if (qty < 1) {
+        qty = 1;
+    }
+    input.val(qty);
+    $.get(input.data('url'), {itemId: input.data('id'), charId: input.data('charId'), qty: qty}, function (result) {
+        $(input).parents('.items').find('.total span').text(result.totalPrice);
+        if ($(input).parents('#cart-modal').length == 1) {
+            updateOrderItemsCountainer();
         }
-        $button.parent().find('input').val(newVal);
     });
+});
 
-    /*------------------
-        Achieve Counter
-    --------------------*/
-    $('.cn_num').each(function () {
-        $(this).prop('Counter', 0).animate({
-            Counter: $(this).text()
-        }, {
-            duration: 4000,
-            easing: 'swing',
-            step: function (now) {
-                $(this).text(Math.ceil(now));
-            }
+$('#cart').click(function (e) {
+    e.preventDefault();
+    $.get(this.href, function (result) {
+        $('.wrap').before('<div class="modals">' + result + '</div>');
+        cartModal = $('#cart-modal');
+        $(cartModal).modal('show');
+        $(cartModal).on('hidden.bs.modal', function () {
+            $('.modals').remove();
         });
     });
+});
 
-
-    // add items to cart
-    const $addToCart = $('.add-to-cart');
-    const $cartCount = $('.cart-count');
-    $addToCart.click(e => {
-        e.preventDefault();
-        const $this = $(e.target);
-        $.ajax({
-            method: 'POST',
-            url: $this.attr('href'),
-            success: function (resp) {
-                $cartCount.each((i, cart) => {
-                    $(cart).text(parseInt($(cart).text() || 0) + 1);
-                });
-            }
-
-        })
-    });
-    // updating quantity in cart
-    const $itemQty = $('.item-quantity');
-    $itemQty.change(e => {
-        const $this = $(e.target);
-        const id = $this.data('id');
-        const url = $this.data('url');
-        $.ajax({
-            method: 'POST',
-            url: url,
-            data: {id: id, count: $this.val()},
-            success: function (resp) {
-                $cartCount.each((i, cart) => {
-                    $(cart).text(resp);
-                });
-            }
-        })
-
-    });
-
-})(jQuery);
+function updateOrderItemsCountainer() {
+    var container = $('.order-page .cart-items-list');
+    if (container.length == 1) {
+        $.get($(container).data('url'), function (data) {
+            var html = $('.cart-items-list', data).html();
+            $(container).html(html);
+        });
+    }
+}
