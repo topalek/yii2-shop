@@ -1,5 +1,9 @@
 <?php
 
+const BACKEND_APP_ID = 'app-backend';
+const FRONTEND_APP_ID = 'app-frontend';
+const CONSOLE_APP_ID = 'app-console';
+
 use common\components\DynamicImgThumbMaker;
 
 if (strpos($_SERVER['REQUEST_URI'], '/thumbs/') !== false) {
@@ -145,4 +149,19 @@ function searchHighlighter($text, $word, $trim = false, $length = 0, $points = f
     }
     $highlighted = str_ireplace($word, '<mark>' . $word . '</mark>', $fragment);
     return $highlighted;
+}
+
+function isBackendApp(): bool
+{
+    return Yii::$app->id == BACKEND_APP_ID;
+}
+
+function isFrontendApp(): bool
+{
+    return Yii::$app->id == FRONTEND_APP_ID;
+}
+
+function isConsoleApp(): bool
+{
+    return Yii::$app->id == CONSOLE_APP_ID;
 }

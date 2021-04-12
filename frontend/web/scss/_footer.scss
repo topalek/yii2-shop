@@ -35,7 +35,7 @@
     margin-bottom: 20px;
   }
 
-  ul {
+  .footer-nav {
 
     li {
       line-height: 36px;
@@ -44,10 +44,26 @@
       a {
         color: #b7b7b7;
         font-size: 15px;
+        padding: 0;
+
+        &:hover, &:active, {
+          background-color: transparent;
+          color: #fff;
+        }
       }
     }
   }
 
+  .footer-phone {
+    i, a {
+      color: #fff;
+      font-size: 16px;
+    }
+
+    i {
+      margin-right: 5px;
+    }
+  }
 
   .footer__newslatter {
 

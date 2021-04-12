@@ -82,7 +82,7 @@ class BaseModel extends ActiveRecord
 
     public static function getModelName()
     {
-        $reflect = new ReflectionClass(self::class);
+        $reflect = new ReflectionClass(static::class);
         return $reflect->getShortName();
     }
 
@@ -136,7 +136,7 @@ class BaseModel extends ActiveRecord
      */
     public static function moduleUploadsPath()
     {
-        $path = Yii::$app->basePath . '/..' . self::moduleUploadsDir() . '/';
+        $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web/" . self::moduleUploadsDir() . '/';
         FileHelper::createDirectory($path);
         return $path;
     }
@@ -290,23 +290,12 @@ class BaseModel extends ActiveRecord
 
     public function getMlTitle($lang = null, $attribute = null)
     {
-        return $this->getMlAttribute('title');
+        return $this->getMlAttribute($lang, 'title');
     }
 
-    public function getMlShortContent()
+    public function getMlShortContent($lang = null)
     {
-        return $this->getMlAttribute('short_content');
-    }
-
-    /**
-     * @param null   $lang
-     * @param string $attribute
-     *
-     * @return mixed
-     */
-    public function getMlContent()
-    {
-        return $this->getMlAttribute('content');
+        return $this->getMlAttribute($lang, 'short_content');
     }
 
     /**
@@ -315,9 +304,22 @@ class BaseModel extends ActiveRecord
      *
      * @return mixed
      */
-    public function getMlAttribute($attribute)
+    public function getMlContent($lang = null)
     {
-        $lang = Yii::$app->language;
+        return $this->getMlAttribute($lang, 'content');
+    }
+
+    /**
+     * @param null   $lang
+     * @param string $attribute
+     *
+     * @return mixed
+     */
+    public function getMlAttribute($lang = null, $attribute)
+    {
+        if (!$lang) {
+            $lang = Yii::$app->language;
+        }
 
         if (php_sapi_name() == 'cli') {
             $lang = substr($lang, 0, -3);

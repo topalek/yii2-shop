@@ -263,6 +263,22 @@ ol {
   z-index: 99999;
 }
 
+.h-100 {
+  height: 100% !important;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
 .search-model-form {
   padding: 0 15px;
 }

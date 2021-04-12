@@ -4,6 +4,7 @@ use backend\extensions\fileapi\FileAPIAdvanced;
 use common\modules\catalog\models\Category;
 use common\modules\seo\widgets\SeoWidget;
 use common\modules\translate\models\Translate;
+use kartik\widgets\FileInput;
 use kartik\widgets\Select2;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -27,10 +28,10 @@ use yii\widgets\ActiveForm;
 
     <?= SeoWidget::widget(['model' => $model]) ?>
 
-    <?= $form->field($model, 'parentId')->widget(
+    <?= $form->field($model, 'parent_id')->widget(
         Select2::class,
         [
-            'data'          => Category::roots(),
+            'data'          => Category::getList(),
             'options'       => ['placeholder' => 'Первый уровень'],
             'pluginOptions' => [
                 'allowClear' => true,
@@ -50,30 +51,23 @@ use yii\widgets\ActiveForm;
         <?php
         endforeach; ?>
     </dl>
-
-    <?= $form->field($model, 'main_img')->widget(
-        FileAPIAdvanced::class,
+    <?= $form->field($model, 'imgFile')->widget(
+        FileInput::class,
         [
-            'url'              => $model->modelUploadsUrl(),
-            'deleteUrl'        => Url::toRoute('/catalog/category/delete-image?id=' . $model->id),
-            'deleteTempUrl'    => Url::toRoute('/catalog/category/delete-temp-image'),
-            'crop'             => true,
-            'cropResizeWidth'  => 300,
-            'cropResizeHeight' => 400,
-            'previewWidth'     => 300,
-            'previewHeight'    => 400,
-            'settings'         => [
-                'url'       => Url::toRoute('uploadTempImage'),
-                'imageSize' => [
-                    'minWidth'  => 300,
-                    'minHeight' => 400,
-                ],
-                'preview'   => [
-                    'el'     => '.uploader-preview',
-                    'width'  => 300,
-                    'height' => 400,
-                ],
+            'pluginOptions' => [
+                'showCaption'          => false,
+                'showRemove'           => false,
+                'showUpload'           => false,
+                'browseClass'          => 'btn btn-primary btn-block',
+                'browseIcon'           => '<i class="glyphicon glyphicon-camera"></i> ',
+                'deleteUrl'            => Url::toRoute(['category/delete-img', 'id' => $model->id]),
+                'previewFileType'      => 'any',
+                'initialPreview'       => $model->getMainImgUrl(),
+                'initialPreviewAsData' => true,
+                'uploadUrl'            => Url::to(['/category/upload-img']),
             ],
+            'options'       => ['accept' => 'image/*'],
+            'language'      => 'ru',
         ]
     ) ?>
 

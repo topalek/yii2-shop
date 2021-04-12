@@ -29,6 +29,7 @@
     "kartik-v/yii2-widgets": "dev-master",
     "2amigos/yii2-ckeditor-widget": "2.1.0",
     "dmstr/yii2-adminlte-asset": "^2.1",
+    "kartik-v/yii2-widget-fileinput": "dev-master",
     "kartik-v/yii2-widget-select2": "@dev"
   },
   "require-dev": {

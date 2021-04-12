@@ -256,6 +256,22 @@ ol {
     z-index: 99999;
 }
 
+.h-100 {
+    height: 100% !important;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
 .search-model-form {
     padding: 0 15px;
 }
@@ -321,12 +337,14 @@ ol {
 .header__top__links {
     display: inline-flex;
 }
-.header__top__links .nav {
+
+.header__top__links .header-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
 }
+
 .header__top__links .dropdown-menu {
     background-color: #111111;
 }
@@ -432,18 +450,20 @@ ol {
     transform: scale(1);
 }
 
-.header__menu ul li:hover a {
+.header__menu ul li:hover a, .header__menu ul li:active a {
     background-color: transparent;
 }
 
-.header__menu ul li:hover a:after {
+.header__menu ul li:hover a:after, .header__menu ul li:active a:after {
     transform: scale(1);
 }
-.header__menu ul li:hover .dropdown {
+
+.header__menu ul li:hover .dropdown, .header__menu ul li:active .dropdown {
     top: 32px;
     opacity: 1;
     visibility: visible;
 }
+
 .header__menu ul li:last-child {
     margin-right: 0;
 }
@@ -1151,6 +1171,7 @@ ol {
     font-weight: 700;
     text-transform: uppercase;
     display: block;
+    position: relative;
 }
 
 .shop__sidebar__categories ul, .shop__sidebar__price ul, .shop__sidebar__brand ul {
@@ -1787,6 +1808,7 @@ ol {
 .footer__widget {
     margin-bottom: 30px;
 }
+
 .footer__widget h6 {
     color: #ffffff;
     font-size: 15px;
@@ -1795,20 +1817,40 @@ ol {
     letter-spacing: 2px;
     margin-bottom: 20px;
 }
-.footer__widget ul li {
+
+.footer__widget .footer-nav li {
     line-height: 36px;
     list-style: none;
 }
-.footer__widget ul li a {
+
+.footer__widget .footer-nav li a {
     color: #b7b7b7;
     font-size: 15px;
+    padding: 0;
 }
+
+.footer__widget .footer-nav li a:hover, .footer__widget .footer-nav li a:active {
+    background-color: transparent;
+    color: #fff;
+}
+
+.footer__widget .footer-phone i, .footer__widget .footer-phone a {
+    color: #fff;
+    font-size: 16px;
+}
+
+.footer__widget .footer-phone i {
+    margin-right: 5px;
+}
+
 .footer__widget .footer__newslatter p {
     color: #b7b7b7;
 }
+
 .footer__widget .footer__newslatter form {
     position: relative;
 }
+
 .footer__widget .footer__newslatter form input {
     width: 100%;
     font-size: 15px;

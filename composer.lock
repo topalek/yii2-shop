@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "62e6586a8497f7844a623a1d32fa3531",
+  "content-hash": "0429362cc5d7f2515b31fc93a9be73d9",
   "packages": [
     {
       "name": "2amigos/yii2-ckeditor-widget",
@@ -178,7 +178,7 @@
       "version": "v3.4.1",
       "source": {
         "type": "git",
-        "url": "git@github.com:twbs/bootstrap.git",
+        "url": "https://github.com/twbs/bootstrap.git",
         "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
       },
       "dist": {
@@ -1425,22 +1425,23 @@
     },
     {
       "name": "kartik-v/yii2-widget-fileinput",
-      "version": "v1.1.0",
+      "version": "dev-master",
       "source": {
         "type": "git",
         "url": "https://github.com/kartik-v/yii2-widget-fileinput.git",
-        "reference": "d43bb9d9638ba117bbaa0045250645dc843fcf7f"
+        "reference": "e15d65047af23a3cf25e47e8c23444e750a27f2c"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/d43bb9d9638ba117bbaa0045250645dc843fcf7f",
-        "reference": "d43bb9d9638ba117bbaa0045250645dc843fcf7f",
+        "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/e15d65047af23a3cf25e47e8c23444e750a27f2c",
+        "reference": "e15d65047af23a3cf25e47e8c23444e750a27f2c",
         "shasum": ""
       },
       "require": {
         "kartik-v/bootstrap-fileinput": ">=5.0.0",
         "kartik-v/yii2-krajee-base": ">=2.0.0"
       },
+      "default-branch": true,
       "type": "yii2-extension",
       "extra": {
         "branch-alias": {
@@ -1478,7 +1479,7 @@
       ],
       "support": {
         "issues": "https://github.com/kartik-v/yii2-widget-fileinput/issues",
-        "source": "https://github.com/kartik-v/yii2-widget-fileinput/tree/v1.1.0"
+        "source": "https://github.com/kartik-v/yii2-widget-fileinput/tree/master"
       },
       "funding": [
         {
@@ -1486,7 +1487,7 @@
           "type": "open_collective"
         }
       ],
-      "time": "2020-10-23T19:54:51+00:00"
+      "time": "2020-12-05T15:43:43+00:00"
     },
     {
       "name": "kartik-v/yii2-widget-growl",
@@ -7161,6 +7162,7 @@
     "yiisoft/yii2-bootstrap": 20,
     "asofter/yii2-imperavi-redactor": 20,
     "kartik-v/yii2-widgets": 20,
+    "kartik-v/yii2-widget-fileinput": 20,
     "kartik-v/yii2-widget-select2": 20
   },
   "prefer-stable": false,

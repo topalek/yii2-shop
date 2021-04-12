@@ -6,10 +6,13 @@ use backend\extensions\fileapi\actions\DeleteAction;
 use backend\extensions\fileapi\actions\UploadAction;
 use common\components\BaseAdminController;
 use common\modules\catalog\models\Category;
+use common\modules\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -32,26 +35,6 @@ class CategoryController extends BaseAdminController
         );
     }
 
-    public function actions()
-    {
-        return [
-            'uploadTempImage' => [
-                'class'     => UploadAction::class,
-                'path'      => Category::mainImgTempPath(),
-                'types'     => ['jpg', 'png'],
-                'minHeight' => 300,
-                'minWidth'  => 400,
-                'maxHeight' => 1000,
-                'maxWidth'  => 1000,
-                'maxSize'   => 3145728,
-            ],
-            'deleteTempImage' => [
-                'class' => DeleteAction::class,
-                'path'  => Category::mainImgTempPath(),
-            ],
-        ];
-    }
-
     /**
      * Lists all Category models.
      *
@@ -63,8 +46,6 @@ class CategoryController extends BaseAdminController
             'index',
             [
                 'roots' => Category::roots()
-                //            'searchModel'  => $searchModel,
-                //            'dataProvider' => $dataProvider,
             ]
         );
     }
@@ -116,10 +97,14 @@ class CategoryController extends BaseAdminController
     {
         $model = new Category();
         $model->setScenario('create');
-        $model->parentId = $parent;
+        $model->parent_id = $parent;
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::$app->session->setFlash('humane', 'Сохранено');
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imgFile = UploadedFile::getInstance($model, 'imgFile');
+            if ($model->imgFile && $model->validate()) {
+                $model->save();
+                Yii::$app->session->setFlash('humane', 'Сохранено');
+            }
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render(
@@ -142,34 +127,18 @@ class CategoryController extends BaseAdminController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $parent = $model->getParent();
+        $parent = $model->parent;
 
-        if (Yii::$app->request->isGet) {
-            if ($parent) {
-                $model->parentId = $parent->id;
-            } else {
-                $model->parentId = null;
-            }
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->parentId != null) {
-                if (!$parent || $model->parentId != $parent->id) {
-                    $target = Category::findOne($model->parentId);
-                    if ($target != null) {
-                        $model->prependTo($target);
-                    }
-                }
-                $model->save(false);
-            } else {
-                if (!$model->isRoot()) {
-                    $model->makeRoot();
-                } else {
-                    $model->save(false);
-                }
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imgFile = UploadedFile::getInstance($model, 'imgFile');
+            if ($model->imgFile && $model->validate()) {
+                $imgName = SeoBehavior::generateSlug($model->title_ru) . '.' . $model->imgFile->extension;
+                $model->main_img = $imgName;
+                $model->imgFile->saveAs($model->modelUploadsPath() . $imgName);
+                $model->save();
+                Yii::$app->session->setFlash('humane', 'Сохранено');
             }
 
-            Yii::$app->session->setFlash('humane', 'Сохранено');
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
             return $this->render(
@@ -193,16 +162,13 @@ class CategoryController extends BaseAdminController
     {
         $model = $this->findModel($id);
         if ($model->isRoot()) {
-            $children = $model->children()->all();
+            $children = $model->children();
             if ($children) {
-                foreach ($children as $child) {
-                    $child->delete();
-                }
+                Category::updateAll(['parent_id' => null], ['parent_id' => $this->id]);
             }
-            $model->deleteWithChildren();
-        } else {
-            $model->delete();
         }
+        $model->delete();
+
         return $this->redirect(['index']);
     }
 
@@ -223,4 +189,26 @@ class CategoryController extends BaseAdminController
         }
         //        return $this->redirect(Yii::$app->request->referrer);
     }
+
+    public function actionUploadImg()
+    {
+    }
+
+    public function actionDeleteImg($id)
+    {
+        $result = false;
+        $model = Category::findOne($id);
+        $imgPath = $model::moduleUploadsPath() . $model->id . DIRECTORY_SEPARATOR . $model->main_img;
+        if ($model->main_img && file_exists($imgPath)) {
+            $model->main_img = null;
+            if ($model->save(false)) {
+                unlink($imgPath);
+                $result = true;
+            } else {
+                $result = $model->errors;
+            }
+        }
+        return Json::encode($result);
+    }
+
 }

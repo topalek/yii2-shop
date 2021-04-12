@@ -5,6 +5,7 @@ namespace common\modules\catalog\models;
 use backend\extensions\fileapi\behaviors\UploadBehavior;
 use common\components\BaseModel;
 use common\modules\search\behaviors\SearchBehavior;
+use common\modules\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -12,8 +13,8 @@ use yii\helpers\Html;
 /**
  * This is the model class for table "category".
  *
- * @property integer $id
- * @property string  $title_uk
+ * @property integer            $id
+ * @property string             $title_uk
  * @property string             $title_ru
  * @property string             $title_en
  * @property string             $description_uk
@@ -30,7 +31,7 @@ use yii\helpers\Html;
  */
 class Category extends BaseModel
 {
-    public $parentId, $autoCache = false;
+    public $parentId, $autoCache = false, $imgFile;
 
     /**
      * @inheritdoc
@@ -38,6 +39,11 @@ class Category extends BaseModel
     public static function tableName()
     {
         return 'category';
+    }
+
+    public static function roots()
+    {
+        return Category::find()->where(['parent_id' => null])->all();
     }
 
     /**
@@ -49,19 +55,24 @@ class Category extends BaseModel
         return new CategoryQuery(get_called_class());
     }
 
-    public static function roots()
+    /**
+     * @param null $image
+     *
+     * @return string
+     * @throws \yii\base\Exception
+     */
+    public static function mainImgTempPath($image = null)
     {
-        return Category::find()->where(['parent_id' => null])->all();
+        $path = self::moduleUploadsPath();
+        if ($image !== null) {
+            $path .= '/' . $image;
+        }
+        return $path;
     }
 
     public function isRoot(): bool
     {
         return !$this->parent_id;
-    }
-
-    public function children()
-    {
-        return Category::find()->where(['parent_id' => $this->id])->all();
     }
 
     /**
@@ -71,12 +82,24 @@ class Category extends BaseModel
     {
         return [
             [['title_ru'], 'required'],
-            ['main_img', 'required', 'on' => 'create'],
+            ['imgFile', 'required', 'on' => 'create'],
             [['description_uk', 'description_ru', 'description_en'], 'string'],
             [['parent_id'], 'integer'],
+            [['imgFile'], 'file'],
             [['updated_at', 'created_at'], 'safe'],
             [['title_uk', 'title_ru', 'title_en', 'main_img'], 'string', 'max' => 255],
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            $imgName = SeoBehavior::generateSlug($this->title_ru) . '.' . $this->imgFile->extension;
+            $this->main_img = $imgName;
+            $this->imgFile->saveAs($this->modelUploadsPath() . $imgName);
+            $this->save();
+        }
     }
 
     /**
@@ -93,7 +116,9 @@ class Category extends BaseModel
             'description_ru' => 'Описание (ru)',
             'description_en' => 'Описание (en)',
             'main_img'       => 'Изображения',
+            'imgFile'        => 'Изображения',
             'parentId'       => 'Вложенность',
+            'parent_id'      => 'Родительская категория',
             'updated_at'     => 'Дата обновления',
             'created_at'     => 'Дата создания',
         ];
@@ -106,21 +131,15 @@ class Category extends BaseModel
         return ArrayHelper::merge(
             $behaviors,
             [
-                'uploadBehavior' => [
-                    'class'      => UploadBehavior::class,
-                    'attributes' => ['main_img'],
-                    'path'       => $this->mainImgPath(),
-                    'tempPath'   => $this->mainImgTempPath(),
-                ],
-                'seo'            => [
+                'seo' => [
                     'class'         => 'common\modules\seo\behaviors\SeoBehavior',
                     'model'         => $this->getModelName(),
                     'view_action'   => '/default/category-view',
                     'view_category' => '/category',
                 ],
-                'search'         => [
-                    'class' => SearchBehavior::class,
-                ],
+//                'search'         => [
+//                    'class' => SearchBehavior::class,
+//                ],
             ]
         );
     }
@@ -133,21 +152,6 @@ class Category extends BaseModel
     public function mainImgPath($image = null)
     {
         $path = $this->modelUploadsPath();
-        if ($image !== null) {
-            $path .= '/' . $image;
-        }
-        return $path;
-    }
-
-    /**
-     * @param null $image
-     *
-     * @return string
-     * @throws \yii\base\Exception
-     */
-    public static function mainImgTempPath($image = null)
-    {
-        $path = self::moduleUploadsPath();
         if ($image !== null) {
             $path .= '/' . $image;
         }
@@ -203,11 +207,26 @@ class Category extends BaseModel
             } else {
                 $path = $this->modelUploadsUrl() . $this->main_img;
             }
+            if (!isFrontendApp()) {
+                $path = Yii::$app->params['frontendUrl'] . $path;
+            }
         } else {
             $path = 'http://placehold.it/' . $width . 'x' . $height;
         }
 
         return Html::img($path, $options);
+    }
+
+    public function getMainImgUrl()
+    {
+        if (!$this->main_img) {
+            return '';
+        }
+        $url = $this::modelUploadsUrl() . $this->main_img;
+        if (!isFrontendApp()) {
+            $url = Yii::$app->params['frontendUrl'] . $url;
+        }
+        return $url;
     }
 
     /**
@@ -279,6 +298,11 @@ class Category extends BaseModel
         return ArrayHelper::map($models, 'id', $title);
     }
 
+    public function children()
+    {
+        return Category::find()->where(['parent_id' => $this->id])->all();
+    }
+
     public function beforeDelete()
     {
         PropertyCategoryCatalogCategory::deleteAll(['category_id' => $this->id]);
@@ -294,11 +318,5 @@ class Category extends BaseModel
     public function getParent()
     {
         return $this->hasOne(self::class, ['parent_id' => 'id']);
-    }
-
-
-    public function getMlContent($lang = null, $attribute = 'description')
-    {
-        return parent::getMlContent($lang, $attribute);
     }
 }

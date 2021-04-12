@@ -111,6 +111,39 @@ $('#cart').click(function (e) {
     });
 });
 
+//Canvas Menu
+$(".canvas__open").on('click', function () {
+    $(".offcanvas-menu-wrapper").addClass("active");
+    $(".offcanvas-menu-overlay").addClass("active");
+});
+
+$(".offcanvas-menu-overlay").on('click', function () {
+    $(".offcanvas-menu-wrapper").removeClass("active");
+    $(".offcanvas-menu-overlay").removeClass("active");
+});
+
+//Search Switch
+$('.search-switch').on('click', function () {
+    $('.search-model').fadeIn(400);
+});
+
+$('.search-close-switch').on('click', function () {
+    $('.search-model').fadeOut(400, function () {
+        $('#search-input').val('');
+    });
+});
+
+/*------------------
+    Accordin Active
+--------------------*/
+$('.collapse').on('shown.bs.collapse', function () {
+    $(this).prev().addClass('active');
+});
+
+$('.collapse').on('hidden.bs.collapse', function () {
+    $(this).prev().removeClass('active');
+});
+
 function updateOrderItemsCountainer() {
     var container = $('.order-page .cart-items-list');
     if (container.length == 1) {

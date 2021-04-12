@@ -53,6 +53,7 @@ return [
             'showScriptName'  => false,
             'rules'           => [
                 'profile'       => 'profile/index',
+                'shop'          => 'shop/default/index',
                 '<action>'      => 'site/<action>',
                 //                'site/<action>/<year:\d{4}>/<category>' => 'post/index',
                 'post/<id:\d+>' => 'post/view',

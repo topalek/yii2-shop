@@ -20,8 +20,6 @@ if ($paddingLeft == 0) {
 }
 
 $isRoot = $model->isRoot();
-$next = $model->next()->one();
-$prev = $model->prev()->one();
 ?>
 
 <tr class="<?= $class ?>" data-id="<?= $model->id ?>">

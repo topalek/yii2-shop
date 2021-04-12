@@ -1,6 +1,6 @@
 <?php
 
-namespace common\controllers;
+namespace backend\controllers;
 
 use backend\extensions\fileapi\actions\DeleteAction;
 use backend\extensions\fileapi\actions\UploadAction;

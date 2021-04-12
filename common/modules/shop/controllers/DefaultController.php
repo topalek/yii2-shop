@@ -190,4 +190,9 @@ class DefaultController extends BaseController
             return $this->redirect(['/']);
         }
     }
+
+    public function actionIndex()
+    {
+        return $this->render('shop');
+    }
 }

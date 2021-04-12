@@ -37,7 +37,7 @@ class ProductSearch extends Product
                 ],
                 'safe',
             ],
-            [['price_from'], 'number'],
+            [['price'], 'number'],
             ['propertyIds', 'safe'],
         ];
     }
@@ -78,15 +78,15 @@ class ProductSearch extends Product
 
         $query->andFilterWhere(
             [
-                'price_from'  => $this->price_from,
-                'category_id' => $this->catalog_category_id,
+                'price'       => $this->price,
+                'category_id' => $this->category_id,
                 'status'      => $this->status,
                 'updated_at'  => $this->updated_at,
                 'created_at'  => $this->created_at,
             ]
         );
 
-        $query->andFilterWhere(['like', 'title_ru', $this->title_uk]);
+        $query->andFilterWhere(['like', 'title_ru', $this->title_ru]);
 
         return $dataProvider;
     }
@@ -106,8 +106,8 @@ class ProductSearch extends Product
                         'label'   => Yii::t('catalog', 'Название'),
                     ],
                     'price_from' => [
-                        'asc'     => ['price_from' => SORT_ASC],
-                        'desc'    => ['price_from' => SORT_DESC],
+                        'asc'     => ['price' => SORT_ASC],
+                        'desc'    => ['price' => SORT_DESC],
                         'default' => SORT_DESC,
                         'label'   => Yii::t('catalog', 'Цена'),
                     ],
@@ -153,20 +153,20 @@ class ProductSearch extends Product
                 }
             }
             $query->andFilterWhere(
-                ['in', 'catalog_item_property.catalog_property_id', array_values($formattedProperties)]
+                ['in', 'product_property.property_id', array_values($formattedProperties)]
             );
         }
 
         $query->andFilterWhere(
             [
-                'catalog_category_id' => $this->catalog_category_id,
+                'category_id' => $this->catalog_category_id,
             ]
         );
 
         if (Yii::$app->request->get('sort')) {
             $query->orderBy($this->sort->orders);
         } else {
-            $query->orderBy('catalog_item.updated_at DESC');
+            $query->orderBy('product.updated_at DESC');
         }
 
         return $dataProvider;

@@ -31,7 +31,7 @@
 .header__top__links {
   display: inline-flex;
 
-  .nav {
+  .header-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -154,18 +154,14 @@
       position: relative;
 
       &.active {
-
         a {
-
-
           &:after {
             transform: scale(1);
           }
         }
       }
 
-      &:hover {
-
+      &:hover, &:active {
         a {
           background-color: transparent;
 

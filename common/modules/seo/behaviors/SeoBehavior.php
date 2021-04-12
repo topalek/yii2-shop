@@ -129,8 +129,8 @@ class SeoBehavior extends Behavior
             $string = Inflector::slug($string, $replacement);
         } else {
             $string = str_ireplace(
-                ['й', 'ц', 'у', 'ш', 'щ', 'х', 'є', 'я', 'ч', 'ж', 'ю'],
-                ['y', 'ts', 'u', 'sh', 'shch', 'kh', 'ye', 'ya', 'ch', 'zh', 'yu'],
+                ['й', 'с', 'ц', 'у', 'ш', 'щ', 'х', 'є', 'я', 'ч', 'ж', 'ю'],
+                ['y', 's', 'ts', 'u', 'sh', 'shch', 'kh', 'ye', 'ya', 'ch', 'zh', 'yu'],
                 $string
             );
             $string = Inflector::transliterate($string);
