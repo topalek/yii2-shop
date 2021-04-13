@@ -186,32 +186,27 @@
   margin-left: 5px;
   font-weight: bold;
 }
-
 #categories-ajax-container tr.closed .title:after {
   font-family: FontAwesome;
   content: "\f106";
   margin-left: 5px;
   font-weight: bold;
 }
-
 .catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.file-sortable.kv-preview-thumb {
   box-shadow: none !important;
   border: none;
   margin: 0;
   padding: 5px;
 }
-
 .catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.file-sortable.kv-preview-thumb img {
   max-width: 100%;
   max-height: 100% !important;
 }
-
 .catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.kv-preview-thumb {
   padding: 5px;
   margin: 0;
   box-shadow: none !important;
 }
-
 .catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.kv-preview-thumb img {
   max-width: 100%;
   max-height: 100% !important;

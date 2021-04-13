@@ -6,14 +6,12 @@
   &.owl-carousel {
 
     .owl-item {
-
       &.active {
-
         .hero__text {
-
           h6 {
             top: 0;
             opacity: 1;
+            //transform: none;
           }
 
           h2 {
@@ -35,7 +33,6 @@
     }
 
     .owl-nav {
-
       button {
         font-size: 36px;
         color: #333333;
@@ -60,7 +57,6 @@
 }
 
 .hero__text {
-
   h6 {
     color: $primary-color;
     font-size: 14px;

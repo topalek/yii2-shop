@@ -8,6 +8,7 @@
 
 namespace common\components;
 
+use common\modules\params\models\Params;
 use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
@@ -25,7 +26,7 @@ class BaseAdminController extends Controller
 
     public function beforeAction($action)
     {
-//        Yii::$app->params = Params::getParamsList();
+        Yii::$app->params = Params::getParamsList();
         Yii::$app->language = 'ru';
         Yii::$app->sourceLanguage = 'ru-RU';
 
@@ -37,34 +38,14 @@ class BaseAdminController extends Controller
      */
     public function behaviors()
     {
-        /*return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['adminAccess'],
-                    ],
-                    [
-                        'allow' => false,
-                    ],
-                ],
-            ],
-            'verbs'  => [
-                'class'   => VerbFilter::class,
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];*/
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => [],
+                        'actions' => ['login', 'request-password-reset', 'reset-password'],
                         'allow'   => true,
-                        'roles'   => ['@'],
+                        'roles'   => ['?'],
                     ],
                 ],
             ],

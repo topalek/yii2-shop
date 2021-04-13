@@ -190,14 +190,14 @@ class Seo extends BaseModel
         ];
     }
 
-    public function getMlDescription()
+    public function getMlDescription($lang = null, $attr = null)
     {
-        return $this->getMlAttribute('description');
+        return $this->getMlAttribute($lang, 'description');
     }
 
-    public function getMlKeywords()
+    public function getMlKeywords($lang = null, $attr = null)
     {
-        return $this->getMlAttribute('keywords');
+        return $this->getMlAttribute($lang, 'keywords');
     }
 
 }

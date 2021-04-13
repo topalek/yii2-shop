@@ -93,10 +93,12 @@ class Category extends BaseModel
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $imgName = SeoBehavior::generateSlug($this->title_ru) . '.' . $this->imgFile->extension;
-            $this->main_img = $imgName;
-            $this->imgFile->saveAs($this->modelUploadsPath() . $imgName);
-            $this->save();
+            if ($this->imgFile) {
+                $imgName = SeoBehavior::generateSlug($this->title_ru) . '.' . $this->imgFile->extension;
+                $this->main_img = $imgName;
+                $this->imgFile->saveAs($this->modelUploadsPath() . $imgName);
+                $this->save();
+            }
         }
         parent::afterSave($insert, $changedAttributes);
     }

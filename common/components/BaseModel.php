@@ -303,18 +303,18 @@ class BaseModel extends ActiveRecord
         return $this->getMlAttribute($lang, 'title');
     }
 
-    public function getMlShortContent($lang = null)
+    public function getMlShortContent($lang = null, $attribute = null)
     {
         return $this->getMlAttribute($lang, 'short_content');
     }
 
     /**
-     * @param null   $lang
-     * @param string $attribute
+     * @param null $lang
+     * @param null $attribute
      *
      * @return mixed
      */
-    public function getMlContent($lang = null, string $attribute)
+    public function getMlContent($lang = null, $attribute = null)
     {
         return $this->getMlAttribute($lang, 'content');
     }
