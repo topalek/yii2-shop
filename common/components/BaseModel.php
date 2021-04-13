@@ -19,6 +19,7 @@ use yii\db\Expression;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
+use yii\helpers\Html;
 use yii\web\Cookie;
 
 class BaseModel extends ActiveRecord
@@ -80,10 +81,10 @@ class BaseModel extends ActiveRecord
         return 'model_' . strtolower(self::getModelName()) . '_id_' . $model_id;
     }
 
-    public static function getModelName()
+    public static function getModelName($shortName = true)
     {
         $reflect = new ReflectionClass(static::class);
-        return $reflect->getShortName();
+        return $shortName ? $reflect->getShortName() : $reflect->name;
     }
 
     public static function findByCacheId($cache_id, $model_id, $with_seo = true)
@@ -136,7 +137,7 @@ class BaseModel extends ActiveRecord
      */
     public static function moduleUploadsPath()
     {
-        $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web/" . self::moduleUploadsDir() . '/';
+        $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web" . self::moduleUploadsDir() . '/';
         FileHelper::createDirectory($path);
         return $path;
     }
@@ -184,6 +185,15 @@ class BaseModel extends ActiveRecord
     public function getImages($width = null, $height = null, $escapeMain = false)
     {
         return Image::getModelImages($this->id, $this->getModelName(), $width, $height, $escapeMain);
+    }
+
+    public function imgPreview()
+    {
+        $url = $this->modelUploadsUrl() . $this->main_img;
+        return Html::img(
+            isFrontendApp() ? $url : Yii::$app->params['frontendUrl'] . $url,
+            ['class' => 'img-responsive', 'style' => 'max-height:170px']
+        );
     }
 
     public function getStatusName()
@@ -304,7 +314,7 @@ class BaseModel extends ActiveRecord
      *
      * @return mixed
      */
-    public function getMlContent($lang = null)
+    public function getMlContent($lang = null, string $attribute)
     {
         return $this->getMlAttribute($lang, 'content');
     }
@@ -327,5 +337,17 @@ class BaseModel extends ActiveRecord
 
         $content = $attribute . '_' . $lang;
         return $this->$content ?? '';
+    }
+
+    public function getMainImgUrl()
+    {
+        if (!$this->main_img) {
+            return '';
+        }
+        $url = $this::modelUploadsUrl() . $this->main_img;
+        if (!isFrontendApp()) {
+            $url = Yii::$app->params['frontendUrl'] . $url;
+        }
+        return $url;
     }
 }

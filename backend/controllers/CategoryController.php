@@ -2,15 +2,12 @@
 
 namespace backend\controllers;
 
-use backend\extensions\fileapi\actions\DeleteAction;
-use backend\extensions\fileapi\actions\UploadAction;
 use common\components\BaseAdminController;
 use common\modules\catalog\models\Category;
 use common\modules\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
@@ -127,7 +124,6 @@ class CategoryController extends BaseAdminController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $parent = $model->parent;
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imgFile = UploadedFile::getInstance($model, 'imgFile');
@@ -189,26 +185,4 @@ class CategoryController extends BaseAdminController
         }
         //        return $this->redirect(Yii::$app->request->referrer);
     }
-
-    public function actionUploadImg()
-    {
-    }
-
-    public function actionDeleteImg($id)
-    {
-        $result = false;
-        $model = Category::findOne($id);
-        $imgPath = $model::moduleUploadsPath() . $model->id . DIRECTORY_SEPARATOR . $model->main_img;
-        if ($model->main_img && file_exists($imgPath)) {
-            $model->main_img = null;
-            if ($model->save(false)) {
-                unlink($imgPath);
-                $result = true;
-            } else {
-                $result = $model->errors;
-            }
-        }
-        return Json::encode($result);
-    }
-
 }

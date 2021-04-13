@@ -38,9 +38,9 @@ return [
         'user'      => [
             'class' => common\modules\user\UserModule::class,
         ],
-        'search'    => [
-            'class' => 'app\modules\search\SearchModule',
-        ],
+//        'search'    => [
+//            'class' => 'app\modules\search\SearchModule',
+//        ],
     ],
     'components' => [
         'cache'        => [

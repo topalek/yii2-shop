@@ -18,7 +18,7 @@ use yii\helpers\Json;
  * @property string  $email
  * @property string  $phone
  * @property string  $delivery_info
- * @property string  $catalog_items
+ * @property string  $products
  * @property integer $status
  * @property string  $updated_at
  * @property string  $created_at
@@ -45,7 +45,7 @@ class Order extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'email'], 'required'],
-            [['delivery_info', 'catalog_items'], 'string'],
+            [['delivery_info', 'products'], 'string'],
             [['updated_at', 'created_at'], 'safe'],
             ['status', 'integer'],
             [['name', 'email', 'phone'], 'string', 'max' => 255],
@@ -63,7 +63,7 @@ class Order extends \yii\db\ActiveRecord
             'email'         => 'Email',
             'phone'         => 'Телефон',
             'delivery_info' => 'Информация о доставке',
-            'catalog_items' => 'Товары',
+            'products'      => 'Товары',
             'status'        => 'Статус',
             'updated_at'    => 'Дата обновления',
             'created_at'    => 'Дата создания',
@@ -86,13 +86,13 @@ class Order extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->catalog_items = Json::encode($this->cartItems);
+        $this->products = Json::encode($this->cartItems);
         return parent::beforeSave($insert);
     }
 
     public function afterFind()
     {
-        $this->cartItems = Json::decode($this->catalog_items);
+        $this->cartItems = Json::decode($this->products);
         parent::afterFind();
     }
 

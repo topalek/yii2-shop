@@ -224,7 +224,7 @@ class ProductController extends BaseAdminController
     public function actionAddProperty($item_id)
     {
         $model = new ProductProperty();
-        $model->catalog_item_id = $item_id;
+        $model->product_id = $item_id;
 
         if (Yii::$app->request->isGet) {
             return $this->renderAjax('_property_form', ['model' => $model]);
@@ -245,7 +245,7 @@ class ProductController extends BaseAdminController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $newModel = new ProductProperty();
-            $newModel->catalog_item_id = $model->catalog_item_id;
+            $newModel->product_id = $model->product_id;
             return [
                 'status' => true,
                 'data'   => $this->renderPartial('_item_property_view', ['model' => $model]),
@@ -264,7 +264,7 @@ class ProductController extends BaseAdminController
     public function actionResetPropertyForm($item_id)
     {
         $model = new ProductProperty();
-        $model->catalog_item_id = $item_id;
+        $model->product_id = $item_id;
 
         return $this->renderAjax('_property_form', ['model' => $model]);
     }

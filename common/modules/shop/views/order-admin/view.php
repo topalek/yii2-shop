@@ -64,7 +64,7 @@ $totalSum = 0;
                         <?= $cartItem['photo'] ?>
                         <?= Html::a(
                             $cartItem['title_uk'],
-                            ['/catalog/product-admin/update', 'id' => $cartItem['id']]
+                            ['/product/update', 'id' => $cartItem['id']]
                         ) ?>
                         <?php
                         $modification = ArrayHelper::getValue($cartItem, 'charTitle_ru');

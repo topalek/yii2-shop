@@ -4,14 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Product */
+/* @var $model common\modules\catalog\models\Product */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Catalog Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
-<div class="product-view">
+<div class="catalog-item-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -28,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]
         ) ?>
-        <?= Html::a('Create new', ['create'], ['class' => 'btn btn-secondary']) ?>
     </p>
 
     <?= DetailView::widget(
@@ -36,15 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'model'      => $model,
             'attributes' => [
                 'id',
-                'name',
-                'description:html',
-                'imgPreview:html',
-                'price:currency',
-                'statusBadge:html',
-                'created_at:datetime',
-                'updated_at:datetime',
-                'createdBy.username',
-                'updatedBy.username',
+                'title_uk',
+                'title_ru',
+                'title_en',
+                'description_uk:ntext',
+                'description_ru:ntext',
+                'description_en:ntext',
+                'price',
+                'main_img',
+                'catalog_category_id',
+                'status',
+                'updated_at',
+                'created_at',
             ],
         ]
     ) ?>

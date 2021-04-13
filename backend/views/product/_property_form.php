@@ -10,7 +10,6 @@
  * @var $this  \yii\web\View
  */
 
-use backend\extensions\fileapi\FileAPIAdvanced;
 use common\modules\catalog\models\Property;
 use common\modules\catalog\models\PropertyCategory;
 use kartik\depdrop\DepDrop;
@@ -56,7 +55,7 @@ use yii\helpers\Url;
 
                     </div>
                     <div class="col-sm-6">
-                        <?= $form->field($model, 'catalog_property_id')->widget(
+                        <?= $form->field($model, 'property_id')->widget(
                             DepDrop::class,
                             [
                                 'type'          => DepDrop::TYPE_SELECT2,
@@ -75,9 +74,10 @@ use yii\helpers\Url;
                         ) ?>
                     </div>
 
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'photo', ['template' => '{label}{input}'])->widget() ?>
-                    </div>
+                    <!--                    <div class="col-sm-6">-->
+                    <!--                        --><?
+                    //= $form->field($model, 'photo', ['template' => '{label}{input}'])->widget() ?>
+                    <!--                    </div>-->
 
                     <div class="col-sm-6">
                         <?= $form->field($model, 'price')->widget(

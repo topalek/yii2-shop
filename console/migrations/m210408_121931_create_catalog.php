@@ -93,8 +93,8 @@ class m210408_121931_create_catalog extends Migration
                 'price'          => $this->decimal(8, 2)->comment('Цена'),
                 'main_img'       => $this->string()->comment('Изображение'),
                 'category_id'    => $this->integer()->notNull()->comment('Категория'),
-                'stock'          => $this->integer()->null()->comment('Количество'),
-                'order_count'    => $this->integer()->null()->comment('Количество заказов'),
+                'stock'          => $this->integer()->null()->defaultValue(0)->comment('Количество'),
+                'order_count'    => $this->integer()->null()->defaultValue(0)->comment('Количество заказов'),
                 'new'            => $this->tinyInteger(1)->null()->defaultValue(1)->comment('Новинка'),
                 'status'         => $this->tinyInteger(1)->notNull()->defaultValue(1)->comment('Статус'),
                 'updated_at'     => $this->timestamp()->notNull()->defaultExpression(

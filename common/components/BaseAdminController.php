@@ -8,12 +8,12 @@
 
 namespace common\components;
 
-use app\modules\params\models\Params;
 use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -96,7 +96,7 @@ class BaseAdminController extends Controller
         $pic = UploadedFile::getInstanceByName('file');
         $model_name = strtolower($model_name);
         if ($pic->type == 'image/png' || $pic->type == 'image/jpg' || $pic->type == 'image/gif' || $pic->type == 'image/jpeg' || $pic->type == 'image/pjpeg') {
-            $path = Yii::$app->basePath . "/../uploads/$model_name/";
+            $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web/uploads/$model_name/";
             $imperavi_path = $path . 'imperavi/';
             $name = md5(time()) . '.jpg';
 
@@ -124,10 +124,30 @@ class BaseAdminController extends Controller
         if (Yii::$app->request->isAjax) {
             $imgUrl = Yii::$app->request->post('imgUrl');
             if ($imgUrl) {
-                @unlink(Yii::$app->basePath . '/..' . $imgUrl);
+                @unlink(str_replace('backend', 'frontend', Yii::$app->basePath) . '/..' . $imgUrl);
             }
         } else {
             throw new NotFoundHttpException('Станица не существует.');
         }
+    }
+
+    public function actionDeleteImg($id, $model_name)
+    {
+        $result = false;
+        $model_name = urldecode($model_name);
+        include_once '../../' . $model_name . '.php';
+        $class = Yii::createObject($model_name);
+        $model = $class::findOne($id);
+        $imgPath = $model::moduleUploadsPath() . $model->id . DIRECTORY_SEPARATOR . $model->main_img;
+        if ($model->main_img && file_exists($imgPath)) {
+            $model->main_img = null;
+            if ($model->save(false)) {
+                unlink($imgPath);
+                $result = true;
+            } else {
+                $result = $model->errors;
+            }
+        }
+        return Json::encode($result);
     }
 }

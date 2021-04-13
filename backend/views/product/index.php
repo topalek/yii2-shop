@@ -1,17 +1,16 @@
 <?php
 
-use common\modules\catalog\models\ProductSearch;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $searchModel ProductSearch */
+/* @var $searchModel common\modules\catalog\models\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Товари';
+$this->title = 'Товары';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-index">
+<div class="catalog-item-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php
@@ -29,13 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 'id',
+                // 'title_uk',
                 'title_ru',
-//            'title_ru',
-//            'title_en',
+                //            'title_en',
+                //             'description_uk:ntext',
                 'description_ru:ntext',
-                // 'description_ru:ntext',
                 // 'description_en:ntext',
-                'price',
+                // 'price',
                 // 'main_img',
                 [
                     'attribute' => 'category_id',
@@ -54,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             return Html::a(
                                 '<span class="glyphicon glyphicon-eye-open"></span>',
                                 $model->getSeoUrl(),
-                                ['target' => '_blank', 'title' => 'Просмотр']
+                                ['target' => '_blank', 'title' => 'Перегляд']
                             );
                         },
                     ],

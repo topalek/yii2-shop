@@ -29,7 +29,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'delivery_info') ?>
 
     <?php
-    // echo $form->field($model, 'catalog_items') ?>
+    // echo $form->field($model, 'products') ?>
 
     <?php
     // echo $form->field($model, 'updated_at') ?>

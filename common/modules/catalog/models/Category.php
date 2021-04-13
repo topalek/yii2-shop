@@ -2,7 +2,6 @@
 
 namespace common\modules\catalog\models;
 
-use backend\extensions\fileapi\behaviors\UploadBehavior;
 use common\components\BaseModel;
 use common\modules\search\behaviors\SearchBehavior;
 use common\modules\seo\behaviors\SeoBehavior;
@@ -93,13 +92,13 @@ class Category extends BaseModel
 
     public function afterSave($insert, $changedAttributes)
     {
-        parent::afterSave($insert, $changedAttributes);
         if ($insert) {
             $imgName = SeoBehavior::generateSlug($this->title_ru) . '.' . $this->imgFile->extension;
             $this->main_img = $imgName;
             $this->imgFile->saveAs($this->modelUploadsPath() . $imgName);
             $this->save();
         }
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -217,17 +216,6 @@ class Category extends BaseModel
         return Html::img($path, $options);
     }
 
-    public function getMainImgUrl()
-    {
-        if (!$this->main_img) {
-            return '';
-        }
-        $url = $this::modelUploadsUrl() . $this->main_img;
-        if (!isFrontendApp()) {
-            $url = Yii::$app->params['frontendUrl'] . $url;
-        }
-        return $url;
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -270,8 +258,7 @@ class Category extends BaseModel
      */
     public function getParentId()
     {
-        $parent = $this->parent()->one();
-        return $parent['id'];
+        return $this->parent->id;
     }
 
     public function getChildrenList($as_array = false, $map = false)

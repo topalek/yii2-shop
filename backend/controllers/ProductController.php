@@ -2,8 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\extensions\fileapi\actions\DeleteAction;
-use backend\extensions\fileapi\actions\UploadAction;
 use common\components\BaseAdminController;
 use common\modules\catalog\models\Product;
 use common\modules\catalog\models\ProductProperty;
@@ -12,6 +10,7 @@ use common\modules\catalog\models\Property;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -36,40 +35,6 @@ class ProductController extends BaseAdminController
                 ],
             ]
         );
-    }
-
-    public function actions()
-    {
-        return [
-            'uploadTempImage'         => [
-                'class'     => UploadAction::class,
-                'path'      => Product::mainImgTempPath(),
-                'types'     => ['jpg', 'png'],
-                'minHeight' => 300,
-                'minWidth'  => 400,
-                'maxHeight' => 1000,
-                'maxWidth'  => 1000,
-                'maxSize'   => 3145728,
-            ],
-            'uploadPropertyTempImage' => [
-                'class'     => UploadAction::class,
-                'path'      => ProductProperty::mainImgTempPath(),
-                'types'     => ['jpg', 'png'],
-                'minHeight' => 800,
-                'minWidth'  => 600,
-                'maxHeight' => 1000,
-                'maxWidth'  => 1000,
-                'maxSize'   => 3145728,
-            ],
-            'deleteTempImage'         => [
-                'class' => DeleteAction::class,
-                'path'  => Product::mainImgTempPath(),
-            ],
-            'deletePropertyTempImage' => [
-                'class' => DeleteAction::class,
-                'path'  => ProductProperty::mainImgTempPath(),
-            ],
-        ];
     }
 
     /**
@@ -141,8 +106,10 @@ class ProductController extends BaseAdminController
         if ($request->isPost) {
             $model->load($request->post());
             $model->originalImgFile = UploadedFile::getInstance($model, 'originalImgFile');
+            $model->imgFiles = UploadedFile::getInstances($model, 'imgFiles');
         }
         if ($request->isPost && $model->save()) {
+            $model->saveImg();
             Yii::$app->session->setFlash('humane', 'Сохранено');
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
@@ -170,8 +137,11 @@ class ProductController extends BaseAdminController
         if ($request->isPost) {
             $model->load($request->post());
             $model->originalImgFile = UploadedFile::getInstance($model, 'originalImgFile');
+            $model->imgFiles = UploadedFile::getInstances($model, 'imgFiles');
         }
+
         if ($request->isPost && $model->save()) {
+            $model->saveImg();
             Yii::$app->session->setFlash('humane', 'Сохранено');
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
@@ -194,7 +164,9 @@ class ProductController extends BaseAdminController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if ($this->findModel($id)->delete()) {
+            FileHelper::removeDirectory(Product::moduleUploadsPath() . $id);
+        }
 
         return $this->redirect(['index']);
     }
@@ -224,7 +196,7 @@ class ProductController extends BaseAdminController
     public function actionAddProperty($item_id)
     {
         $model = new ProductProperty();
-        $model->catalog_item_id = $item_id;
+        $model->product_id = $item_id;
 
         if (Yii::$app->request->isGet) {
             return $this->renderAjax('_property_form', ['model' => $model]);
@@ -233,7 +205,7 @@ class ProductController extends BaseAdminController
         Yii::$app->response->format = Response::FORMAT_JSON;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return ['status' => true, 'data' => $this->renderPartial('_item_property_view', ['model' => $model])];
+            return ['status' => true, 'data' => $this->renderPartial('_product_property_view', ['model' => $model])];
         } else {
             return ['status' => false, 'message' => 'Произошла ошибка. Попробуйте еще раз.'];
         }
@@ -245,7 +217,7 @@ class ProductController extends BaseAdminController
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $newModel = new ProductProperty();
-            $newModel->catalog_item_id = $model->catalog_item_id;
+            $newModel->product_id = $model->product_id;
             return [
                 'status' => true,
                 'data'   => $this->renderPartial('_item_property_view', ['model' => $model]),
@@ -264,8 +236,46 @@ class ProductController extends BaseAdminController
     public function actionResetPropertyForm($item_id)
     {
         $model = new ProductProperty();
-        $model->catalog_item_id = $item_id;
+        $model->product_id = $item_id;
 
         return $this->renderAjax('_property_form', ['model' => $model]);
+    }
+
+    public function actionSortGallery()
+    {
+        $request = Yii::$app->request;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($request->isPost) {
+            $modelId = $request->post('modelId');
+            $sort = $request->post('sort');
+            $model = Product::findOne($modelId);
+            $imgList = $model->additional_images;
+            moveElement($imgList, $sort['oldIndex'], $sort['newIndex']);
+            $model->additional_images = $imgList;
+            if (!$model->save(false)) {
+                return $model->errors;
+            }
+            return true;
+        }
+    }
+
+    public function actionDeleteAdditionalImg()
+    {
+        $request = Yii::$app->request;
+        if ($request->isPost) {
+            $modelId = $request->post('id');
+            $key = $request->post('key');
+            $model = Product::findOne($modelId);
+            $imgList = $model->additional_images;
+            $file = explode('/', $imgList[$key]);
+            $file = array_pop($file);
+            @unlink($model->modelUploadsPath() . 'additional/' . $file);
+            unset($imgList[$key]);
+            $model->additional_images = [...$imgList];
+            if (!$model->save(false)) {
+                return $model->errors;
+            }
+            return $this->redirect(['update', 'id' => $modelId]);
+        }
     }
 }

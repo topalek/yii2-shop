@@ -1,6 +1,5 @@
 <?php
 
-use backend\extensions\fileapi\FileAPIAdvanced;
 use common\modules\catalog\models\Category;
 use common\modules\seo\widgets\SeoWidget;
 use common\modules\translate\models\Translate;
@@ -60,14 +59,14 @@ use yii\widgets\ActiveForm;
                 'showUpload'           => false,
                 'browseClass'          => 'btn btn-primary btn-block',
                 'browseIcon'           => '<i class="glyphicon glyphicon-camera"></i> ',
-                'deleteUrl'            => Url::toRoute(['category/delete-img', 'id' => $model->id]),
+                'deleteUrl'            => Url::toRoute(
+                    ['category/delete-img', 'id' => $model->id, 'model_name' => $model::getModelName(0)]
+                ),
                 'previewFileType'      => 'any',
                 'initialPreview'       => $model->getMainImgUrl(),
                 'initialPreviewAsData' => true,
                 'uploadUrl'            => Url::to(['/category/upload-img']),
             ],
-            'options'       => ['accept' => 'image/*'],
-            'language'      => 'ru',
         ]
     ) ?>
 

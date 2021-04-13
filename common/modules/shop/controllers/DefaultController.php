@@ -129,7 +129,7 @@ class DefaultController extends BaseController
                 if ($key == $needleKey) {
                     $cartItem['qty'] = $qty;
                     $cart->cartItems[$key]['qty'] = $qty;
-                    $cart->update(false, ['catalog_items']);
+                    $cart->update(false, ['products']);
                 }
                 $totalPrice += $cartItem['price'] * $cartItem['qty'];
             }
@@ -173,7 +173,7 @@ class DefaultController extends BaseController
         if ($model->load($request->post()) && $model->save()) {
             if ($model->sendOrder()) {
                 $cart->cartItems = [];
-                $cart->update(false, ['catalog_items']);
+                $cart->update(false, ['products']);
                 Yii::$app->session->setFlash('orderSuccess', true);
                 return $this->redirect(['success']);
             }

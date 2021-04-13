@@ -68,7 +68,7 @@ class InputWidget extends Widget
             'language' => 'ru',
         ];
         $defaultPluginOptions = [
-            'allowedFileExtensions' => ['jpg', 'png', 'jpeg', 'gif', 'bmp'],
+            'allowedFileExtensions' => ['jpg', 'png', 'jpeg', 'gif', 'bmp', 'webp'],
             'overwriteInitial'      => false,
             'maxFileCount'          => 30,
             'autoReplace'           => true,

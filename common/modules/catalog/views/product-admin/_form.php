@@ -114,8 +114,8 @@ use yii\widgets\ActiveForm;
         FileAPIAdvanced::class,
         [
             'url'              => $model->modelUploadsUrl(),
-            'deleteUrl'        => Url::toRoute('/catalog/product-admin/delete-image?id=' . $model->id),
-            'deleteTempUrl'    => Url::toRoute('/catalog/product-admin/delete-temp-image'),
+            'deleteUrl'        => Url::toRoute('/product/delete-image?id=' . $model->id),
+            'deleteTempUrl'    => Url::toRoute('/product/delete-temp-image'),
             'crop'             => true,
             'cropResizeWidth'  => 300,
             'cropResizeHeight' => 400,
@@ -181,7 +181,7 @@ use yii\widgets\ActiveForm;
                 <p class="text-center">
                     <?= Html::a(
                         'Добавить язык',
-                        ['/catalog/product-admin/add-property', 'item_id' => $model->id],
+                        ['/product/add-property', 'item_id' => $model->id],
                         ['class' => 'add-new-property btn btn-primary']
                     ) ?>
                 </p>

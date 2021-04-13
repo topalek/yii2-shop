@@ -94,7 +94,7 @@ class ProductSearch extends Product
 
     public function search($params)
     {
-        $viewType = $viewType = Yii::$app->session->get('viewType', 'block');
+        $viewType = Yii::$app->session->get('viewType', 'block');
         $lang = Yii::$app->language;
         $this->sort = new Sort(
             [
@@ -159,7 +159,7 @@ class ProductSearch extends Product
 
         $query->andFilterWhere(
             [
-                'category_id' => $this->catalog_category_id,
+                'category_id' => $this->category_id,
             ]
         );
 

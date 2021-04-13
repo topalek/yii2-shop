@@ -1,257 +1,219 @@
 .main-header a.logo {
-    position: relative;
-    background: #1B74A7 !important;
+  position: relative;
+  background: #1B74A7 !important;
 }
-
 .main-header .navbar {
-    background: #1B74A7 !important;
-    display: flex;
-    align-items: center;
+  background: #1B74A7 !important;
+  display: flex;
+  align-items: center;
 }
-
 .main-header .navbar-custom-menu {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: flex-end;
-    align-items: center;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+  align-items: center;
 }
-
 .main-header .navbar-custom-menu-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    text-decoration: none;
-    padding: 15px;
-    font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+  padding: 15px;
+  font-size: 20px;
 }
-
 .main-header .navbar-custom-menu-link:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
-
 .content-header > .breadcrumb {
-    float: none;
-    position: initial;
+  float: none;
+  position: initial;
 }
-
 .content {
-    padding-top: 5px;
+  padding-top: 5px;
 }
-
 .content h1 {
-    margin-top: 0;
+  margin-top: 0;
 }
-
 .content .btn {
-    border-radius: 1px;
+  border-radius: 1px;
 }
-
 .content .bootstrap-switch {
-    border-radius: 1px;
+  border-radius: 1px;
 }
-
 .content .bootstrap-switch .bootstrap-switch-handle-on {
-    border-radius: 1px;
+  border-radius: 1px;
 }
-
 .content .panel {
-    border-radius: 1px;
+  border-radius: 1px;
 }
-
 .content .panel .panel-heading {
-    border-radius: 1px;
+  border-radius: 1px;
 }
-
 .slimScrollDiv {
-    height: auto !important;
+  height: auto !important;
 }
-
 .slimScrollDiv .menu {
-    height: auto !important;
+  height: auto !important;
 }
-
 .navbar-nav > .notifications-menu > .dropdown-menu,
 .navbar-nav > .messages-menu > .dropdown-menu,
 .navbar-nav > .tasks-menu > .dropdown-menu {
-    width: 200px;
+  width: 200px;
 }
-
 .sidebar .sidebar-menu > li.active > a {
-    border-left-color: #E2DA79;
+  border-left-color: #E2DA79;
 }
-
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:hover,
 .navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a:hover {
-    background: #222D32;
-    color: #B8C7CE;
+  background: #222D32;
+  color: #B8C7CE;
 }
-
 .grid-view tr td:last-child a {
-    margin: 0 3px;
+  margin: 0 3px;
 }
-
 .grid-view table.nested-table tr .toggle-children {
-    text-decoration: underline;
-    cursor: pointer;
+  text-decoration: underline;
+  cursor: pointer;
 }
-
 .grid-view table.nested-table tr.child-row td:first-child {
-    padding-left: 20px;
+  padding-left: 20px;
 }
-
 .tabs {
-    width: 100%;
-    overflow: hidden;
-    font-size: 0.9em;
-    margin: 0;
-    zoom: 1;
-    padding: 1px;
-    position: relative;
+  width: 100%;
+  overflow: hidden;
+  font-size: 0.9em;
+  margin: 0;
+  zoom: 1;
+  padding: 1px;
+  position: relative;
 }
-
 .tabs dt {
-    float: left;
-    height: 34px;
-    line-height: 34px;
-    position: relative;
-    color: #393939;
-    cursor: pointer;
-    font-size: 14px;
-    text-transform: uppercase;
-    z-index: 20;
-    padding: 0 15px;
+  float: left;
+  height: 34px;
+  line-height: 34px;
+  position: relative;
+  color: #393939;
+  cursor: pointer;
+  font-size: 14px;
+  text-transform: uppercase;
+  z-index: 20;
+  padding: 0 15px;
 }
-
 .tabs dt:hover {
-    height: 34px;
-    background: #337AB7;
-    color: #fff;
-    z-index: 20;
+  height: 34px;
+  background: #337AB7;
+  color: #fff;
+  z-index: 20;
 }
-
 .tabs dt.selected {
-    height: 34px;
-    background: #337AB7;
-    color: #fff;
-    z-index: 20;
+  height: 34px;
+  background: #337AB7;
+  color: #fff;
+  z-index: 20;
 }
-
 .tabs dd {
-    /*background:#fff;*/
-    display: none;
-    float: right;
-    width: 100%;
-    margin: 34px 0 0 -100%;
-    position: relative;
-    z-index: 10;
-    padding-top: 15px;
+  /*background:#fff;*/
+  display: none;
+  float: right;
+  width: 100%;
+  margin: 34px 0 0 -100%;
+  position: relative;
+  z-index: 10;
+  padding-top: 15px;
 }
-
 .tabs dd.selected {
-    display: block;
+  display: block;
 }
-
 .tabs .tab-content {
-    border-top: 34px solid #e6e6e6;
-    padding-top: 10px;
-    margin-top: -34px;
-    z-index: 1;
+  border-top: 34px solid #e6e6e6;
+  padding-top: 10px;
+  margin-top: -34px;
+  z-index: 1;
 }
-
 .timeLines-list {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
-
 .timeLines-list .item {
-    border: 1px solid #999;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    position: relative;
+  border: 1px solid #999;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  position: relative;
 }
-
 .timeLines-list .item .actions {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
-
 .timeLines-list .item .actions a {
-    display: inline-block;
-    right: 10px;
+  display: inline-block;
+  right: 10px;
 }
-
 .item-properties .property-list .item-property {
-    position: relative;
-    float: left;
-    width: 150px;
-    border: 1px solid #ebebeb;
-    padding: 5px;
-    font-size: 12px;
+  position: relative;
+  float: left;
+  width: 150px;
+  border: 1px solid #ebebeb;
+  padding: 5px;
+  font-size: 12px;
 }
-
 .item-properties .property-list .item-property:before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(51, 51, 51, 0.5);
-    content: '';
-    z-index: 1;
-    top: 0;
-    left: 0;
-    box-shadow: 0 0 1px #333;
-    display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(51, 51, 51, 0.5);
+  content: '';
+  z-index: 1;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 1px #333;
+  display: none;
 }
-
 .item-properties .property-list .item-property.disabled:before {
-    display: block;
+  display: block;
 }
-
 .item-properties .property-form {
-    margin-top: 20px;
+  margin-top: 20px;
 }
-
 .item-properties .property-form fieldset legend {
-    margin-bottom: 5px;
-    font-size: 18px;
+  margin-bottom: 5px;
+  font-size: 18px;
 }
-
 #categories-ajax-container tr.open .title:after {
-    font-family: FontAwesome;
-    content: "\f107";
-    margin-left: 5px;
-    font-weight: bold;
+  font-family: FontAwesome;
+  content: "\f107";
+  margin-left: 5px;
+  font-weight: bold;
 }
 
 #categories-ajax-container tr.closed .title:after {
-    font-family: FontAwesome;
-    content: "\f106";
-    margin-left: 5px;
-    font-weight: bold;
+  font-family: FontAwesome;
+  content: "\f106";
+  margin-left: 5px;
+  font-weight: bold;
 }
 
-.catalog-item-form .field-catalog_item-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.file-sortable.kv-preview-thumb {
-    box-shadow: none !important;
-    border: none;
-    margin: 0;
-    padding: 5px;
+.catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.file-sortable.kv-preview-thumb {
+  box-shadow: none !important;
+  border: none;
+  margin: 0;
+  padding: 5px;
 }
 
-.catalog-item-form .field-catalog_item-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.file-sortable.kv-preview-thumb img {
-    max-width: 100%;
-    max-height: 100% !important;
+.catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.file-sortable.kv-preview-thumb img {
+  max-width: 100%;
+  max-height: 100% !important;
 }
 
-.catalog-item-form .field-catalog_item-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.kv-preview-thumb {
-    padding: 5px;
-    margin: 0;
-    box-shadow: none !important;
+.catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.kv-preview-thumb {
+  padding: 5px;
+  margin: 0;
+  box-shadow: none !important;
 }
 
-.catalog-item-form .field-catalog_item-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.kv-preview-thumb img {
-    max-width: 100%;
-    max-height: 100% !important;
+.catalog-item-form .field-product-originalimgfile .file-preview-frame.krajee-default.file-preview-initial.kv-preview-thumb img {
+  max-width: 100%;
+  max-height: 100% !important;
 }
-
 /*# sourceMappingURL=admin.css.map */

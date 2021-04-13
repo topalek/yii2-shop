@@ -17,7 +17,7 @@ class OrderSearch extends Order
     {
         return [
             [['id', 'status'], 'integer'],
-            [['name', 'email', 'phone', 'delivery_info', 'catalog_items', 'updated_at', 'created_at'], 'safe'],
+            [['name', 'email', 'phone', 'delivery_info', 'products', 'updated_at', 'created_at'], 'safe'],
         ];
     }
 
@@ -67,10 +67,10 @@ class OrderSearch extends Order
         );
 
         $query->andFilterWhere(['like', 'name', $this->name])
-              ->andFilterWhere(['like', 'email', $this->email])
-              ->andFilterWhere(['like', 'phone', $this->phone])
-              ->andFilterWhere(['like', 'delivery_info', $this->delivery_info])
-              ->andFilterWhere(['like', 'catalog_items', $this->catalog_items]);
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'phone', $this->phone])
+            ->andFilterWhere(['like', 'delivery_info', $this->delivery_info])
+            ->andFilterWhere(['like', 'products', $this->products]);
 
         return $dataProvider;
     }

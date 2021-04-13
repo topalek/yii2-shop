@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'delivery_info')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'catalog_items')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'products')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'updated_at')->textInput() ?>
 

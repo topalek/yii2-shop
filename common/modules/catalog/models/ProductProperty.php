@@ -2,7 +2,6 @@
 
 namespace common\modules\catalog\models;
 
-use backend\extensions\fileapi\behaviors\UploadBehavior;
 use common\components\BaseModel;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -39,21 +38,6 @@ class ProductProperty extends BaseModel
             [['updated_at', 'created_at'], 'safe'],
             [['photo'], 'string', 'max' => 255],
         ];
-    }
-
-    public function behaviors()
-    {
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                'uploadBehavior' => [
-                    'class'      => UploadBehavior::class,
-                    'attributes' => ['photo'],
-                    'path'       => $this->mainImgPath(),
-                    'tempPath'   => $this->mainImgTempPath(),
-                ],
-            ]
-        );
     }
 
     /**
@@ -180,7 +164,7 @@ class ProductProperty extends BaseModel
     {
         return [
             'id'                   => 'ID',
-            'product_id'           => 'Catalog Item ID',
+            'product_id'           => 'Product ID',
             'property_id'          => 'Характеристика',
             'property_category_id' => 'Категория',
             'photo'                => 'Фото',

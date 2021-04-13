@@ -165,3 +165,9 @@ function isConsoleApp(): bool
 {
     return Yii::$app->id == CONSOLE_APP_ID;
 }
+
+function moveElement(&$array, $from, $to)
+{
+    $out = array_splice($array, $from, 1);
+    array_splice($array, $to, 0, $out);
+}
