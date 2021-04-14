@@ -24,6 +24,11 @@ $userImg = '/img/undraw_profile.svg';
         </a>
 
         <div class="navbar-custom-menu">
+            <?= Html::a(
+                '<i class="fa fa-ban"></i>',
+                ['/site/clear-cache'],
+                ['class' => 'navbar-custom-menu-link', 'title' => 'Скинути кеш']
+            ) ?>
             <?= BaseHtml::a(
                 '<i class="fa fa-globe"></i>',
                 Yii::$app->params['frontendUrl'],

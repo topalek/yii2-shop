@@ -7,11 +7,11 @@ use yii\helpers\Html;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\forms\LoginForm */
 
-$this->title = 'Sign In';
+$this->title = 'Вход';
 
 $fieldOptions1 = [
     'options'       => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>",
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-user form-control-feedback'></span>",
 ];
 
 $fieldOptions2 = [
@@ -22,11 +22,11 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Admin</b></a>
+        <b>Admin</b>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">Войдите чтобы начать Вашу сессию</p>
 
         <?php
         $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
@@ -48,7 +48,7 @@ $fieldOptions2 = [
             <!-- /.col -->
             <div class="col-xs-4">
                 <?= Html::submitButton(
-                    'Sign in',
+                    'Вход',
                     ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']
                 ) ?>
             </div>

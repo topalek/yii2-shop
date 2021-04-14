@@ -33,7 +33,7 @@ class BaseController extends Controller
      */
     public function beforeAction($action)
     {
-        Yii::$app->params = Params::getParamsList();
+        Yii::$app->params = array_merge(Yii::$app->params, Params::getParamsList());
 
         Yii::$app->session->open();
         $this->view->params['cartItemCount'] = Cart::getItemsCount();

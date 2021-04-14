@@ -40,7 +40,7 @@ class SeoBehavior extends Behavior
      */
     public function deleteSeo($event)
     {
-        $seo = Seo::find()->where(['model_name' => $this->model, 'model_id' => $event->sender->id])->one();
+        $seo = Seo::find()->where(['model_name' => $this->model, 'model_id' => $event->owner->id])->one();
         if ($seo) {
             $seo->delete();
         }
@@ -53,22 +53,22 @@ class SeoBehavior extends Behavior
     public function writeSeo($event)
     {
         $seo = Seo::findSeo($this->model, $event->sender->id);
-        $ownerSeoData = (method_exists($event->sender, 'buildSeoData')) ? $event->sender->buildSeoData() : null;
+        $ownerSeoData = (method_exists($event->owner, 'buildSeoData')) ? $event->sender->buildSeoData() : null;
 
         if ($seo == null) {
             $seo = new Seo();
         }
 
-        $title = trim(str_replace('  ', ' ', $event->sender->getMlTitle('ru')));
+        $title = trim(str_replace('  ', ' ', $event->owner->getMlTitle('ru')));
 
         $seo->load(\Yii::$app->request->post());
 
         if ($seo->external_link == '' || $seo->isNewRecord) {
-            if (method_exists($event->sender, 'buildUrl')) {
+            if (method_exists($event->owner, 'buildUrl')) {
                 if ($title) {
-                    $seo->external_link = trim($event->sender->buildUrl() . '/' . $this::generateSlug($title), '/');
+                    $seo->external_link = trim($event->owner->buildUrl() . '/' . $this::generateSlug($title), '/');
                 } else {
-                    $seo->external_link = trim($event->sender->buildUrl() . '/' . $event->sender->id, '/');
+                    $seo->external_link = trim($event->owner->buildUrl() . '/' . $event->owner->id, '/');
                 }
             } else {
                 $seo->external_link = $this->checkUniqueUrl(

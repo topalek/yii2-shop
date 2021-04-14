@@ -24,9 +24,19 @@ class BaseAdminController extends Controller
 {
     public $layout = '@backend/views/layouts/main';
 
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class'  => 'yii\web\ErrorAction',
+                'layout' => 'main-login',
+            ],
+        ];
+    }
+
     public function beforeAction($action)
     {
-        Yii::$app->params = Params::getParamsList();
+        Yii::$app->params = array_merge(Yii::$app->params, Params::getParamsList());
         Yii::$app->language = 'ru';
         Yii::$app->sourceLanguage = 'ru-RU';
 
@@ -41,11 +51,17 @@ class BaseAdminController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only'  => ['login', 'request-password-reset', 'reset-password'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'request-password-reset', 'reset-password'],
+                        'actions' => ['login', 'request-password-reset', 'reset-password', 'error'],
                         'allow'   => true,
                         'roles'   => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
