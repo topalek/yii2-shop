@@ -37,7 +37,7 @@ class PropertyCategory extends BaseModel
     public function rules()
     {
         return [
-            [['title_uk'], 'required'],
+            [['title_ru'], 'required'],
             ['catalogCategoryIds', 'each', 'rule' => ['integer']],
             [['updated_at', 'created_at'], 'safe'],
             [['title_uk', 'title_ru', 'title_en'], 'string', 'max' => 255],
@@ -51,9 +51,9 @@ class PropertyCategory extends BaseModel
     {
         return [
             'id'                 => 'ID',
-            'title_uk'           => 'Название',
-            'title_ru'           => 'Название',
-            'title_en'           => 'Название',
+            'title_uk'           => 'Название (uk)',
+            'title_ru'           => 'Название (ru)',
+            'title_en'           => 'Название (en)',
             'catalogCategoryIds' => 'Категория в каталоге',
             'updated_at'         => 'Дата обновления',
             'created_at'         => 'Дата создания',
@@ -82,14 +82,14 @@ class PropertyCategory extends BaseModel
                 foreach ($this->catalogCategoryIds as $newCatId) {
                     $newCategory = new PropertyCategoryCatalogCategory();
                     $newCategory->property_category_id = $this->id;
-                    $newCategory->catalog_category_id = $newCatId;
+                    $newCategory->category_id = $newCatId;
                     $newCategory->save(false);
                 }
             } else {
                 $oldCategories = [];
 
                 foreach ($catalogCategories as $old) {
-                    $oldCategories[] = $old['catalog_category_id'];
+                    $oldCategories[] = $old['category_id'];
                 }
 
                 $resultForAdd = array_diff($this->catalogCategoryIds, $oldCategories); // перевірка на нові
@@ -98,7 +98,7 @@ class PropertyCategory extends BaseModel
                     foreach ($resultForAdd as $newCatId) {
                         $newCategory = new PropertyCategoryCatalogCategory();
                         $newCategory->property_category_id = $this->id;
-                        $newCategory->catalog_category_id = $newCatId;
+                        $newCategory->category_id = $newCatId;
                         $newCategory->save(false);
                     }
                 } else {
@@ -110,7 +110,7 @@ class PropertyCategory extends BaseModel
                     if ($resultForRemove != null) {
                         foreach ($resultForRemove as $removeId) {
                             PropertyCategoryCatalogCategory::deleteAll(
-                                ['catalog_category_id' => $removeId, 'property_category_id' => $this->id]
+                                ['category_id' => $removeId, 'property_category_id' => $this->id]
                             );
                         }
                     }
@@ -175,7 +175,7 @@ class PropertyCategory extends BaseModel
             if ($key > 0) {
                 $result .= ', ';
             }
-            $result .= $catalogCategory->catalogCategory->title_uk;
+            $result .= $catalogCategory->catalogCategory->title_ru;
         }
         return $result;
     }

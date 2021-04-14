@@ -61,7 +61,7 @@ class Property extends BaseModel
     public function rules()
     {
         return [
-            [['title_uk', 'property_category_id'], 'required'],
+            [['title_ru', 'property_category_id'], 'required'],
             [['property_category_id'], 'integer'],
             [['updated_at', 'created_at'], 'safe'],
             [['title_uk', 'title_ru', 'title_en'], 'string', 'max' => 255],
@@ -75,9 +75,9 @@ class Property extends BaseModel
     {
         return [
             'id'                   => 'ID',
-            'title_uk'             => 'Название',
-            'title_ru'             => 'Название',
-            'title_en'             => 'Название',
+            'title_uk'             => 'Название (uk)',
+            'title_ru'             => 'Название (ru)',
+            'title_en'             => 'Название (en)',
             'property_category_id' => 'Категория',
             'updated_at'           => 'Дата обновления',
             'created_at'           => 'Дата создания',

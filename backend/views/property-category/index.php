@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ['class' => 'yii\grid\SerialColumn'],
 
                 'id',
-                'title_uk',
+                'title_ru',
                 [
                     'attribute' => 'catalog_categories',
                     'header'    => 'Категории в каталоге',

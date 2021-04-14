@@ -9,7 +9,7 @@ use common\components\BaseModel;
  *
  * @property integer          $id
  * @property integer          $property_category_id
- * @property integer          $catalog_category_id
+ * @property integer          $category_id
  * @property string           $updated_at
  * @property string           $created_at
  *

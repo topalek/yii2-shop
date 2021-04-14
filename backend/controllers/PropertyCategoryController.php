@@ -122,7 +122,7 @@ class PropertyCategoryController extends BaseAdminController
 
         if (!Yii::$app->request->isPost && $model->catalogCategories != null) {
             foreach ($model->catalogCategories as $catalogCategoryId) {
-                $model->catalogCategoryIds [] = $catalogCategoryId->catalog_category_id;
+                $model->catalogCategoryIds [] = $catalogCategoryId->category_id;
             }
         }
 

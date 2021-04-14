@@ -316,7 +316,6 @@ ol {
 .header {
     background: #ffffff;
 }
-
 .header .wrap {
     display: flex;
     justify-content: space-between;
@@ -497,7 +496,6 @@ ol {
 .header__menu ul li .dropdown li a:after {
     display: none;
 }
-
 .header__menu ul li a {
     font-size: 18px;
     color: #111111;
@@ -506,11 +504,9 @@ ol {
     position: relative;
     padding: 3px 0;
 }
-
 .header__menu ul li a:hover, .header__menu ul li a:focus, .header__menu ul li a:active {
     background-color: transparent;
 }
-
 .header__menu ul li a:after {
     position: absolute;
     left: 0;
@@ -532,7 +528,6 @@ ol {
     justify-content: flex-end;
     text-align: right;
 }
-
 .header__nav__option a {
     display: inline-block;
     margin-right: 26px;
@@ -541,23 +536,19 @@ ol {
     color: #111;
     font-size: 16px;
 }
-
 .header__nav__option a:hover {
     color: #424242;
     text-decoration: none;
 }
-
 .header__nav__option a span {
     color: #0d0d0d;
     font-size: 11px;
     left: 5px;
     top: 8px;
 }
-
 .header__nav__option a:last-child {
     margin-right: 0;
 }
-
 .header__nav__option .price {
     font-size: 15px;
     color: #111111;
@@ -567,13 +558,11 @@ ol {
     position: relative;
     top: 3px;
 }
-
 .header__nav__option .lang {
     display: flex;
     font-size: 16px;
     align-items: center;
 }
-
 .header__nav__option .lang > * {
     padding: 10px;
     display: flex;
@@ -581,7 +570,6 @@ ol {
     align-items: center;
     position: relative;
 }
-
 .header__nav__option .lang > *:after {
     display: block;
     content: "";
@@ -590,15 +578,12 @@ ol {
     border-right: 1px dotted #696969;
     right: 0;
 }
-
 .header__nav__option .lang > *:last-child:after {
     display: none;
 }
-
 .header__nav__option .lang a {
     margin-right: 0;
 }
-
 .header__nav__option .lang span {
     color: #939393;
 }
