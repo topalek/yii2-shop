@@ -1,6 +1,6 @@
 <?php
 
-use common\models\Product;
+use common\modules\catalog\models\Product;
 use yii\helpers\Html;
 
 /**
@@ -12,7 +12,8 @@ use yii\helpers\Html;
  */
 ?>
 <div class="product__item">
-    <div class="product__item__pic set-bg" data-setbg="<?= $model->imgUrl ?>">
+    <div class="product__item__pic set-bg" data-setbg="<?= $model->getMainImgUrl() ?>"
+         style="background-image: url('<?= $model->getMainImgUrl() ?>')">
         <ul class="product__hover">
             <li><a href="#"><img src="/img/icon/heart.png" alt=""></a></li>
             <li><a href="#"><img src="/img/icon/compare.png" alt=""> <span>Compare</span></a>
@@ -21,24 +22,17 @@ use yii\helpers\Html;
         </ul>
     </div>
     <div class="product__item__text">
-        <h6><?= $model->name ?></h6>
+        <h6><?= $model->getMlTitle() ?></h6>
         <?= Html::a(
             '+ Add To Cart',
-            ['/cart/add', 'id' => $model->id],
+            ['/shop/default/add-to-cart', 'id' => $model->id],
             [
 //                    'data-method' => 'post',
                 'class' => 'add-to-cart',
             ]
         ) ?>
-        <!--            <a href="#" class="add-cart"></a>-->
-        <div class="rating">
-            <i class="fa fa-star-o"></i>
-            <i class="fa fa-star-o"></i>
-            <i class="fa fa-star-o"></i>
-            <i class="fa fa-star-o"></i>
-            <i class="fa fa-star-o"></i>
-        </div>
-        <h5><?= Yii::$app->formatter->asCurrency($model->price) ?></h5>
+
+        <h5><?= Yii::$app->formatter->asCurrency($model->price, 'UAH') ?></h5>
         <div class="product__color__select">
             <label for="pc-4">
                 <input type="radio" id="pc-4">

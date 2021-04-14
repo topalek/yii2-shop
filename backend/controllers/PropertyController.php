@@ -1,6 +1,6 @@
 <?php
 
-namespace common\controllers;
+namespace backend\controllers;
 
 use common\components\BaseAdminController;
 use common\modules\catalog\models\Property;

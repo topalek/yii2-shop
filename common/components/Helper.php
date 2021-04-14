@@ -1,10 +1,5 @@
 <?php
 
-use Imagine\Image\Box;
-use Imagine\Image\Point;
-use yii\helpers\FileHelper;
-use yii\imagine\Image as ImageHelper;
-
 function cmp($a, $b)
 {
     if ($a['ordering'] == $b['ordering']) {
@@ -46,108 +41,7 @@ function searchHighlighter($text, $word, $trim = false, $length = 0, $points = f
     return $highlighted;
 }
 
-/**
- * @param      $original_path
- * @param      $original_file_name
- * @param      $resize_file_path
- * @param      $width
- * @param      $height
- * @param bool $web_path
- *
- * @return bool|string
- */
 
-function resizeImage($original_path, $original_file_name, $resize_file_path, $width, $height, $web_path = false)
-{
-    FileHelper::createDirectory($resize_file_path);
-
-    $name = $width . '_' . $height . '_' . $original_file_name;
-
-    $originalFullName = DIRECTORY_SEPARATOR . trim($original_path, '/') . DIRECTORY_SEPARATOR . $original_file_name;
-
-    if (!file_exists($originalFullName)) {
-        return false;
-    }
-
-    $thumbFullName = DIRECTORY_SEPARATOR . trim($resize_file_path, '/') . DIRECTORY_SEPARATOR . $name;
-
-
-    if (!file_exists($thumbFullName)) {
-        $originalImgInfo = getimagesize($originalFullName);
-        $originalWidth = $originalImgInfo[0];
-        $originalHeight = $originalImgInfo[1];
-
-        ImageHelper::getImagine()->open($originalFullName)->thumbnail(
-            new Box($width + $width / 2, $height + $height / 2)
-        )->save($thumbFullName);
-
-        $imgInfo = getimagesize($thumbFullName);
-        $imgWidth = $imgInfo[0];
-        $imgHeight = $imgInfo[1];
-
-
-        if ($imgWidth < $width) {
-            $newWidth = $width + ($width - $imgWidth);
-            $newHeight = round($width / $originalWidth * $originalHeight);
-            ImageHelper::getImagine()->open($originalFullName)->thumbnail(new Box($newWidth, $newHeight))->save(
-                $thumbFullName,
-                ['quality' => 100]
-            );
-            $imgInfo = getimagesize($thumbFullName);
-            $imgWidth = $imgInfo[0];
-            $imgHeight = $imgInfo[1];
-        }
-
-        if ($imgHeight < $height) {
-            $newWidth = round($height / $originalHeight * $originalWidth);
-            $newHeight = $height + ($height - $imgHeight);
-            ImageHelper::getImagine()->open($originalFullName)->thumbnail(new Box($newWidth, $newHeight))->save(
-                $thumbFullName,
-                ['quality' => 100]
-            );
-            $imgInfo = getimagesize($thumbFullName);
-            $imgWidth = $imgInfo[0];
-            $imgHeight = $imgInfo[1];
-        }
-
-        if ($imgWidth > $width || $imgHeight > $height) {
-            $startX = 0;
-            $startY = 0;
-            if ($imgWidth > $width) {
-                $startX = ceil($imgWidth - $width) / 2;
-            }
-            if ($imgWidth > $height) {
-                $startY = ceil($imgHeight - $height) / 2;
-            }
-            ImageHelper::getImagine()->open($thumbFullName)->crop(
-                new Point($startX, $startY),
-                new Box($width, $height)
-            )->save($thumbFullName, ['quality' => 100]);
-        }
-    }
-
-    if ($web_path) {
-        return DIRECTORY_SEPARATOR . trim($web_path, '/') . DIRECTORY_SEPARATOR . $name;
-    }
-
-    return $name;
-}
-
-/**
- * @param        $number
- * @param string $decPoint
- * @param string $thousandsSep
- * @param int    $decCount
- *
- * @return string
- */
-function asMoney($number, $decPoint = ',', $thousandsSep = ' ', $decCount = 0)
-{
-    if ($decCount == 0) {
-        $number = round($number, 0);
-    }
-    return number_format($number, $decCount, $decPoint, $thousandsSep);
-}
 
 /**
  * @param      $imageUrl

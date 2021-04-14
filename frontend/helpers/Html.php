@@ -247,7 +247,7 @@ class Html extends \yii\helpers\Html
         $defaultWidth = 200;
         $srcset = null;
         $class = $options['class'] ?? null;
-        $lazyLoad = $options['lazyLoad'] ?? true;
+        $lazyLoad = $options['lazy'] ?? true;
         $responsive = $options['responsive'] ?? true;
         $size = ArrayHelper::remove($options, 'size');
 
@@ -300,7 +300,7 @@ class Html extends \yii\helpers\Html
                 }
             }
             if ($width) {
-                $srcset = makeDynamicImageThumbUrl($src, $width, $height, boolval($crop));
+                $srcset = dynamicImageUrl($src, $width, $height, boolval($crop));
             } else {
                 $width = $height = $defaultWidth;
             }

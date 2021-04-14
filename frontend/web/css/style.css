@@ -317,6 +317,12 @@ ol {
     background: #ffffff;
 }
 
+.header .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .header__top {
     background: #111111;
     padding: 10px 0;
@@ -491,6 +497,7 @@ ol {
 .header__menu ul li .dropdown li a:after {
     display: none;
 }
+
 .header__menu ul li a {
     font-size: 18px;
     color: #111111;
@@ -499,6 +506,11 @@ ol {
     position: relative;
     padding: 3px 0;
 }
+
+.header__menu ul li a:hover, .header__menu ul li a:focus, .header__menu ul li a:active {
+    background-color: transparent;
+}
+
 .header__menu ul li a:after {
     position: absolute;
     left: 0;
@@ -516,24 +528,36 @@ ol {
 }
 
 .header__nav__option {
+    display: flex;
+    justify-content: flex-end;
     text-align: right;
-    padding: 30px 0;
 }
+
 .header__nav__option a {
     display: inline-block;
     margin-right: 26px;
     position: relative;
+    padding: 10px;
+    color: #111;
+    font-size: 16px;
 }
+
+.header__nav__option a:hover {
+    color: #424242;
+    text-decoration: none;
+}
+
 .header__nav__option a span {
     color: #0d0d0d;
     font-size: 11px;
-    position: absolute;
     left: 5px;
     top: 8px;
 }
+
 .header__nav__option a:last-child {
     margin-right: 0;
 }
+
 .header__nav__option .price {
     font-size: 15px;
     color: #111111;
@@ -542,6 +566,41 @@ ol {
     margin-left: -20px;
     position: relative;
     top: 3px;
+}
+
+.header__nav__option .lang {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+}
+
+.header__nav__option .lang > * {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header__nav__option .lang > *:after {
+    display: block;
+    content: "";
+    height: 40%;
+    position: absolute;
+    border-right: 1px dotted #696969;
+    right: 0;
+}
+
+.header__nav__option .lang > *:last-child:after {
+    display: none;
+}
+
+.header__nav__option .lang a {
+    margin-right: 0;
+}
+
+.header__nav__option .lang span {
+    color: #939393;
 }
 
 .offcanvas-menu-wrapper {
@@ -1879,7 +1938,7 @@ ol {
 -----------------------*/
 .breadcrumb-option {
     background: #f3f2ee;
-    padding: 40px 0;
+    padding: 10px 0;
 }
 
 .breadcrumb__text h4 {

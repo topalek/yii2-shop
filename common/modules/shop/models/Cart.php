@@ -2,6 +2,7 @@
 
 namespace common\modules\shop\models;
 
+use common\components\BaseModel;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -13,15 +14,13 @@ use yii\helpers\Json;
  *
  * @property integer $id
  * @property string  $sid
- * @property string  $products
+ * @property array   $products
  * @property string  $updated_at
  * @property string  $created_at
  *
  */
-class Cart extends ActiveRecord
+class Cart extends BaseModel
 {
-    public $cartItems = [];
-
     /**
      * @inheritdoc
      */
@@ -34,7 +33,7 @@ class Cart extends ActiveRecord
     {
         $cart = self::getSessionCart();
         if ($cart) {
-            return count($cart->cartItems);
+            return count($cart->products);
         } else {
             return 0;
         }
@@ -63,7 +62,7 @@ class Cart extends ActiveRecord
     {
         return [
             [['sid'], 'required'],
-            [['products'], 'string'],
+            ['products', 'each', 'rule' => ['string']],
             [['updated_at', 'created_at'], 'safe'],
             [['sid'], 'string', 'max' => 255],
         ];
@@ -103,12 +102,6 @@ class Cart extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
-    public function afterFind()
-    {
-        $this->cartItems = Json::decode($this->products);
-        parent::afterFind();
-    }
-
     public function removeCartItem($id, $charId = null)
     {
         $totalSum = 0;
@@ -119,10 +112,10 @@ class Cart extends ActiveRecord
         if ($charId) {
             $key .= '_' . $charId;
         }
-        if (!empty($this->cartItems)) {
-            foreach ($this->cartItems as $itemKey => $cartItem) {
+        if (!empty($this->products)) {
+            foreach ($this->products as $itemKey => $cartItem) {
                 if ($itemKey == $key) {
-                    unset($this->cartItems[$key]);
+                    unset($this->products[$key]);
                     $this->update(false, ['products']);
                 } else {
                     $totalSum += $cartItem['price'] * $cartItem['qty'];

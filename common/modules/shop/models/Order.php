@@ -13,15 +13,15 @@ use yii\helpers\Json;
 /**
  * This is the model class for table "shop_order".
  *
- * @property integer $id
- * @property string  $name
- * @property string  $email
- * @property string  $phone
- * @property string  $delivery_info
- * @property string  $products
- * @property integer $status
- * @property string  $updated_at
- * @property string  $created_at
+ * @property integer  $id
+ * @property string   $name
+ * @property string   $email
+ * @property string   $phone
+ * @property string   $delivery_info
+ * @property string[] $products
+ * @property integer  $status
+ * @property string   $updated_at
+ * @property string   $created_at
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -35,7 +35,7 @@ class Order extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'shop_order';
+        return 'order';
     }
 
     /**
@@ -44,9 +44,10 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'email'], 'required'],
-            [['delivery_info', 'products'], 'string'],
+            [['name', 'phone'], 'required'],
+            [['delivery_info'], 'string'],
             [['updated_at', 'created_at'], 'safe'],
+            ['products', 'each', 'rule' => ['string']],
             ['status', 'integer'],
             [['name', 'email', 'phone'], 'string', 'max' => 255],
         ];

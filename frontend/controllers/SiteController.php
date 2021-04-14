@@ -2,12 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\components\BaseController;
 use common\models\forms\LoginForm;
+use common\modules\catalog\models\Category;
 use common\modules\catalog\models\Product;
 use frontend\models\ContactForm;
-use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
-use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -15,12 +15,11 @@ use yii\base\InvalidArgumentException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /**
      * {@inheritdoc}
@@ -76,12 +75,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $categories = Category::find()->limit(4)->all();
         $products = Product::find()->active()->popular()->limit(6)->all();
         if (count($products) < 6) {
             $products = Product::find()->active()->limit(6)->all();
         }
 
-        return $this->render('index', compact('products'));
+        return $this->render('index', compact('products', 'categories'));
     }
 
     /**

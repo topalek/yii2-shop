@@ -3,6 +3,12 @@
 -----------------------*/
 .header {
   background: $white-color;
+
+  .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .header__top {
@@ -220,6 +226,10 @@
         position: relative;
         padding: 3px 0;
 
+        &:hover, &:focus, &:active {
+          background-color: transparent;
+        }
+
         &:after {
           position: absolute;
           left: 0;
@@ -237,18 +247,28 @@
 }
 
 .header__nav__option {
+  display: flex;
+  justify-content: flex-end;
   text-align: right;
-  padding: 30px 0;
+  //padding: 30px 0;
 
   a {
     display: inline-block;
     margin-right: 26px;
     position: relative;
+    padding: 10px;
+    color: #111;
+    font-size: 16px;
+
+    &:hover {
+      color: #424242;
+      text-decoration: none;
+    }
 
     span {
       color: #0d0d0d;
       font-size: 11px;
-      position: absolute;
+      //position: absolute;
       left: 5px;
       top: 8px;
     }
@@ -266,6 +286,41 @@
     margin-left: -20px;
     position: relative;
     top: 3px;
+  }
+
+  .lang {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+
+    & > * {
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      &:after {
+        display: block;
+        content: "";
+        height: 40%;
+        position: absolute;
+        border-right: 1px dotted #696969;
+        right: 0;
+      }
+
+      &:last-child:after {
+        display: none;
+      }
+    }
+
+    a {
+      margin-right: 0;
+    }
+
+    span {
+      color: #939393;
+    }
   }
 }
 

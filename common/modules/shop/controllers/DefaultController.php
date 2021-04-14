@@ -20,10 +20,10 @@ class DefaultController extends BaseController
     public function actionAddToCart()
     {
         /**
-         * @var $catalogItem Product
+         * @var $product Product
          */
         $request = Yii::$app->request;
-        $catalogItemId = $request->get('itemId');
+        $productId = $request->get('id');
         $charId = (int)$request->get('charId');
         if ($charId == 0) {
             $charId = null;
@@ -31,16 +31,16 @@ class DefaultController extends BaseController
         $cartItems = [];
         $cart = Cart::getSessionCart();
         if ($cart) {
-            $cartItems = $cart->cartItems;
+            $cartItems = $cart->products;
         } else {
             $cart = new Cart();
             $cart->sid = Yii::$app->session->id;
         }
 
-        $catalogItem = Product::findById($catalogItemId);
+        $product = Product::findById($productId);
 
-        if ($catalogItem) {
-            $key = $catalogItemId;
+        if ($product) {
+            $key = $productId;
             if ($charId) {
                 $key .= '_' . $charId;
             }
@@ -49,18 +49,18 @@ class DefaultController extends BaseController
                 $cartItems[$key]['qty']++;
             } else {
                 $newItem = [
-                    'id'       => $catalogItemId,
-                    'title_uk' => $catalogItem->title_uk,
-                    'title_en' => $catalogItem->title_en,
-                    'title_ru' => $catalogItem->title_ru,
-                    'photo'    => $catalogItem->getMainImg(),
-                    'price'    => asMoney($catalogItem->price),
+                    'id'       => $productId,
+                    'title_uk' => $product->title_uk,
+                    'title_en' => $product->title_en,
+                    'title_ru' => $product->title_ru,
+                    'photo'    => $product->getMainImg(),
+                    'price'    => asMoney($product->price),
                     'qty'      => 1,
-                    'url'      => $catalogItem->getSeoUrl(),
+                    'url'      => $product->getSeoUrl(),
                 ];
 
                 if ($charId != null) {
-                    foreach ($catalogItem->properties as $property) {
+                    foreach ($product->properties as $property) {
                         if ($property->id == $charId) {
                             $newItem['char_id'] = $charId;
                             $newItem['charTitle_uk'] = $property->propertyCategory->title_uk . ' ' . $property->property->title_uk;
@@ -75,7 +75,7 @@ class DefaultController extends BaseController
                 $cartItems[$key] = $newItem;
             }
 
-            $cart->cartItems = $cartItems;
+            $cart->products = $cartItems;
             if ($cart->save()) {
                 Yii::$app->response->cookies->add(
                     new Cookie(
@@ -92,7 +92,7 @@ class DefaultController extends BaseController
                 return ['errors' => $cart->getErrors()];
             }
         } else {
-            throw new BadRequestHttpException(Yii::t('site', 'Не вірний запит'));
+            throw new BadRequestHttpException(Yii::t('site', 'Не правильный запрос'));
         }
     }
 
@@ -125,10 +125,10 @@ class DefaultController extends BaseController
                 $needleKey .= '_' . $charId;
             }
             $totalPrice = 0;
-            foreach ($cart->cartItems as $key => $cartItem) {
+            foreach ($cart->products as $key => $cartItem) {
                 if ($key == $needleKey) {
                     $cartItem['qty'] = $qty;
-                    $cart->cartItems[$key]['qty'] = $qty;
+                    $cart->products[$key]['qty'] = $qty;
                     $cart->update(false, ['products']);
                 }
                 $totalPrice += $cartItem['price'] * $cartItem['qty'];
@@ -144,7 +144,7 @@ class DefaultController extends BaseController
         $cartItems = [];
         $cart = Cart::getSessionCart();
         if ($cart) {
-            $cartItems = $cart->cartItems;
+            $cartItems = $cart->products;
         }
         return $this->renderAjax('_cart', ['cartItems' => $cartItems]);
     }
@@ -154,8 +154,8 @@ class DefaultController extends BaseController
         $request = Yii::$app->request;
         $cart = Cart::getSessionCart();
         $model = new Order();
-        $cartItems = $cart->cartItems;
-        $model->cartItems = $cartItems;
+        $cartItems = $cart->products;
+        $model->products = $cartItems;
 
         if ($request->isAjax && $request->get('updateContainer') == true) {
             return $this->renderPartial('create_order', ['model' => $model]);
@@ -172,7 +172,7 @@ class DefaultController extends BaseController
 
         if ($model->load($request->post()) && $model->save()) {
             if ($model->sendOrder()) {
-                $cart->cartItems = [];
+                $cart->products = [];
                 $cart->update(false, ['products']);
                 Yii::$app->session->setFlash('orderSuccess', true);
                 return $this->redirect(['success']);

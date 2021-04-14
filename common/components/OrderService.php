@@ -8,7 +8,7 @@
 namespace common\components;
 
 
-use app\modules\shop\models\ShopOrder;
+use common\modules\shop\models\Order;
 
 class OrderService
 {
@@ -25,8 +25,8 @@ class OrderService
     {
         $mindate = (new \DateTime())->format('Y-m-d 00:00:00');
         $maxdate = (new \DateTime())->modify('+1 day')->format('Y-m-d 00:00:00');
-        return ShopOrder::find()->where(["between", "created_at", $mindate, $maxdate])->andWhere(
-            ['status' => ShopOrder::STATUS_NEW]
+        return Order::find()->where(["between", "created_at", $mindate, $maxdate])->andWhere(
+            ['status' => Order::STATUS_NEW]
         )->all();
     }
 

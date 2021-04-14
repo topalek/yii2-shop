@@ -60,7 +60,7 @@ class ProductSearch extends Product
      */
     public function adminSearch($params)
     {
-        $query = Product::find();
+        $query = Product::find()->with(['seo', 'category']);
 
         $dataProvider = new ActiveDataProvider(
             [

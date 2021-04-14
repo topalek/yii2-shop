@@ -22,7 +22,7 @@ use yii\helpers\Url;
  * @property string          $description_en
  * @property int             $price
  * @property string          $main_img
- * @property string          $additional_images
+ * @property string[]        $additional_images
  * @property integer         $category_id
  * @property integer         $status
  * @property integer         $stock
@@ -181,7 +181,7 @@ class Product extends BaseModel
             'class' => 'img-responsive main-image',
         ];
         $options = ArrayHelper::merge($options, $defaultOptions);
-        $path = $this->modelUploadsUrl() . $this->main_img;
+        $path = $this->getMainImgUrl();
         return Html::img($path, $options);
     }
 

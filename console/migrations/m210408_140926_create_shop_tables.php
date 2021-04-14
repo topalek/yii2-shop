@@ -17,10 +17,10 @@ class m210408_140926_create_shop_tables extends Migration
             [
                 'id'         => $this->primaryKey(),
                 'sid'        => $this->string()->notNull(),
-                'products'   => $this->integer()->notNull(),
+                'products'   => $this->json()->notNull(),
                 'updated_at' => $this->timestamp()->notNull()
-                                     ->defaultExpression('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
-                                     ->comment('Дата обновления'),
+                    ->defaultExpression('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+                    ->comment('Дата обновления'),
                 'created_at' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP')->comment(
                     'Дата создания'
                 ),

@@ -12,7 +12,6 @@ use frontend\assets\AppAsset;
 use frontend\widgets\SitePhonesWidget;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
@@ -76,109 +75,7 @@ $this->beginBody() ?>
         <div class="loader"></div>
     </div>-->
 
-    <!-- Offcanvas Menu Begin -->
-    <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__option">
-            <div class="offcanvas__links">
-                <?= Nav::widget(
-                    [
-                        'options' => ['class' => 'mobile-nav'],
-                        'items'   => $navItems,
-                    ]
-                ) ?>
-            </div>
-        </div>
-        <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
-            < <a href="<?= Url::to(['/shop/default/view-cart']) ?>" id="cart">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                <span>0</span></a>
-            <?php
-            //$langList = Translate::getLangList();
-            if (count($langList) > 1) :?>
-                <div class="lang">
-                    <?php
-                    foreach ($langList as $langPrefix => $lang) {
-                        if ($langPrefix == $currentLang) {
-                            echo Html::tag(
-                                'span',
-                                $langPrefix,
-                                ['class' => 'lang-item', 'title' => $lang['label']]
-                            );
-                        } else {
-                            echo Html::a(
-                                $langPrefix,
-                                $lang['url'],
-                                ['class' => 'lang-item', 'title' => $lang['label']]
-                            );
-                        }
-                    } ?>
-                </div>
-            <?php
-            endif; ?>
-        </div>
-        <div id="mobile-menu-wrap"></div>
-    </div>
-    <!-- Offcanvas Menu End -->
-
-    <!-- Header Section Begin -->
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 col-md-2">
-                    <div class="header__logo">
-                        <?= Html::a(Html::img("/img/logo.png"), ['/']) ?>
-                    </div>
-                </div>
-                <div class="col-lg-8 col-md-8">
-                    <nav class="header__menu mobile-menu">
-                        <?= Nav::widget(
-                            [
-                                'options' => ['class' => 'header-nav'],
-                                'items'   => $navItems,
-                            ]
-                        ) ?>
-                    </nav>
-                </div>
-                <div class="col-lg-2 col-md-2">
-                    <div class="header__nav__option">
-                        <a href="#" class="search-switch">
-                            <img src="/img/icon/search.png" alt="">
-                        </a>
-                        <a href="<?= Url::to(['/shop/default/view-cart']) ?>" id="cart">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            <span>0</span></a>
-                        <?php
-                        //$langList = Translate::getLangList();
-                        if (count($langList) > 1) :?>
-                            <div class="lang">
-                                <?php
-                                foreach ($langList as $langPrefix => $lang) {
-                                    if ($langPrefix == $currentLang) {
-                                        echo Html::tag(
-                                            'span',
-                                            $langPrefix,
-                                            ['class' => 'lang-item', 'title' => $lang['label']]
-                                        );
-                                    } else {
-                                        echo Html::a(
-                                            $langPrefix,
-                                            $lang['url'],
-                                            ['class' => 'lang-item', 'title' => $lang['label']]
-                                        );
-                                    }
-                                } ?>
-                            </div>
-                        <?php
-                        endif; ?>
-                    </div>
-                </div>
-            </div>
-            <div class="canvas__open"><i class="fa fa-bars"></i></div>
-        </div>
-    </header>
-    <!-- Header Section End -->
+    <?= $this->render('parts/_header', compact('navItems', 'langList', 'currentLang')) ?>
 
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
@@ -186,7 +83,6 @@ $this->beginBody() ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4><?= $this->title ?></h4>
                         <?= Breadcrumbs::widget(
                             [
                                 'links'              => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

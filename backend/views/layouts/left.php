@@ -38,7 +38,7 @@ use backend\widgets\AdminMenu;
                     ['label' => 'Управление SEO', 'icon' => 'line-chart', 'url' => ['/seo/admin']],
                     ['label' => 'Страницы', 'icon' => 'file-text', 'url' => ['/page/admin']],
                     ['label' => 'Перевод', 'icon' => 'globe', 'url' => ['/translate/admin-translate']],
-                    ['label' => 'Заказы', 'icon' => 'calendar-check-o', 'url' => ['/shop/order-admin']],
+                    ['label' => 'Заказы', 'icon' => 'calendar-check-o', 'url' => ['/shop/order']],
                     ['label' => 'Html блоки', 'icon' => 'code', 'url' => ['/htmlBlock/admin']],
                     ['label' => 'Параметры сайта', 'icon' => 'cogs', 'url' => ['/params/admin']],
                 ],

@@ -171,3 +171,19 @@ function moveElement(&$array, $from, $to)
     $out = array_splice($array, $from, 1);
     array_splice($array, $to, 0, $out);
 }
+
+/**
+ * @param        $number
+ * @param string $decPoint
+ * @param string $thousandsSep
+ * @param int    $decCount
+ *
+ * @return string
+ */
+function asMoney($number, $decPoint = ',', $thousandsSep = ' ', $decCount = 0)
+{
+    if ($decCount == 0) {
+        $number = round($number, 0);
+    }
+    return number_format($number, $decCount, $decPoint, $thousandsSep);
+}
