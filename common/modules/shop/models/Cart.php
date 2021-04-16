@@ -7,7 +7,6 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\helpers\Json;
 
 /**
  * This is the model class for table "shop_cart".
@@ -62,8 +61,8 @@ class Cart extends BaseModel
     {
         return [
             [['sid'], 'required'],
-            ['products', 'each', 'rule' => ['string']],
-            [['updated_at', 'created_at'], 'safe'],
+//            [ 'each', 'rule' => ['string']],
+            [['updated_at', 'products', 'created_at'], 'safe'],
             [['sid'], 'string', 'max' => 255],
         ];
     }
@@ -96,11 +95,6 @@ class Cart extends BaseModel
         ];
     }
 
-    public function beforeSave($insert)
-    {
-        $this->products = Json::encode($this->cartItems);
-        return parent::beforeSave($insert);
-    }
 
     public function removeCartItem($id, $charId = null)
     {

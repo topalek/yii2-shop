@@ -141,7 +141,7 @@ class SiteController extends BaseAdminController
     public function actionClearCache()
     {
         Yii::$app->cache->flush();
-        Yii::$app->session->setFlash('success', 'Виконано!');
+        Yii::$app->session->setFlash('success', 'Done!');
         return $this->redirect(Yii::$app->request->referrer);
     }
 }

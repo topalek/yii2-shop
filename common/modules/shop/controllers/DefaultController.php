@@ -125,10 +125,11 @@ class DefaultController extends BaseController
                 $needleKey .= '_' . $charId;
             }
             $totalPrice = 0;
-            foreach ($cart->products as $key => $cartItem) {
+            $cartItems = $cart->products;
+            foreach ($cartItems as $key => $cartItem) {
                 if ($key == $needleKey) {
                     $cartItem['qty'] = $qty;
-                    $cart->products[$key]['qty'] = $qty;
+                    $cartItems[$key]['qty'] = $qty;
                     $cart->update(false, ['products']);
                 }
                 $totalPrice += $cartItem['price'] * $cartItem['qty'];
@@ -146,7 +147,7 @@ class DefaultController extends BaseController
         if ($cart) {
             $cartItems = $cart->products;
         }
-        return $this->renderAjax('_cart', ['cartItems' => $cartItems]);
+        return $this->renderFile('_cart', ['cartItems' => $cartItems]);
     }
 
     public function actionOrder()

@@ -34,9 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'property_category_id',
                     'filter'    => \common\modules\catalog\models\PropertyCategory::getList(),
-                    'value'     => function ($model) {
-                        return $model->category->title_ru;
-                    },
+                    'value'     => "category.title_ru",
                 ],
                 // 'updated_at',
                 // 'created_at',

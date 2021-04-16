@@ -12,6 +12,8 @@
 
 /* @var $currentLang string */
 
+use common\modules\shop\models\Cart;
+use frontend\widgets\MenuWidget;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -35,7 +37,7 @@ use yii\helpers\Url;
         <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
         < <a href="<?= Url::to(['/shop/default/view-cart']) ?>" id="cart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <span>0</span></a>
+            <span><?= Cart::getItemsCount() ?></span></a>
         <?php
         //$langList = Translate::getLangList();
         if (count($langList) > 1) :?>
@@ -72,7 +74,7 @@ use yii\helpers\Url;
                 <?= Html::a(Html::img("/img/logo.png"), ['/']) ?>
             </div>
             <nav class="header__menu mobile-menu">
-                <?= Nav::widget(
+                <?= MenuWidget::widget(
                     [
                         'options' => ['class' => 'header-nav'],
                         'items'   => $navItems,
@@ -85,7 +87,7 @@ use yii\helpers\Url;
                 </a>
                 <a href="<?= Url::to(['/shop/default/view-cart']) ?>" id="cart">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span>0</span></a>
+                    <span><?= Cart::getItemsCount() ?></span></a>
                 <?php
                 //$langList = Translate::getLangList();
                 if (count($langList) > 1) :?>

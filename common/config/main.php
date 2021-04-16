@@ -43,6 +43,11 @@ return [
 //        ],
     ],
     'components' => [
+        'db'           => [
+            'class'             => 'yii\db\Connection',
+            'charset'           => 'utf8',
+            'enableSchemaCache' => true,
+        ],
         'cache'        => [
             'class' => 'yii\caching\FileCache',
         ],
