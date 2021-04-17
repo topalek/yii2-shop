@@ -29,7 +29,16 @@ class Property extends BaseModel
         return 'property';
     }
 
-    static function getListByCategory($categoryId, $map = true)
+    static function getListByCategory($categoryId)
+    {
+        return self::find()->select(['title_ru', 'id'])
+                   ->where(['property_category_id' => $categoryId])
+                   ->orderBy('title_ru ASC')
+                   ->indexBy('id')
+                   ->column();
+    }
+
+    static function getListByCategory2($categoryId, $map = true)
     {
         $cacheKay = 'propertyListForCategory' . $categoryId;
 

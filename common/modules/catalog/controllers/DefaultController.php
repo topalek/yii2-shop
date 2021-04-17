@@ -5,36 +5,33 @@ namespace common\modules\catalog\controllers;
 use common\components\BaseController;
 use common\modules\catalog\models\Category;
 use common\modules\catalog\models\Product;
-use common\modules\catalog\models\ProductSearch;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 class DefaultController extends BaseController
 {
-    public function actionIndex()
+    public function actionIndex($page = 1)
     {
+        $perPage = 12;
+        $offset = $page - 1;
         $categories = Category::roots();
+        $productCount = Product::find()->active()->count();
+        $products = Product::find()->with(['category'])->active()->limit($perPage)->offset($offset)->all();
 
-        return $this->render('index', ['categories' => $categories]);
+        return $this->render(
+            'index',
+            compact(
+                'categories',
+                'productCount',
+                'products',
+            )
+        );
     }
 
-    public function actionCatalogCategoryView($id)
+    public function actionCategoryView($id)
     {
-        $model = $this->findCategory($id);
-        $children = $model->getChildrenList();
-        if (!$children) {
-            $searchModel = new ProductSearch();
-            $searchModel->catalog_category_id = $id;
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            return $this->render(
-                'items',
-                [
-                    'model'        => $model,
-                    'searchModel'  => $searchModel,
-                    'dataProvider' => $dataProvider,
-                ]
-            );
-        }
+        $model = Category::findOne($id);
+
         return $this->render(
             'category_view',
             [

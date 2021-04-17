@@ -43,6 +43,20 @@
       }
     }
 
+    .product-info {
+      a {
+        color: $heading-color;
+        text-decoration: none;
+        display: flex;
+
+        &:hover,
+        &:active,
+        &:focus {
+          color: fade-out($heading-color, .8);
+        }
+      }
+    }
+
     .product__item__text {
 
       .rating {

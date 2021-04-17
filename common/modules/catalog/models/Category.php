@@ -7,7 +7,6 @@ use common\modules\search\behaviors\SearchBehavior;
 use common\modules\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "category".
@@ -135,8 +134,8 @@ class Category extends BaseModel
                 'seo' => [
                     'class'         => 'common\modules\seo\behaviors\SeoBehavior',
                     'model'         => $this->getModelName(),
-                    'view_action'   => '/default/category-view',
-                    'view_category' => '/category',
+                    'view_action'   => 'catalog/default/category-view',
+                    'view_category' => 'catalog/category',
                 ],
 //                'search'         => [
 //                    'class' => SearchBehavior::class,
@@ -190,32 +189,6 @@ class Category extends BaseModel
             ['name' => 'url', 'value' => $this->getSeoUrl(), 'type' => SearchBehavior::FIELD_KEYWORD],
             ['name' => 'img', 'value' => $this->getMainImg(200, 200, ['class' => 'media-object'])],
         ];
-    }
-
-    public function getMainImg($width = 300, $height = 400, $htmlOptions = [])
-    {
-        $defaultOptions = [
-            'alt'   => $this->getMlTitle(),
-            'class' => 'img-responsive',
-        ];
-        $options = ArrayHelper::merge($defaultOptions, $htmlOptions);
-        if ($this->main_img != null) {
-            if ($width != 300 && $height != 400) {
-                $path = makeDynamicImageThumbUrl($this->main_img, $width, $height);
-                //                $path = Image::getThumb($width, $height, $this->getModelName(), $this->id, $this->main_img, [
-                //                    'native_dir' => true,
-                //                ]);
-            } else {
-                $path = $this->modelUploadsUrl() . $this->main_img;
-            }
-            if (!isFrontendApp()) {
-                $path = Yii::$app->params['frontendUrl'] . $path;
-            }
-        } else {
-            $path = 'http://placehold.it/' . $width . 'x' . $height;
-        }
-
-        return Html::img($path, $options);
     }
 
 

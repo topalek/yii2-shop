@@ -7,7 +7,6 @@ use common\modules\seo\behaviors\SeoBehavior;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -142,7 +141,7 @@ class Product extends BaseModel
                 'seo' => [
                     'class'         => SeoBehavior::class,
                     'model'         => $this->getModelName(),
-                    'view_action'   => '/catalog/default/product-view',
+                    'view_action'   => 'catalog/default/product-view',
                     'view_category' => 'catalog/product',
                 ],
             ]
@@ -174,16 +173,6 @@ class Product extends BaseModel
         parent::afterSave($insert, $changedAttributes);
     }
 
-    public function getMainImg($options = [])
-    {
-        $defaultOptions = [
-            'alt'   => $this->getMlTitle(),
-            'class' => 'img-responsive main-image',
-        ];
-        $options = ArrayHelper::merge($options, $defaultOptions);
-        $path = $this->getMainImgUrl();
-        return Html::img($path, $options);
-    }
 
     public function getAdditionalImgsUrl()
     {

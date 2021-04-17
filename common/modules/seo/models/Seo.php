@@ -46,20 +46,7 @@ class Seo extends BaseModel
 
     static function findByExternalLink($link)
     {
-        $model = Yii::$app->cache->get('seo_' . $link);
-        if (!$model) {
-            $model = Seo::getDb()->cache(
-                function () use ($link) {
-                    return Seo::find()->where(['external_link' => $link])->one();
-                },
-                BaseModel::DEFAULT_CACHE_DURATION,
-                BaseModel::getDbDependency('seo')
-            );
-
-            Yii::$app->cache->set('seo_' . $link, $model, BaseModel::DEFAULT_CACHE_DURATION);
-        }
-
-        return $model;
+        return Seo::find()->where(['external_link' => $link])->one();
     }
 
     /**

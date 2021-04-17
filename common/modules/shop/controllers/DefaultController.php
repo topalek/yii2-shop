@@ -7,6 +7,7 @@ use common\modules\catalog\models\Product;
 use common\modules\shop\models\Cart;
 use common\modules\shop\models\Order;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\BadRequestHttpException;
 use yii\web\Cookie;
 use yii\web\Response;
@@ -194,6 +195,15 @@ class DefaultController extends BaseController
 
     public function actionIndex()
     {
-        return $this->render('shop');
+        $query = Product::find()->with(['category'])->active();
+        $dataProvider = new ActiveDataProvider(
+            [
+                'query'      => $query,
+                'pagination' => [
+                    'pageSize' => 12,
+                ],
+            ]
+        );
+        return $this->render('shop', compact('dataProvider',));
     }
 }

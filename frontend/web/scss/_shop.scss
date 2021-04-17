@@ -348,3 +348,9 @@
     padding-right: 15px;
   }
 }
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 15px;
+}

@@ -32,7 +32,8 @@ use yii\widgets\ActiveForm;
         [
             'data'    => Category::getList(),
             'options' => [
-                'multiple' => true,
+                'multiple'    => true,
+                'placeholder' => 'Выберите категорию...',
             ],
         ]
     ) ?>

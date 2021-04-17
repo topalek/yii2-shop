@@ -11,25 +11,16 @@
  */
 $this->title = $model->getMlTitle();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('site', 'Каталог'), 'url' => ['/catalog/default/index']];
-foreach ($model->parents()->all() as $root) {
-    $this->params['breadcrumbs'][] = ['label' => $root->getMlTitle(), 'url' => $root->getSeoUrl()];
+if ($model->parent) {
+    $this->params['breadcrumbs'][] = ['label' => $model->parent->getMlTitle(), 'url' => $model->parent->getSeoUrl()];
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catalog-category-view">
-    <div class="row list-view">
-        <?php
-        if ($children != null) {
-            foreach ($children as $child) {
-                echo $this->render('_category_view', ['model' => $child]);
-            }
-        }
-        ?>
-    </div>
 
     <div class="media about-category">
         <div class="media-left">
-            <?= $model->getMainImg(200, 400, ['class' => 'media-object']) ?>
+            <?= $model->getMainImg() ?>
         </div>
         <div class="media-body">
             <h1 class="media-heading"><?= $this->title ?></h1>

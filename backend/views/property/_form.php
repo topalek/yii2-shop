@@ -30,7 +30,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'property_category_id')->widget(
         Select2::class,
         [
-            'data' => PropertyCategory::getList(),
+            'data'    => PropertyCategory::getList(),
+            'options' => [
+                'placeholder' => 'Выберите категорию...',
+            ],
         ]
     ) ?>
 
@@ -39,6 +42,7 @@ use yii\widgets\ActiveForm;
             $model->isNewRecord ? 'Создать' : 'Обновить',
             ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']
         ) ?>
+        <?= !$model->isNewRecord ? Html::a('Создать новую', ['create'], ['class' => 'btn btn-success']) : '' ?>
     </div>
 
     <?php

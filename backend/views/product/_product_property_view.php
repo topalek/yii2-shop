@@ -13,9 +13,10 @@
 use yii\helpers\Html;
 
 ?>
-
-<div class="item-property" data-id="<?= $model->id ?>">
-    <div class="text-right">
+<tr class="product-property" data-id="<?= $model->id ?>">
+    <td><?= $model->property->category->getMLTitle() ?></td>
+    <td><?= $model->property->getMLTitle() ?></td>
+    <td class="actions">
         <?= Html::a(
             '<i class="fa fa-pencil"></i>',
             ['/product/update-property', 'id' => $model->id],
@@ -26,9 +27,5 @@ use yii\helpers\Html;
             ['/product/delete-property', 'id' => $model->id],
             ['class' => 'delete-property']
         ) ?>
-    </div>
-    <?= $model->getImg(150, 150) ?>
-    <strong>Категория</strong>: <?= $model->property->category->title_ru ?><br>
-    <strong>Опция</strong>: <?= $model->property->title_ru ?><br>
-    <strong>Цена</strong>: <?= $model->price ?>
-</div>
+    </td>
+</tr>

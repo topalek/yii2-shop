@@ -12,18 +12,17 @@ use yii\helpers\Html;
 
 $this->title = $model->getMlTitle();
 $this->params['breadcrumbs'][] = ['label' => Yii::t('site', 'Каталог'), 'url' => ['/catalog/default/index']];
-foreach ($model->buildNestedBreadcrumbs() as $item) {
-    $this->params['breadcrumbs'][] = $item;
+
+if ($model->category->parent) {
+    $this->params['breadcrumbs'][] = [
+        'label' => $model->category->parent->getMlTitle(),
+        'url'   => $model->category->parent->getSeoUrl(),
+    ];
 }
-//if($model->category->parent)
-//    $this->params['breadcrumbs'][] = ['label' => $model->category->parent->getMlTitle(), 'url' => $model->category->parent->getSeoUrl()];
-//$this->params['breadcrumbs'][] = ['label' => $model->category->getMlTitle(), 'url' => $model->category->getSeoUrl()];
+$this->params['breadcrumbs'][] = ['label' => $model->category->getMlTitle(), 'url' => $model->category->getSeoUrl()];
 $this->params['breadcrumbs'][] = $this->title;
 
-$images = $model->getImages(300, 300);
-if ($images == null) {
-    $images = [];
-}
+$images = [];
 
 $propertyData = [];
 
@@ -42,8 +41,8 @@ if ($defaultProperty) {
     $originalImgSrc = $propertyPhoto['fullSize'];
     $price = $defaultProperty->price;
 } else {
-    $originalImgSrc = $model->modelUploadsUrl() . $model->original_img;
-    $price = $model->getPrice();
+    $originalImgSrc = $model->modelUploadsUrl() . $model->main_img;
+    $price = $model->price;
 }
 ?>
     <div class="catalog-item-view">
@@ -63,7 +62,7 @@ if ($defaultProperty) {
             <div class="col-sm-8 about">
                 <h1><?= Html::encode($this->title) ?></h1>
 
-                <div class="price" data-price="<?= $model->getPrice() ?>">
+                <div class="price" data-price="<?= $model->price ?>">
                     <span><?= $price ?></span> грн.
                 </div>
 
@@ -122,12 +121,12 @@ if ($defaultProperty) {
                 </div>
 
                 <?= Html::a(
-                    Yii::t('shop', 'Купити'),
+                    Yii::t('shop', 'Купит'),
                     ['/shop/default/add-to-cart'],
                     ['class' => 'add-to-cart-btn btn btn-default', 'data-item-id' => $model->id]
                 ) ?>
 
-                <?= \app\widgets\SocialShareWidget::widget(
+                <?= frontend\widgets\SocialShareWidget::widget(
                     [
                         'title'     => $model->getMlTitle(),
                         'desc'      => getShortText($model->getMlContent(), 250, true),

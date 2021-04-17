@@ -11,7 +11,6 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
@@ -84,7 +83,7 @@ class ProductController extends BaseAdminController
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = Product::find()->with(['category', 'properties'])->where(['id' => $id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -174,22 +173,22 @@ class ProductController extends BaseAdminController
     public function actionDepProperty()
     {
         $out = [];
+        Yii::$app->response->format = Response::FORMAT_JSON;
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $cat_id = $parents[0];
 
-                $models = Property::getListByCategory($cat_id, false);
+                $models = Property::getListByCategory($cat_id);
 
-                foreach ($models as $model) {
-                    $out[] = ['id' => $model['id'], 'name' => $model['title_ru']];
+                foreach ($models as $modelId => $modelTitle) {
+                    $out[] = ['id' => $modelId, 'name' => $modelTitle];
                 }
 
-                echo Json::encode(['output' => $out]);
-                return;
+                return ['output' => $out];
             }
         }
-        echo Json::encode(['output' => '', 'selected' => '']);
+        return ['output' => '', 'selected' => ''];
     }
 
 

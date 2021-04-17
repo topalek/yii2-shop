@@ -13,7 +13,6 @@
 use common\modules\catalog\models\Property;
 use common\modules\catalog\models\PropertyCategory;
 use kartik\depdrop\DepDrop;
-use kartik\money\MaskMoney;
 use kartik\widgets\Select2;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -73,24 +72,6 @@ use yii\helpers\Url;
                             ]
                         ) ?>
                     </div>
-
-                    <!--                    <div class="col-sm-6">-->
-                    <!--                        --><?
-                    //= $form->field($model, 'photo', ['template' => '{label}{input}'])->widget() ?>
-                    <!--                    </div>-->
-
-                    <div class="col-sm-6">
-                        <?= $form->field($model, 'price')->widget(
-                            MaskMoney::class,
-                            [
-                                'pluginOptions' => [
-                                    'prefix' => html_entity_decode('&#8372; '),
-                                ],
-                            ]
-                        ) ?>
-
-                        <?= $form->field($model, 'default')->checkbox() ?>
-                    </div>
                 </div>
 
                 <?= Html::activeHiddenInput($model, 'product_id') ?>
@@ -149,7 +130,22 @@ let propertyModal = $('#property-form-modal');
                     }
                     else
                     {
-                        $('.property-list').append(result.data);
+                        let list = $('.property-list');
+                        if(list.length>0){
+                          list.append(result.data);
+                      }else{
+                          $('.properties').append('
+                              <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Категория</th>
+                                        <th scope="col">Характеристика</th>
+                                        <th scope="col">Операции</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="property-list">'+result.data+'</tbody>
+                            </table>')
+                      }
                     }
                     $('#property-form-modal').modal('hide');
                   }

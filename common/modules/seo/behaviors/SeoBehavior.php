@@ -8,7 +8,6 @@
 
 namespace common\modules\seo\behaviors;
 
-use common\components\BaseModel;
 use common\modules\seo\models\Seo;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
@@ -150,13 +149,7 @@ class SeoBehavior extends Behavior
      */
     public function checkUniqueUrl($url, $id)
     {
-        $result = Seo::getDb()->cache(
-            function () use ($url, $id) {
-                return Seo::find()->where(['external_link' => $url])->andWhere('id!=' . $id)->limit(1)->one();
-            },
-            BaseModel::DEFAULT_CACHE_DURATION,
-            BaseModel::getDbDependency('seo')
-        );
+        $result = Seo::find()->where(['external_link' => $url])->andWhere('id!=' . $id)->limit(1)->one();
 
         if ($result != null) {
             return $url . '_' . $id;

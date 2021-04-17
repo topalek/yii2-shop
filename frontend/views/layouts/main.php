@@ -35,8 +35,8 @@ $navItems = [
         'url'   => Yii::$app->homeUrl,
     ],
     [
-        'label' => Yii::t('site', 'Магазин'),
-        'url'   => ['/shop'],
+        'label' => Yii::t('site', 'Каталог'),
+        'url'   => ['/catalog'],
     ],
     [
         'label' => Yii::t('site', 'О нас'),

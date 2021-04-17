@@ -2,11 +2,11 @@
 
 /* @var $this yii\web\View */
 
-/* @var $form yii\bootstrap4\ActiveForm */
+/* @var $form yii\bootstrap\ActiveForm */
 
-/* @var $model \common\models\LoginForm */
+/* @var $model common\models\forms\LoginForm */
 
-use yii\bootstrap4\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 $this->title = 'Login';

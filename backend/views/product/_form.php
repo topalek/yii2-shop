@@ -168,32 +168,62 @@ use yii\widgets\ActiveForm;
     <?php
     ActiveForm::end(); ?>
 
-    <!--    <?php
-    /*    if (!$model->isNewRecord): */ ?>
+    <?php
+    if (!$model->isNewRecord): ?>
         <div class="panel panel-default">
             <div class="panel-heading" onclick="$(this).next().toggle('fast');" style="cursor: pointer">
-                <h3 class="panel-title">Модификации</h3>
+                <h3 class="panel-title">Характеристики</h3>
             </div>
             <div class="panel-body item-properties">
                 <p class="text-center">
-                    <?
-    /*= Html::a(
-                            'Добавить',
-                            ['/product/add-property', 'item_id' => $model->id],
-                            ['class' => 'add-new-property btn btn-primary']
-                        ) */ ?>
+                    <?= Html::a(
+                        'Добавить',
+                        ['/product/add-property', 'item_id' => $model->id],
+                        ['class' => 'add-new-property btn btn-primary']
+                    ) ?>
                 </p>
 
-                <div class="property-list clearfix">
+                <div class="properties">
                     <?php
-    /*                    foreach ($model->properties as $property) {
-                            echo $this->render('_item_property_view', ['model' => $property]);
-                        } */ ?>
+                    if ($model->properties): ?>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Категория</th>
+                                <th scope="col">Характеристика</th>
+                                <th scope="col">Операции</th>
+                            </tr>
+                            </thead>
+                            <tbody class="property-list">
+                            <?php
+                            foreach ($model->properties as $property) :?>
+                                <tr class="product-property" data-id="<?= $property->id ?>">
+                                    <td><?= $property->propertyCategory->getMLTitle() ?></td>
+                                    <td><?= $property->property->getMLTitle() ?></td>
+                                    <td class="actions">
+                                        <?= Html::a(
+                                            '<i class="fa fa-pencil"></i>',
+                                            ['/product/update-property', 'id' => $property->id],
+                                            ['class' => 'update-property']
+                                        ) ?>
+                                        <?= Html::a(
+                                            '<i class="fa fa-times"></i>',
+                                            ['/product/delete-property', 'id' => $property->id],
+                                            ['class' => 'delete-property']
+                                        ) ?>
+                                    </td>
+                                </tr>
+                            <?php
+                            endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php
+                    endif; ?>
                 </div>
             </div>
         </div>
-    --><?php
-    /*    endif; */ ?>
+    <?php
+    endif; ?>
 </div>
 
 <?php
@@ -224,7 +254,7 @@ $(document).on('click','.delete-property',function(e) {
             url: this.href,
             type: 'post',
             success: function(result) {
-              $(link).parents('.item-property').remove();
+              $(link).parents('.product-property').remove();
             }
         });     
     }

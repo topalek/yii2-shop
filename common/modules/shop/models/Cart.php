@@ -4,9 +4,8 @@ namespace common\modules\shop\models;
 
 use common\components\BaseModel;
 use Yii;
-use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "shop_cart".
@@ -31,11 +30,12 @@ class Cart extends BaseModel
     public static function getItemsCount()
     {
         $cart = self::getSessionCart();
+        $count = 0;
         if ($cart) {
-            return count($cart->products);
-        } else {
-            return 0;
+            $count = ArrayHelper::getColumn($cart->products, 'qty');
+            $count = array_sum($count);
         }
+        return $count;
     }
 
     /**
@@ -80,21 +80,6 @@ class Cart extends BaseModel
             'created_at' => 'Дата создания',
         ];
     }
-
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class'      => TimestampBehavior::class,
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'created_at',
-                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
-                ],
-                'value'      => new Expression('NOW()'),
-            ],
-        ];
-    }
-
 
     public function removeCartItem($id, $charId = null)
     {

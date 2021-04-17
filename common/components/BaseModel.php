@@ -34,24 +34,13 @@ class BaseModel extends ActiveRecord
     const DEFAULT_LANG = 'ru';
     public $autoCache = true;
 
-    public static function getList($map = true, $attributes = [])
+    public static function getList($attributes = [])
     {
-        $defaultAttributes = ['id', 'title_ru'];
+        $defaultAttributes = ['title_ru', 'id'];
         if (empty($attributes)) {
             $attributes = $defaultAttributes;
         }
-        $models = self::getDb()->cache(
-            function () {
-                return self::find()->orderBy('id DESC')->all();
-            },
-            self::DEFAULT_CACHE_DURATION,
-            self::getDbDependency()
-        );
-
-        if ($map) {
-            return ArrayHelper::map($models, $attributes[0], $attributes[1]);
-        }
-        return $models;
+        return static::find()->select($attributes)->orderBy('id DESC')->indexBy($attributes[1])->column();
     }
 
     /**
@@ -349,5 +338,16 @@ class BaseModel extends ActiveRecord
             $url = Yii::$app->params['frontendUrl'] . $url;
         }
         return $url;
+    }
+
+    public function getMainImg($options = [])
+    {
+        $defaultOptions = [
+            'alt'   => $this->getMlTitle(),
+            'class' => 'img-responsive main-image',
+        ];
+        $options = ArrayHelper::merge($options, $defaultOptions);
+        $path = $this->getMainImgUrl();
+        return Html::img($path, $options);
     }
 }
