@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use common\components\BaseAdminController;
+use common\components\Import;
 use common\models\forms\LoginForm;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -143,5 +144,12 @@ class SiteController extends BaseAdminController
         Yii::$app->cache->flush();
         Yii::$app->session->setFlash('success', 'Done!');
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionImport()
+    {
+        $import = new Import(Yii::$app->runtimePath . '/import.xml');
+        dd($import->run());
+        return $this->render('import');
     }
 }

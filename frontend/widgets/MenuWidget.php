@@ -41,7 +41,6 @@ class MenuWidget extends Menu
 
             if (is_array($requestUrlArray)) {
                 $urlWithoutSlash = substr($item['url'], 1);
-                var_dump($urlWithoutSlash);
                 if ($urlWithoutSlash != null && in_array($urlWithoutSlash, $requestUrlArray)) {
                     return true;
                 } elseif ($urlWithoutSlash == $requestUrlArray[1]) {

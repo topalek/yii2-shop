@@ -21,26 +21,28 @@ use backend\widgets\AdminMenu;
 
         <?= AdminMenu::widget(
             [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
-                'items'   => [
+                'options'         => ['class' => 'sidebar-menu tree', 'data-widget' => 'tree'],
+                'activateParents' => true,
+                'items'           => [
                     ['label' => 'Dashboard', 'options' => ['class' => 'header']],
                     [
                         'label' => 'Каталог',
                         'icon'  => 'shopping-bag',
                         'items' => [
-                            ['label' => 'Категории', 'url' => ['/category']],
-                            ['label' => 'Товары', 'url' => ['/product']],
-                            ['label' => 'Категории характеристик', 'url' => ['/property-category']],
-                            ['label' => 'Характеристики', 'url' => ['/property']],
+                            ['label' => 'Категории', 'url' => '/category'],
+                            ['label' => 'Товары', 'url' => '/product'],
+                            ['label' => 'Категории характеристик', 'url' => '/property-category'],
+                            ['label' => 'Характеристики', 'url' => '/property'],
                         ],
                     ],
                     ['label' => 'Settings', 'options' => ['class' => 'header']],
-                    ['label' => 'Управление SEO', 'icon' => 'line-chart', 'url' => ['/seo/admin']],
-                    ['label' => 'Страницы', 'icon' => 'file-text', 'url' => ['/page/admin']],
-                    ['label' => 'Перевод', 'icon' => 'globe', 'url' => ['/translate/admin-translate']],
-                    ['label' => 'Заказы', 'icon' => 'calendar-check-o', 'url' => ['/shop/order']],
-                    ['label' => 'Html блоки', 'icon' => 'code', 'url' => ['/htmlBlock/admin']],
-                    ['label' => 'Параметры сайта', 'icon' => 'cogs', 'url' => ['/params/admin']],
+                    ['label' => 'Управление SEO', 'icon' => 'line-chart', 'url' => '/seo/admin'],
+                    ['label' => 'Страницы', 'icon' => 'file-text', 'url' => '/page/admin'],
+                    ['label' => 'Перевод', 'icon' => 'globe', 'url' => '/translate/admin-translate'],
+                    ['label' => 'Заказы', 'icon' => 'calendar-check-o', 'url' => '/shop/order'],
+                    ['label' => 'Html блоки', 'icon' => 'code', 'url' => '/htmlBlock/admin'],
+                    ['label' => 'Параметры сайта', 'icon' => 'cogs', 'url' => '/params/admin'],
+                    ['label' => 'Import', 'icon' => 'cart-arrow-down', 'url' => '/site/import'],
                 ],
             ]
 

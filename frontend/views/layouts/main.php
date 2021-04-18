@@ -36,19 +36,19 @@ $navItems = [
     ],
     [
         'label' => Yii::t('site', 'Каталог'),
-        'url'   => ['/catalog'],
+        'url'   => '/catalog',
     ],
     [
         'label' => Yii::t('site', 'О нас'),
-        'url'   => ['/o_nas'],
+        'url'   => '/o_nas',
     ],
     [
         'label' => Yii::t('site', 'Контакты'),
-        'url'   => ['/kontakty'],
+        'url'   => '/kontakty',
     ],
     [
         'label' => Yii::t('site', 'Доставка и оплата'),
-        'url'   => ['/dostavka_i_oplata'],
+        'url'   => '/dostavka_i_oplata',
     ],
 ];
 ?>

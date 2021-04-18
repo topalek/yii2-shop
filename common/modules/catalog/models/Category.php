@@ -80,7 +80,7 @@ class Category extends BaseModel
     {
         return [
             [['title_ru'], 'required'],
-            ['imgFile', 'required', 'on' => 'create'],
+            // ['imgFile', 'required', 'on' => 'create'],
             [['description_uk', 'description_ru', 'description_en'], 'string'],
             [['parent_id'], 'integer'],
             [['imgFile'], 'file'],

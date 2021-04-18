@@ -78,6 +78,7 @@ use yii\helpers\Url;
                     [
                         'options' => ['class' => 'header-nav'],
                         'items'   => $navItems,
+                        'activateParents' => true,
                     ]
                 ) ?>
             </nav>

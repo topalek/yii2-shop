@@ -14,7 +14,7 @@ use yii\helpers\Html;
 $pageAbsoluteUrl = Yii::$app->request->absoluteUrl;
 
 $this->registerMetaTag(['property' => 'og:site_name', 'content' => Yii::$app->name]);
-$this->registerMetaTag(['property' => 'og:locale', 'content' => Yii::$app->language . '_ua']);
+$this->registerMetaTag(['property' => 'og:locale', 'content' => Yii::$app->language . '_ru']);
 $this->registerMetaTag(['property' => 'og:title', 'content' => $title]);
 $this->registerMetaTag(['property' => 'og:type', 'content' => 'product']);
 $this->registerMetaTag(['property' => 'og:url', 'content' => $pageAbsoluteUrl]);
@@ -30,19 +30,19 @@ if ($imgUrl) {
     $this->registerMetaTag(['itemprop' => 'image', 'content' => $imgUrl]);
 }
 
-$shareText = Yii::t('social', 'Поділитись');
+$shareText = Yii::t('social', 'Поделиться');
 $shareUrl = urldecode($pageAbsoluteUrl);
 ?>
 
     <div class="social-share-block">
-        <h5><?= Yii::t('site', 'Поділітись в соціальних мережах') ?></h5>
+        <h5><?= Yii::t('social', 'Поделиться в социальных сетях') ?></h5>
         <ul>
             <li>
                 <?= Html::a(
                     '<i class="fa fa-facebook"></i>',
                     'javascript:(0)',
                     [
-                        'title'   => Yii::t('social', 'Поділитись в {network}', ['network' => 'Facebook']),
+                        'title'   => Yii::t('social', 'Поделиться в {network}', ['network' => 'Facebook']),
                         'target'  => '_blank',
                         'onclick' => "shareFb('$shareUrl'); return false;",
                     ]
@@ -53,7 +53,7 @@ $shareUrl = urldecode($pageAbsoluteUrl);
                     '<i class="fa fa-google"></i>',
                     'javascript:(0)',
                     [
-                        'title'   => Yii::t('social', 'Поділитись в {network}', ['network' => 'Google']),
+                        'title'   => Yii::t('social', 'Поделиться в {network}', ['network' => 'Google']),
                         'target'  => '_blank',
                         'onclick' => "shareGoogle('$shareUrl'); return false;",
                     ]
@@ -64,7 +64,7 @@ $shareUrl = urldecode($pageAbsoluteUrl);
                     '<i class="fa fa-twitter"></i>',
                     'javascript:(0)',
                     [
-                        'title'   => Yii::t('social', 'Поділитись в {network}', ['network' => 'Twitter']),
+                        'title'   => Yii::t('social', 'Поделиться в {network}', ['network' => 'Twitter']),
                         'target'  => '_blank',
                         'onclick' => "shareTwitter('$shareUrl'); return false;",
                     ]

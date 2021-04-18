@@ -335,7 +335,11 @@ class BaseModel extends ActiveRecord
         }
         $url = $this::modelUploadsUrl() . $this->main_img;
         if (!isFrontendApp()) {
-            $url = Yii::$app->params['frontendUrl'] . $url;
+            if (strpos($this->main_img, 'http') !== false) {
+                $url = $this->main_img;
+            } else {
+                $url = Yii::$app->params['frontendUrl'] . $url;
+            }
         }
         return $url;
     }

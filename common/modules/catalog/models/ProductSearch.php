@@ -32,6 +32,8 @@ class ProductSearch extends Product
                     'description_ru',
                     'description_en',
                     'main_img',
+                    'article',
+                    'additional_images',
                     'updated_at',
                     'created_at',
                 ],

@@ -8,44 +8,49 @@
 namespace common\components;
 
 
-use app\modules\catalog\models\Category;
-use common\components\import\Msg;
-use common\modules\shop\models\Partner;
-use common\modules\shop\models\PartnerCategory;
+use common\modules\catalog\models\Category;
+use common\modules\catalog\models\Product;
 use DOMDocument;
 use XMLReader;
-use Yii;
 use yii\console\Exception;
-use yii\db\Query;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Console;
 use yii\log\Logger;
 
 class Import
 {
     public $defaultFields = [
-        'id'            => 'id',
-        'code'          => 'article',
-        'barcode'       => 'article',
-        'vendorCode'    => 'article',
-        'sku'           => 'article',
-        'name'          => 'title',
-        'description'   => 'description',
-        'url'           => 'url',
-        'image'         => 'image',
-        'price'         => 'price',
-        'oldprice'      => 'oldPrice',
-        'purchasePrice' => 'purchasePrice',
-        'available'     => 'available',
-        'param'         => 'param',
-        'vendor'        => 'brand',
-        'brand'         => 'brand',
-        'categoryId'    => 'categoryId',
+        'id'             => 'id',
+        'code'           => 'article',
+        'barcode'        => 'article',
+        'vendorCode'     => 'article',
+        'sku'            => 'article',
+        'article'        => 'article',
+        'name'           => 'title',
+        'name_ua'        => 'title_uk',
+        'description'    => 'description',
+        'description_ua' => 'description_uk',
+        'url'            => 'url',
+        'image'          => 'image',
+        'picture'        => 'image',
+        'price'          => 'price',
+        'oldprice'       => 'oldPrice',
+        'purchasePrice'  => 'purchasePrice',
+        'available'      => 'available',
+        'param'          => 'param',
+        'vendor'         => 'brand',
+        'stock_quantity' => 'stock',
+        'brand'          => 'brand',
+        'categoryId'     => 'category_id',
     ];
     private $importFile;
     private $logger;
     private $fieldsNameRelation = [];
     private $importErrorText;
+    private $_xmlCategories = [];
+    private $_categories = [];
+    private $_products = [];
+    private $_xmlProducts = [];
+    private array $readImportFileErrors;
 
     public function __construct($filePath)
     {
@@ -65,133 +70,64 @@ class Import
             if (($this->partnerImportConfig['setShopItemsCategories'] ?? false)) {
                 $this->setShopItemsCategories();
             }
-//                $this->writeSeoShopItems();
-//                $this->compareCategories();
+            //                $this->writeSeoShopItems();
+            //                $this->compareCategories();
             $result = true;
         }
     }
 
     public function importCategories()
     {
-        $this->_xmlCategories = $this->getXmlCategoryArray();
-        if (!empty($this->_xmlCategories)) {
-            $oldPartnerCategoryIds = (new Query())
-                ->select(['xml_id'])
-                ->from(Category::tableName())
-                ->where(['partner_id' => $this->partnerId])
-                ->column();
-
-            if (!empty($oldPartnerCategoryIds)) {
-                $newCategoryIds = array_keys($this->_xmlCategories);
-
-                $categoryIdsToAdd = array_diff($newCategoryIds, $oldPartnerCategoryIds);
-
-                if (!empty($categoryIdsToAdd)) {
-                    $count = 0;
-                    $sql = "SET NAMES utf8 COLLATE utf8_general_ci;";
-                    $sql .= "\nINSERT INTO partner_category (title,partner_id,xml_id,xml_parent_id,sync_status) VALUES ";
-                    $i = 0;
-                    $counter = 0;
-                    foreach ($categoryIdsToAdd as $key => $id) {
-                        $title = Yii::$app->db->quoteValue($this->_xmlCategories[$id]['name']);
-                        $parentId = ArrayHelper::getValue($this->_xmlCategories[$id], 'parentId', 0);
-                        $values = "($title,$partnerId,$id,$parentId,0)";
-                        if ($i == 1500) {
-                            $sql .= "; \n INSERT INTO partner_category (title,partner_id,xml_id,xml_parent_id,0) VALUES $values, ";
-                            $i = 0;
-                        } else {
-                            if ($i > 0) {
-                                $sql .= ",";
-                            }
-                            $sql .= $values;
-                            $i++;
-                        }
-                        usleep(1000);
-                    }
-                    file_put_contents($this->importDir . 'category.sql', $sql);
-                    $this->runSql($this->importDir . 'category.sql');
-                }
-
-                $categoryIdsToRemove = array_diff($oldPartnerCategoryIds, $newCategoryIds);
-
-                if (!empty($categoryIdsToRemove)) {
-                    $count = count($categoryIdsToRemove);
-                    Yii::$app->db->createCommand()
-                        ->update(
-                            Category::tableName(),
-                            ['status' => 0, 'sync_status' => 0],
-                            ['partner_id' => $this->partnerId, 'id' => $categoryIdsToRemove, 'status' => 1]
-                        )
-                        ->execute();
-                }
-
-                if (empty($categoryIdsToAdd) && (!isset($categoryIdsToRemove) || empty($categoryIdsToRemove))) {
-                    $this->printR("\n Categories is equal \n");
-                }
-            } else {
-                $this->printR(" \n No old partner categories, insert all \n");
-                $sql = "SET NAMES utf8 COLLATE utf8_general_ci;";
-                $sql .= "\nINSERT INTO partner_category (title,partner_id,xml_id,xml_parent_id,sync_status) VALUES ";
-                $i = 0;
-                $counter = 0;
-                $count = 0;
-                if ($this->interactiveMode) {
-                    $count = count($this->_xmlCategories);
-                    Console::startProgress(0, $count, 'Preparing partner_category_sql file ', false);
-                }
-                foreach ($this->_xmlCategories as $categoryId => $category) {
-                    $title = Yii::$app->db->quoteValue($category['name']);
-                    $parentId = ArrayHelper::getValue($category, 'parentId', 0);
-                    $values = "($title,$partnerId,$categoryId,$parentId,0)";
-                    if ($i == 1500) {
-                        $sql .= "; \n INSERT INTO partner_category (title,partner_id,xml_id,xml_parent_id,sync_status) VALUES $values, ";
-                        $i = 0;
-                    } else {
-                        if ($i > 0) {
-                            $sql .= ",";
-                        }
-                        $sql .= $values;
-                        $i++;
-                    }
-                    if ($this->interactiveMode) {
-                        $counter++;
-                        Console::updateProgress($counter, $count);
-                    }
-                }
-                if ($this->interactiveMode) {
-                    Console::endProgress("done." . PHP_EOL);
-                }
-                file_put_contents($this->importDir . 'category.sql', $sql);
-                Yii::$app->db->createCommand($sql)->execute();
+        $categoriesToAdd = $this->getCategoriesToAdd();
+        if (!$categoriesToAdd) {
+            foreach ($categoriesToAdd as $newCategory) {
+                $cat = new Category();
+                $cat->title_ru = $newCategory['name'];
+                $cat->parent_id = $newCategory['parentId'];
+                $cat->save();
             }
             return true;
         }
         if ($this->importErrorText == null) {
-            $this->importErrorText = 'Відсутні категорії';
+            $this->importErrorText = 'Отсутствуют категории';
         }
         return false;
     }
 
+    public function getCategoriesToAdd()
+    {
+        $categoriesToAdd = [];
+        if ($this->getXmlCategoryArray()) {
+            foreach ($this->getXmlCategoryArray() as $xmlCategory) {
+                if (!in_array($xmlCategory['name'], $this->getCategories())) {
+                    $categoriesToAdd[] = $xmlCategory;
+                }
+            }
+        }
+        return $categoriesToAdd;
+    }
+
     public function getXmlCategoryArray()
     {
-        $data = [];
-        $categories = $this->parseXml('category');
-        if (!empty($categories)) {
-            foreach ($categories as $category) {
-                $nameKey = 'title';
-                $data[$category['id']] = [
-                    'name'     => ArrayHelper::getValue($category, $nameKey),
-                    'parentId' => ArrayHelper::getValue($category, 'parentId', 0),
-                ];
+        if (!$this->_xmlCategories) {
+            $categories = $this->parseXml('category');
+            if (!empty($categories)) {
+                foreach ($categories as $category) {
+                    $nameKey = 'title';
+                    $this->_xmlCategories[$category['id']] = [
+                        'name'     => ArrayHelper::getValue($category, $nameKey),
+                        'parentId' => ArrayHelper::getValue($category, 'parentId', 0),
+                    ];
+                }
+            } else {
+                if ($this->importErrorText == null) {
+                    $this->importErrorText = 'Отсутствуют категории';
+                }
+                return false;
             }
-        } else {
-            if ($this->importErrorText == null) {
-                $this->importErrorText = 'Категорії відсутні';
-            }
-            return false;
         }
 
-        return $data;
+        return $this->_xmlCategories;
     }
 
     /**
@@ -204,6 +140,7 @@ class Import
      */
     private function parseXml($key_node, $filePath = null)
     {
+        $filePath = $filePath ?? $this->importFile;
         try {
             $output = [];
             $DOMDocument = new DOMDocument();
@@ -236,8 +173,8 @@ class Import
                         $dom = simplexml_import_dom($DOMDocument->importNode($expanded, true));
                         foreach ($dom->attributes() as $k => $v) {
                             $fieldName = mb_convert_encoding(trim($k), 'utf-8');
-                            if (array_key_exists($fieldName, $this->fieldsNameRelation)) {
-                                $fieldName = $this->fieldsNameRelation[$fieldName];
+                            if (array_key_exists($fieldName, $this->defaultFields)) {
+                                $fieldName = $this->defaultFields[$fieldName];
                             }
                             $output[$i][$fieldName] = mb_convert_encoding(
                                 trim((string)$v),
@@ -253,8 +190,8 @@ class Import
                                 foreach ($item->attributes as $prop) {
                                     if ((string)$prop->nodeValue) {
                                         $fieldName = trim((string)$item->nodeName);
-                                        if (array_key_exists($fieldName, $this->fieldsNameRelation)) {
-                                            $fieldName = $this->fieldsNameRelation[$fieldName];
+                                        if (array_key_exists($fieldName, $this->defaultFields)) {
+                                            $fieldName = $this->defaultFields[$fieldName];
                                         }
                                         $output[$i][$fieldName][trim((string)$prop->nodeValue)] = mb_convert_encoding(
                                             trim((string)$item->nodeValue),
@@ -264,8 +201,8 @@ class Import
                                 }
                             } else {
                                 $nodeName = trim((string)$item->nodeName);
-                                if (array_key_exists($nodeName, $this->fieldsNameRelation)) {
-                                    $nodeName = $this->fieldsNameRelation[$nodeName];
+                                if (array_key_exists($nodeName, $this->defaultFields)) {
+                                    $nodeName = $this->defaultFields[$nodeName];
                                 }
                                 if (in_array($nodeName, ['picture', 'image'])) {
                                     $output[$i]['image'][] = mb_convert_encoding(
@@ -305,6 +242,49 @@ class Import
 
     private function importProducts()
     {
+        if ($this->getXmlProductsArray()) {
+            $this->fillProductCategory();
+            $productsToAdd = $this->getProductsToAdd();
+            if ($productsToAdd) {
+                foreach ($productsToAdd as $addProduct) {
+                    $newProduct = new Product();
+                    $newProduct->title_ru = $addProduct['name'];
+                    $newProduct->title_uk = $addProduct['name_ua'];
+                    $newProduct->description_ru = $addProduct['description'];
+                    $newProduct->description_uk = $addProduct['description_ua'];
+                    $newProduct->article = $addProduct['article'];
+                    $newProduct->status = $addProduct['available'] == 'true';
+                    $newProduct->price = $addProduct['price'];
+                    $newProduct->stock = $addProduct['stock'];
+                    $newProduct->category_id = $addProduct['category_id'];
+                    if (is_array($addProduct['image'])) {
+                        $newProduct->main_img = array_shift($addProduct['image']);
+                        $newProduct->additional_images = $addProduct['image'];
+                    }
+                    $newProduct->save();
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    public function getXmlProductsArray()
+    {
+        if (!$this->_xmlProducts) {
+            $products = $this->parseXml('offer');
+            if (!empty($products)) {
+                $this->_xmlProducts = $products;
+            } else {
+                if ($this->importErrorText == null) {
+                    $this->importErrorText = 'Отсутствуют товары';
+                }
+                return false;
+            }
+        }
+
+        return $this->_xmlProducts;
     }
 
     private function importChars()
@@ -313,5 +293,62 @@ class Import
 
     private function importCharValues()
     {
+    }
+
+    private function getProducts()
+    {
+        if (!$this->_products) {
+            $this->_products = Product::find()->select(['article', 'id'])->indexBy('id')->column();
+        }
+        return $this->_products;
+    }
+
+    private function getCategories()
+    {
+        if (!$this->_categories) {
+            $this->_categories = Category::find()->select(['title_ru', 'id'])->indexBy('id')->column();
+        }
+        return $this->_categories;
+    }
+
+    private function fillProductCategory()
+    {
+        foreach ($this->getXmlProductsArray() as $i => $xmlProduct) {
+            if (array_key_exists($xmlProduct['categoryId'], $this->getXmlCategoryArray())) {
+                $xmlCat = ArrayHelper::getValue($this->getXmlCategoryArray(), $xmlProduct['categoryId']);
+                $xmlCategoryName = ArrayHelper::getValue($xmlCat, 'name');
+                $this->_xmlProducts[$i]['categoryId'] = $xmlCategoryName;
+                if (in_array($xmlCategoryName, $this->getCategories())) {
+                    $categoryId = array_keys($this->getCategories(), $xmlCategoryName);
+                    $categoryId = array_shift($categoryId);
+                    $this->_xmlProducts[$i]['categoryId'] = $categoryId;
+                }
+            }
+        }
+    }
+
+    private function getProductsToAdd()
+    {
+        $productsToAdd = [];
+        foreach ($this->getXmlProductsArray() as $xmlProduct) {
+            if (!in_array($xmlProduct['article'], $this->getProducts())) {
+                $productsToAdd[] = $this->clearParams($xmlProduct);
+            }
+        }
+        return $productsToAdd;
+    }
+
+    private function clearParams($xmlProduct)
+    {
+        $params = ArrayHelper::getValue($xmlProduct, 'param');
+        if ($params) {
+            foreach ($params as $i => $param) {
+                if (is_int($i)) {
+                    unset($params[$i]);
+                }
+            }
+        }
+        $xmlProduct['param'] = $params;
+        return $xmlProduct;
     }
 }

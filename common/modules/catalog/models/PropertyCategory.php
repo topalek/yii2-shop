@@ -70,7 +70,6 @@ class PropertyCategory extends BaseModel
         parent::afterSave($insert, $changedAttributes);
         $this->syncCategories();
         self::getPropertiesList(false, true);
-        Yii::$app->cache->delete('propertyListForCategory' . $this->id);
     }
 
     public function syncCategories()

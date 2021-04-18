@@ -9,13 +9,14 @@
 namespace backend\widgets;
 
 use dmstr\widgets\Menu;
+use Yii;
 
 class AdminMenu extends Menu
 {
     public $activeUrl;
     private $noDefaultAction;
     private $noDefaultRoute;
-/*
+
     protected function isItemActive($item)
     {
         $url = trim(Yii::$app->request->url, '/');
@@ -61,5 +62,5 @@ class AdminMenu extends Menu
         }
 
         return false;
-    }*/
+    }
 }

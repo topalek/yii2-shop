@@ -3,8 +3,6 @@
 namespace common\modules\catalog\models;
 
 use common\components\BaseModel;
-use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "catalog_property".
@@ -36,32 +34,6 @@ class Property extends BaseModel
                    ->orderBy('title_ru ASC')
                    ->indexBy('id')
                    ->column();
-    }
-
-    static function getListByCategory2($categoryId, $map = true)
-    {
-        $cacheKay = 'propertyListForCategory' . $categoryId;
-
-        $models = Yii::$app->cache->get($cacheKay);
-
-        if ($models === false) {
-            $models = self::getDb()->cache(
-                function () use ($categoryId) {
-                    return self::find()->where(['property_category_id' => $categoryId])->orderBy(
-                        'title_ru ASC'
-                    )->asArray()->all();
-                },
-                self::DEFAULT_CACHE_DURATION,
-                self::getDbDependency()
-            );
-
-            Yii::$app->cache->set($cacheKay, $models, self::DEFAULT_CACHE_DURATION);
-        }
-
-        if ($map) {
-            return ArrayHelper::map($models, 'id', 'title_ru');
-        }
-        return $models;
     }
 
     /**
@@ -97,25 +69,5 @@ class Property extends BaseModel
     {
         return $this->hasOne(PropertyCategory::class, ['id' => 'property_category_id']);
     }
-
-    public function beforeSave($insert)
-    {
-        ProductProperty::deleteAll(['property_id' => $this->id]);
-        return parent::beforeSave($insert);
-    }
-
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-        Yii::$app->cache->delete('propertiesListForCategory' . $this->property_category_id);
-    }
-
-    public function afterDelete()
-    {
-        parent::afterDelete();
-        Yii::$app->cache->delete('propertiesListForCategory' . $this->property_category_id);
-    }
-
 
 }

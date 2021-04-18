@@ -36,26 +36,18 @@ $this->registerJsFile(
     ['depends' => 'yii\web\JqueryAsset']
 );
 
-if ($defaultProperty) {
-    $propertyPhoto = $defaultProperty->getImgPreview();
-    $originalImgSrc = $propertyPhoto['fullSize'];
-    $price = $defaultProperty->price;
-} else {
-    $originalImgSrc = $model->modelUploadsUrl() . $model->main_img;
-    $price = $model->price;
-}
 ?>
-    <div class="catalog-item-view">
+    <div class="catalog-product-view">
 
         <div class="row">
-            <div class="col-sm-4 main-img-block" data-thumb="<?= $originalImgSrc ?>"
-                 data-full-img="<?= $originalImgSrc ?>">
+            <div class="col-sm-4 main-img-block" data-thumb="<?= $model->getMainImgUrl() ?>"
+                 data-full-img="<?= $model->getMainImgUrl() ?>">
                 <?= Html::img(
-                    $originalImgSrc,
+                    $model->getMainImgUrl(),
                     [
                         'alt'             => $model->getMlTitle(),
                         'class'           => 'img-responsive main-image',
-                        'data-zoom-image' => $originalImgSrc,
+                        'data-zoom-image' => $model->getMainImgUrl(),
                     ]
                 ) ?>
             </div>
@@ -63,7 +55,7 @@ if ($defaultProperty) {
                 <h1><?= Html::encode($this->title) ?></h1>
 
                 <div class="price" data-price="<?= $model->price ?>">
-                    <span><?= $price ?></span> грн.
+                    <span><?= asMoney($model->price) ?></span> грн.
                 </div>
 
                 <div class="description">
@@ -82,18 +74,11 @@ if ($defaultProperty) {
                                 echo Html::tag('strong', $property->propertyCategory->getMlTitle()) . ':';
                             }
 
-                            $propertyPhoto = $property->getImgPreview();
 
                             echo Html::tag(
                                 'span',
                                 $property->property->getMlTitle(),
                                 [
-                                    'data'  => [
-                                        'thumb-img' => $propertyPhoto['thumb'],
-                                        'full-img'  => $propertyPhoto['fullSize'],
-                                        'price'     => asMoney($property->price),
-                                        'id'        => $property->id,
-                                    ],
                                     'class' => ($property->id == $defaultProperty->id) ? 'active' : '',
                                 ]
                             );
@@ -108,22 +93,24 @@ if ($defaultProperty) {
                     </ul>
                 <?php
                 endif; ?>
-
-                <div class="row">
-                    <?php
-                    foreach ($images as $image) {
-                        echo Html::a(
-                            Html::img($image['url'], ['class' => 'img-responsive', 'alt' => $model->getMlTitle()]),
-                            $image['fullSizeUrl'],
-                            ['class' => 'fancy-box col-sm-3 col-xs-6 col-xxs-12', 'rel' => 'cat']
-                        );
-                    } ?>
-                </div>
-
+                <?php
+                if ($model->additional_images): ?>
+                    <div class="row">
+                        <?php
+                        foreach ($model->additional_images as $image) {
+                            echo Html::a(
+                                Html::img($image, ['class' => 'img-responsive', 'alt' => $model->getMlTitle()]),
+                                $image,
+                                ['class' => 'fancy-box col-sm-3 col-xs-6 col-xxs-12', 'rel' => 'cat']
+                            );
+                        } ?>
+                    </div>
+                <?php
+                endif; ?>
                 <?= Html::a(
-                    Yii::t('shop', 'Купит'),
+                    Yii::t('shop', 'Купить'),
                     ['/shop/default/add-to-cart'],
-                    ['class' => 'add-to-cart-btn btn btn-default', 'data-item-id' => $model->id]
+                    ['class' => 'add-to-cart-btn primary-btn', 'data-item-id' => $model->id]
                 ) ?>
 
                 <?= frontend\widgets\SocialShareWidget::widget(

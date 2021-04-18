@@ -23,6 +23,7 @@ use yii\helpers\Url;
  * @property string          $main_img
  * @property string[]        $additional_images
  * @property integer         $category_id
+ * @property string          $article
  * @property integer         $status
  * @property integer         $stock
  * @property integer         $order_count
@@ -59,9 +60,9 @@ class Product extends BaseModel
             'product' . $id,
             function () use ($id) {
                 return self::find()
-                    ->with(['properties', 'properties.property', 'properties.propertyCategory'])
-                    ->where(['product.id' => $id])
-                    ->one();
+                           ->with(['properties', 'properties.property', 'properties.propertyCategory'])
+                           ->where(['product.id' => $id])
+                           ->one();
             }
         );
     }
@@ -94,7 +95,7 @@ class Product extends BaseModel
         return [
             [['title_ru', 'category_id'], 'required'],
             [['originalImgFile'], 'required', 'on' => 'create'],
-            [['description_ru', 'description_uk', 'description_en'], 'string'],
+            [['description_ru', 'description_uk', 'description_en', 'article'], 'string'],
             [['price'], 'number'],
             ['additional_images', 'each', 'rule' => ['string']],
             [['category_id', 'status', 'stock', 'order_count', 'new'], 'integer'],
@@ -119,6 +120,7 @@ class Product extends BaseModel
             'price'             => 'Цена',
             'stock'             => 'На складе',
             'order_count'       => 'Популярность',
+            'article'           => 'Артикул',
             'new'               => 'Новинка',
             'main_img'          => 'Оригинальное изображения',
             'originalImgFile'   => 'Оригинальное изображения',

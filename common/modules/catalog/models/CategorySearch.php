@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 /**
  * CategorySearch represents the model behind the search form about `common\modules\catalog\models\Category`.
  */
-class CategorySearch extends CatalogCategory
+class CategorySearch extends Category
 {
     /**
      * @inheritdoc
@@ -16,7 +16,7 @@ class CategorySearch extends CatalogCategory
     public function rules()
     {
         return [
-            [['id', 'tree', 'lft', 'rgt', 'depth'], 'integer'],
+            [['id', 'parent_id'], 'integer'],
             [
                 [
                     'title_uk',
@@ -52,7 +52,7 @@ class CategorySearch extends CatalogCategory
      */
     public function search($params)
     {
-        $query = CatalogCategory::find();
+        $query = Category::find();
 
         $dataProvider = new ActiveDataProvider(
             [
@@ -71,10 +71,7 @@ class CategorySearch extends CatalogCategory
         $query->andFilterWhere(
             [
                 'id'         => $this->id,
-                'tree'       => $this->tree,
-                'lft'        => $this->lft,
-                'rgt'        => $this->rgt,
-                'depth'      => $this->depth,
+                'parent_id'  => $this->parent_id,
                 'updated_at' => $this->updated_at,
                 'created_at' => $this->created_at,
             ]
@@ -93,8 +90,7 @@ class CategorySearch extends CatalogCategory
 
     public function adminSearch($params)
     {
-        $query = CatalogCategory::find();
-        $query->where('depth=0');
+        $query = Category::find();
         $dataProvider = new ActiveDataProvider(
             [
                 'query' => $query,
@@ -109,8 +105,8 @@ class CategorySearch extends CatalogCategory
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'title_ru', $this->title_uk])
-              ->andFilterWhere(['like', 'description_ru', $this->description_uk]);
+        $query->andFilterWhere(['like', 'title_ru', $this->title_ru])
+              ->andFilterWhere(['like', 'description_ru', $this->description_ru]);
 
         return $dataProvider;
     }
