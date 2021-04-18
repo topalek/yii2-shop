@@ -178,7 +178,7 @@ use yii\widgets\ActiveForm;
                 <p class="text-center">
                     <?= Html::a(
                         'Добавить',
-                        ['/product/add-property', 'item_id' => $model->id],
+                        ['/product/add-property', 'product_id' => $model->id],
                         ['class' => 'add-new-property btn btn-primary']
                     ) ?>
                 </p>
@@ -229,13 +229,13 @@ use yii\widgets\ActiveForm;
 <?php
 $this->registerJs(
     <<<JS
-$(document).on('click','.add-new-property',function(e) {
-  e.preventDefault();
-  $.get(this.href,function(result) {
-    $('.wrapper').before('<div id="prepend-block">'+result+'</div>');
-  });
-  return false;
-});
+// $(document).on('click','.add-new-property',function(e) {
+//   e.preventDefault();
+//   $.get(this.href,function(result) {
+//     $('.wrapper').before('<div id="prepend-block">'+result+'</div>');
+//   });
+//   return false;
+// });
 
 $(document).on('click','.update-property',function(e) {
     e.preventDefault();

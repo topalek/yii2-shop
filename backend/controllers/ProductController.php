@@ -192,7 +192,7 @@ class ProductController extends BaseAdminController
     }
 
 
-    public function actionAddProperty($item_id)
+    public function actionAddProperty2($item_id)
     {
         $model = new ProductProperty();
         $model->product_id = $item_id;
@@ -209,6 +209,19 @@ class ProductController extends BaseAdminController
             return ['status' => false, 'message' => 'Произошла ошибка. Попробуйте еще раз.'];
         }
     }
+
+    public function actionAddProperty($product_id)
+    {
+        $model = new ProductProperty();
+        $model->product_id = $product_id;
+        $product = Product::findOne($product_id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['update', 'id' => $product_id]);
+        }
+        return $this->render('property_form', ['model' => $model, 'product' => $product]);
+    }
+
 
     public function actionUpdateProperty($id)
     {
