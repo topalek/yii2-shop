@@ -60,7 +60,7 @@ class Product extends BaseModel
             'product' . $id,
             function () use ($id) {
                 return self::find()
-                           ->with(['properties', 'properties.property', 'properties.propertyCategory'])
+                    ->with(['properties', 'properties.property', 'properties.propertyCategory', 'category'])
                            ->where(['product.id' => $id])
                            ->one();
             }

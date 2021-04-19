@@ -143,7 +143,9 @@ class PropertyController extends BaseAdminController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->db->createCommand('DELETE FROM {{%product_property}} WHERE property_id=' . $id)->execute()) {
+            $this->findModel($id)->delete();
+        }
 
         return $this->redirect(['index']);
     }

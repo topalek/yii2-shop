@@ -116,20 +116,13 @@ class DefaultController extends BaseController
             $request = Yii::$app->request;
             $itemId = $request->get('itemId');
             $qty = $request->get('qty');
-            $charId = (int)$request->get('charId');
-            if ($charId == 0) {
-                $charId = null;
-            }
-            $needleKey = $itemId;
-            if ($charId) {
-                $needleKey .= '_' . $charId;
-            }
             $totalPrice = 0;
             $cartItems = $cart->products;
             foreach ($cartItems as $key => $cartItem) {
-                if ($key == $needleKey) {
+                if ($key == $itemId) {
                     $cartItem['qty'] = $qty;
                     $cartItems[$key]['qty'] = $qty;
+                    $cart->products = $cartItems;
                     $cart->update(false, ['products']);
                 }
                 $totalPrice += $cartItem['price'] * $cartItem['qty'];

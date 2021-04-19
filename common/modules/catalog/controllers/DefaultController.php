@@ -30,7 +30,7 @@ class DefaultController extends BaseController
 
     public function actionCategoryView($id)
     {
-        $model = Category::findOne($id);
+        $model = $this->findCategory($id);
 
         return $this->render(
             'category_view',
@@ -51,8 +51,9 @@ class DefaultController extends BaseController
      */
     protected function findCategory($id)
     {
-        if (($model = Category::find()->with(['propertyCategories', 'seo'])->where(['category.id' => $id])->one(
-            )) !== null) {
+        if (($model = Category::find()->with(['propertyCategories', 'products', 'seo'])->where(
+                ['category.id' => $id]
+            )->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('site', 'Страница не существует или была удалена.'));

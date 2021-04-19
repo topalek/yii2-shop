@@ -27,14 +27,14 @@ use yii\helpers\Url;
                 [
                     'id'     => 'product-property-form',
                     'action' => ($model->isNewRecord) ? Url::toRoute(
-                        ['/product/add-property', 'item_id' => $model->product_id]
+                        ['/product/add-property', 'product_id' => $model->product_id]
                     ) :
                         Url::toRoute(['/product/update-property', 'id' => $model->id]),
                 ]
             ) ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Добавить новую модификацию</h4>
+                <h4 class="modal-title">Добавить новую характеристику</h4>
             </div>
             <div class="modal-body">
 
@@ -46,7 +46,7 @@ use yii\helpers\Url;
 
                                 'data'    => PropertyCategory::getList(),
                                 'options' => [
-                                    'placeholder' => 'Категория опций',
+                                    'placeholder' => 'Категория характеристик',
                                     'id'          => 'property-category',
                                 ],
                             ]
@@ -62,7 +62,7 @@ use yii\helpers\Url;
                                     $model->property_category_id
                                 ) : null,
                                 'options'       => [
-                                    'placeholder' => 'Опция',
+                                    'placeholder' => 'Характеристика',
                                 ],
                                 'pluginOptions' => [
                                     'depends' => ['property-category'],
@@ -94,68 +94,47 @@ use yii\helpers\Url;
 $isUpdate = $model->isNewRecord;
 $this->registerJs(
     <<<JS
-    let isUpdate = '$isUpdate';
+let isUpdate = '$isUpdate';
 let propertyModal = $('#property-form-modal');
-    propertyModal.modal({
-      keyboard: false,
-      show: true,
-      backdrop: 'static'
-    });
-    
-    $(document).on('click','.cancel-form',function() {
-      $('#property-form-modal').modal('hide');
-    })
-    
-    propertyModal.on('hidden.bs.modal', function (e) {
-        $('#prepend-block').remove();
-    });
-    
-    $('#product-property-form').on('beforeSubmit',function(e) {
-        var form = $(this);
-        if($(form).data().yiiActiveForm.validated == true)
-        {
-            $.ajax({
-                url: $(form).attr('action'),
-                type: 'post',
-                dataType: 'json',
-                data: form.serialize(),
-                success: function(result) {
-                  if(result.status == true)
-                  {
-                    if(!isUpdate)
-                    {
-                        $('.product-property[data-id=$model->id]').fadeOut(function() {
-                          $(this).after(result.data);
-                        });
-                    }
-                    else
-                    {
-                        let list = $('.property-list');
-                        if(list.length>0){
-                          list.append(result.data);
-                      }else{
-                          $('.properties').append('
-                              <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Категория</th>
-                                        <th scope="col">Характеристика</th>
-                                        <th scope="col">Операции</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="property-list">'+result.data+'</tbody>
-                            </table>')
-                      }
-                    }
-                    $('#property-form-modal').modal('hide');
-                  }
-                  else 
-                    humane.log(result.message);
+propertyModal.modal({
+    keyboard: false,
+    show: true,
+    backdrop: 'static'
+});
+
+$(document).on('click', '.cancel-form', function () {
+    $('#property-form-modal').modal('hide');
+})
+
+propertyModal.on('hidden.bs.modal', function (e) {
+    $('#prepend-block').remove();
+});
+
+$('#product-property-form').on('beforeSubmit', function (e) {
+    var form = $(this);
+    if ($(form).data().yiiActiveForm.validated == true) {
+        $.post($(form).attr('action'),$(form).serialize(),result=>{
+            if (result.status == true) {
+            if (!isUpdate) {
+                $('.product-property[data-id=$model->id]').fadeOut(function () {
+                    $(this).after(result.data);
+                });
+            } else {
+                let list = $('.property-list');
+                if (list.length > 0) {
+                    list.append(result.data);
+                } else {
+                    $('.properties').append('<table class="table"><thead><tr><th scope="col">Категория</th><th scope="col">Характеристика</th><th scope="col">Операции</th></tr></thead><tbody class="property-list">'+result.data+'</tbody></table>')
                 }
-            });  
+            }
+            $('#property-form-modal').modal('hide');
+        } else {
+            humane.log(result.message);
         }
-        return false;
-    });
+        })
+    }
+    return false;
+});
 JS
 );
 ?>

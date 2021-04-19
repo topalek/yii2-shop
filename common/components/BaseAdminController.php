@@ -51,17 +51,15 @@ class BaseAdminController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only'  => ['login', 'request-password-reset', 'reset-password'],
                 'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                     [
                         'actions' => ['login', 'request-password-reset', 'reset-password', 'error'],
                         'allow'   => true,
                         'roles'   => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow'   => true,
-                        'roles'   => ['@'],
                     ],
                 ],
             ],

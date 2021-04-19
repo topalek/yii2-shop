@@ -203,7 +203,11 @@ use yii\widgets\ActiveForm;
                                     <td class="actions">
                                         <?= Html::a(
                                             '<i class="fa fa-pencil"></i>',
-                                            ['/product/update-property', 'id' => $property->id],
+                                            [
+                                                '/product/update-property',
+                                                'id' => $property->id,
+                                                'product_id' => $model->id,
+                                            ],
                                             ['class' => 'update-property']
                                         ) ?>
                                         <?= Html::a(
@@ -229,21 +233,21 @@ use yii\widgets\ActiveForm;
 <?php
 $this->registerJs(
     <<<JS
-// $(document).on('click','.add-new-property',function(e) {
-//   e.preventDefault();
-//   $.get(this.href,function(result) {
-//     $('.wrapper').before('<div id="prepend-block">'+result+'</div>');
-//   });
-//   return false;
-// });
+/*$(document).on('click','.add-new-property',function(e) {
+  e.preventDefault();
+  $.get(this.href,function(result) {
+    $('.wrapper').append('<div id="prepend-block">'+result+'</div>');
+  });
+  return false;
+});
 
 $(document).on('click','.update-property',function(e) {
     e.preventDefault();
     var propertyBlock = $(this).parents('.item-property');
     $.post(this.href,function(result) {
-     $('.wrapper').before('<div id="prepend-block">'+result+'</div>');
+     $('.wrapper').append('<div id="prepend-block">'+result+'</div>');
     })
-});
+});*/
 
 $(document).on('click','.delete-property',function(e) {
     e.preventDefault();

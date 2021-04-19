@@ -192,10 +192,10 @@ class ProductController extends BaseAdminController
     }
 
 
-    public function actionAddProperty2($item_id)
+    public function actionAddProperty2($product_id)
     {
         $model = new ProductProperty();
-        $model->product_id = $item_id;
+        $model->product_id = $product_id;
 
         if (Yii::$app->request->isGet) {
             return $this->renderAjax('_property_form', ['model' => $model]);
@@ -223,20 +223,14 @@ class ProductController extends BaseAdminController
     }
 
 
-    public function actionUpdateProperty($id)
+    public function actionUpdateProperty($id, $product_id)
     {
         $model = ProductProperty::find()->where(['id' => $id])->limit(1)->one();
+        $product = Product::findOne($product_id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            $newModel = new ProductProperty();
-            $newModel->product_id = $model->product_id;
-            return [
-                'status' => true,
-                'data'   => $this->renderPartial('_item_property_view', ['model' => $model]),
-            ];
-        } else {
-            return $this->renderAjax('_property_form', ['model' => $model]);
+            return $this->redirect(['update', 'id' => $product_id]);
         }
+        return $this->render('property_form', ['model' => $model, 'product' => $product]);
     }
 
     public function actionDeleteProperty($id)
@@ -245,10 +239,10 @@ class ProductController extends BaseAdminController
         $model->delete();
     }
 
-    public function actionResetPropertyForm($item_id)
+    public function actionResetPropertyForm($product_id)
     {
         $model = new ProductProperty();
-        $model->product_id = $item_id;
+        $model->product_id = $product_id;
 
         return $this->renderAjax('_property_form', ['model' => $model]);
     }

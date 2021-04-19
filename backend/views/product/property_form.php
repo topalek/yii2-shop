@@ -24,7 +24,7 @@ $form = ActiveForm::begin(
         'action' => ($model->isNewRecord) ? Url::toRoute(
             ['/product/add-property', 'product_id' => $model->product_id]
         ) :
-            Url::toRoute(['/product/update-property', 'id' => $model->id]),
+            Url::toRoute(['/product/update-property', 'id' => $model->id, 'product_id' => $model->product_id]),
     ]
 ) ?>
 <div class="modal-header">

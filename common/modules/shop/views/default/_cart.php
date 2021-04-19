@@ -43,7 +43,7 @@ Modal::begin(
                         $totalSum += $cartItem['price'] * $cartItem['qty'];
                         $title = $cartItem['title_' . Yii::$app->language];
                         ?>
-                        <tr>
+                        <tr class="cart__product__item">
                             <td class="product__cart__item">
                                 <div class="product__cart__item__pic">
                                     <?= Html::img(
@@ -66,16 +66,17 @@ Modal::begin(
                                             "qty",
                                             $cartItem['qty'],
                                             [
-                                                'data-id'      => $cartItem['id'],
-                                                'data-char-id' => ArrayHelper::getValue($cartItem, 'char_id'),
-                                                'data-url'     => Url::toRoute(['/shop/default/change-qty']),
+                                                'data-id'    => $cartItem['id'],
+                                                'data-price' => $cartItem['price'],
+                                                'data-url'   => Url::toRoute(['/shop/default/change-qty']),
+                                                'class'      => 'price-input',
                                             ]
                                         ) ?>
                                         <i class="fa fa-plus plus-btn"></i>
                                     </div>
                                 </div>
                             </td>
-                            <td class="cart__price"><span><?= $cartItem['price'] ?></span> грн.</td>
+                            <td class="cart__price"><span><?= $cartItem['price'] * $cartItem['qty'] ?></span> грн.</td>
                             <td class="cart__close">
                                 <?= Html::a(
                                     '<i class="fa fa-close"></i>',

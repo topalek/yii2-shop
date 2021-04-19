@@ -3,6 +3,11 @@
 -----------------------*/
 .shopping-cart {
   padding: 15px 0;
+
+  .minus-btn, .plus-btn {
+    user-select: none;
+    cursor: pointer;
+  }
 }
 
 .shopping__cart__table {
