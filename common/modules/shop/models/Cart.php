@@ -81,25 +81,21 @@ class Cart extends BaseModel
         ];
     }
 
-    public function removeCartItem($id, $charId = null)
+    public function removeCartItem($id)
     {
         $totalSum = 0;
-        if ($charId == 0) {
-            $charId = null;
-        }
         $key = $id;
-        if ($charId) {
-            $key .= '_' . $charId;
-        }
         if (!empty($this->products)) {
-            foreach ($this->products as $itemKey => $cartItem) {
+            $cartItems = $this->products;
+            foreach ($cartItems as $itemKey => $cartItem) {
                 if ($itemKey == $key) {
-                    unset($this->products[$key]);
-                    $this->update(false, ['products']);
+                    unset($cartItems[$key]);
                 } else {
                     $totalSum += $cartItem['price'] * $cartItem['qty'];
                 }
             }
+            $this->products = $cartItems;
+            $this->update(false, ['products']);
         }
         return $totalSum;
     }

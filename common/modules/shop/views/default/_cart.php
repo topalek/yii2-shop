@@ -22,7 +22,7 @@ Modal::begin(
 
 ?>
     <!-- Shopping Cart Section Begin -->
-    <section class="shopping-cart spad">
+    <section class="shopping-cart">
         <?php
         if (!$cartIsEmpty): ?>
 
@@ -42,15 +42,16 @@ Modal::begin(
                         <?php
                         $totalSum += $cartItem['price'] * $cartItem['qty'];
                         $title = $cartItem['title_' . Yii::$app->language];
-                        $modification = ArrayHelper::getValue($cartItem, 'charTitle_' . Yii::$app->language);
-                        if ($modification) {
-                            $title .= '<br>(' . $modification . ')';
-                        }
                         ?>
                         <tr>
                             <td class="product__cart__item">
                                 <div class="product__cart__item__pic">
-                                    <?= $cartItem['photo'] ?>
+                                    <?= Html::img(
+                                        dynamicImageUrl($cartItem['photo'], 100),
+                                        [
+                                            'class' => 'img-responsive',
+                                        ]
+                                    ) ?>
                                 </div>
                                 <div class="product__cart__item__text">
                                     <h6> <?= Html::a($title, [$cartItem['url']]) ?></h6>
@@ -92,7 +93,7 @@ Modal::begin(
                 </table>
             </div>
 
-            <div class="item total text-right">
+            <div class="products-total text-right">
                 <?= Yii::t('shop', 'Итого:') ?> <span><?= $totalSum ?></span> грн.
             </div>
         <?php
@@ -103,19 +104,13 @@ Modal::begin(
                 'Ваша корзина пуста'
             ) ?></h4>
 
-        <div class="text-center buttons <?= ($cartIsEmpty) ? 'hide' : '' ?>">
-            <div class="continue__btn">
-                <?= Html::submitButton(Yii::t('shop', 'Продолжить'), ['class' => 'btn btn-default']) ?>
-            </div>
-            <div class="continue__btn update__btn">
-                <?= Html::a(
-                    Yii::t('shop', 'Оформить заказ'),
-                    ['/shop/default/order'],
-                    ['class' => 'btn btn-default']
-                ) ?>
-            </div>
-
-
+        <div class="d-flex jcsa buttons <?= ($cartIsEmpty) ? 'hide' : '' ?>">
+            <?= Html::submitButton(Yii::t('shop', 'Продолжить'), ['class' => 'primary-btn']) ?>
+            <?= Html::a(
+                Yii::t('shop', 'Оформить заказ'),
+                ['/shop/default/order'],
+                ['class' => 'primary-btn']
+            ) ?>
         </div>
     </section>
     <!-- Shopping Cart Section End -->

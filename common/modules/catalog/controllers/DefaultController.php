@@ -36,7 +36,6 @@ class DefaultController extends BaseController
             'category_view',
             [
                 'model'    => $model,
-                'children' => $children,
             ]
         );
     }

@@ -3,10 +3,8 @@ var cartModal;
 
 $(document).on('click', '.add-to-cart', function (e) {
     e.preventDefault();
-    var charId = $('.property-list .active').data('id');
-    $.get($(this).attr('href'), {
-        itemId: $(this).data('itemId'), charId: charId, price: $('.price span').text()
-    }, function (result) {
+    $.get($(this).attr('href'), function (result) {
+        console.log(result)
         insertModal(result)
     });
 });
@@ -65,8 +63,10 @@ $(document).on('click', '.order-page .cart-items-list .delete-item-btn', functio
 
 
 $(document).on('click', '#cart-modal .minus-btn, .order-page .items .minus-btn', function (e) {
-    var input = $(this).next();
-    var qty = parseInt(input.val());
+    console.log(e)
+    return false
+    let input = $(this).next();
+    let qty = parseInt(input.val());
     qty--;
     if (qty < 1) {
         qty = 1;
@@ -87,7 +87,7 @@ $(document).on('click', '#cart-modal .plus-btn, .order-page .items .plus-btn', f
         qty = 1;
     }
     input.val(qty);
-    $.get(input.data('url'), {itemId: input.data('id'), charId: input.data('charId'), qty: qty}, function (result) {
+    $.post(input.data('url'), {itemId: input.data('id'), charId: input.data('charId'), qty: qty}, function (result) {
         $(input).parents('.items').find('.total span').text(result.totalPrice);
         if ($(input).parents('#cart-modal').length == 1) {
             updateOrderItemsCountainer();
@@ -97,8 +97,7 @@ $(document).on('click', '#cart-modal .plus-btn, .order-page .items .plus-btn', f
 
 $(document).on('click', '#cart', e => {
     e.preventDefault();
-    $.get(this.href, function (result) {
-        console.log(result);
+    $.post(e.currentTarget.href, function (result) {
         insertModal(result)
     });
     return false;
@@ -138,17 +137,17 @@ $('.collapse').on('hidden.bs.collapse', function () {
 });
 
 function updateOrderItemsCountainer() {
-    var container = $('.order-page .cart-items-list');
+    let container = $('.order-page .cart-items-list');
     if (container.length == 1) {
         $.get($(container).data('url'), function (data) {
-            var html = $('.cart-items-list', data).html();
+            let html = $('.cart-items-list', data).html();
             $(container).html(html);
         });
     }
 }
 
 function insertModal(content) {
-    $('.wrap').before('<div class="modals">' + content + '</div>');
+    $('.body-wrap').before('<div class="modals">' + content + '</div>');
     cartModal = $('#cart-modal');
     $(cartModal).modal('show');
     $(cartModal).on('hidden.bs.modal', function () {

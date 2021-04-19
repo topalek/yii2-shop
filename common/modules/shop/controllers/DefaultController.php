@@ -54,7 +54,7 @@ class DefaultController extends BaseController
                     'title_uk' => $product->title_uk,
                     'title_en' => $product->title_en,
                     'title_ru' => $product->title_ru,
-                    'photo'    => $product->getMainImg(),
+                    'photo'    => $product->getMainImgUrl(),
                     'price'    => asMoney($product->price),
                     'qty'      => 1,
                     'url'      => $product->getSeoUrl(),
@@ -89,8 +89,7 @@ class DefaultController extends BaseController
 
                 return $this->renderAjax('_cart', ['cartItems' => $cartItems]);
             } else {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ['errors' => $cart->getErrors()];
+                return $this->asJson(['errors' => $cart->getErrors()]);
             }
         } else {
             throw new BadRequestHttpException(Yii::t('site', 'Не правильный запрос'));
@@ -138,7 +137,7 @@ class DefaultController extends BaseController
 
             return ['status' => true, 'totalPrice' => $totalPrice];
         }
-        return ['status' => false, 'message' => Yii::t('site', 'Ваш кошик пустий')];
+        return ['status' => false, 'message' => Yii::t('site', 'Ваша корзина пустой')];
     }
 
     public function actionViewCart()
@@ -148,7 +147,7 @@ class DefaultController extends BaseController
         if ($cart) {
             $cartItems = $cart->products;
         }
-        return $this->renderFile('_cart', ['cartItems' => $cartItems]);
+        return $this->renderAjax('_cart', ['cartItems' => $cartItems]);
     }
 
     public function actionOrder()

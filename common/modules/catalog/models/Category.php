@@ -187,7 +187,7 @@ class Category extends BaseModel
             ['name' => 'content_ru', 'value' => strip_tags($this->description_ru)],
             ['name' => 'content_en', 'value' => strip_tags($this->description_en)],
             ['name' => 'url', 'value' => $this->getSeoUrl(), 'type' => SearchBehavior::FIELD_KEYWORD],
-            ['name' => 'img', 'value' => $this->getMainImg(200, 200, ['class' => 'media-object'])],
+            ['name' => 'img', 'value' => $this->getMainImg()],
         ];
     }
 
@@ -198,6 +198,14 @@ class Category extends BaseModel
     public function getProducts()
     {
         return $this->hasMany(Product::class, ['category_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getChildren()
+    {
+        return $this->hasMany(Category::class, ['parent_id' => 'id']);
     }
 
     public function getPropertyCategories()
