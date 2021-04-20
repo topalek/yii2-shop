@@ -35,7 +35,7 @@ class m210408_140926_create_shop_tables extends Migration
                 'email'         => $this->string()->notNull(),
                 'phone'         => $this->string(),
                 'delivery_info' => $this->text(),
-                'products'      => $this->text()->notNull(),
+                'products'      => $this->json()->notNull(),
                 'status'        => $this->smallInteger()->defaultValue(0),
                 'updated_at'    => $this->timestamp()->notNull()
                     ->defaultExpression('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')

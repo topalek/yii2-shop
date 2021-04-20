@@ -9,20 +9,6 @@
   position: relative;
   overflow: hidden;
 
-  &:hover {
-
-    .banner__item__text {
-
-      a {
-
-        &:after {
-          width: 40px;
-          background: $primary-color;
-        }
-      }
-    }
-  }
-
   &.banner__item--middle {
     margin-top: -75px;
 
@@ -60,28 +46,6 @@
     line-height: 46px;
     margin-bottom: 10px;
   }
-
-  a {
-    display: inline-block;
-    color: $heading-color;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    padding: 3px 0;
-    position: relative;
-
-    &:after {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 2px;
-      background: $heading-color;
-      content: "";
-      @include transition(all, .3s);
-    }
-  }
 }
 
 /*---------------------
@@ -92,6 +56,73 @@
   overflow: hidden;
   padding-top: 150px;
   padding-bottom: 125px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+
+  .category__item {
+    display: flex;
+    align-items: center;
+
+    &:nth-child(2n+1) {
+      grid-column: 2 / 5;
+      justify-content: flex-end;
+
+      .category__item__pic {
+        order: 2;
+      }
+
+      .category__item__text {
+        order: 1;
+      }
+    }
+
+    &:nth-child(2n) {
+      grid-column: 2 / 4;
+      justify-content: flex-start;
+    }
+
+    &__pic {
+      order: 1;
+    }
+
+    &__text {
+      order: 2;
+
+      a {
+        display: inline-block;
+        color: $heading-color;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        padding: 3px 0;
+        position: relative;
+
+        &:after {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 2px;
+          background: $heading-color;
+          content: "";
+          @include transition(all, .3s);
+        }
+      }
+    }
+
+    &:hover {
+      .category__item__text {
+        a {
+          &:after {
+            width: 40px;
+            background: $primary-color;
+          }
+        }
+      }
+    }
+  }
 }
 
 .categories__text {

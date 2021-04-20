@@ -100,13 +100,17 @@ $this->beginBody() ?>
         </div>
     </section>
     <!-- Breadcrumb Section End -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <?= Alert::widget() ?>
+    <?php
+    if ($alert = Alert::widget()): ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <?= $alert ?>
+                </div>
             </div>
         </div>
-    </div>
+    <?php
+    endif; ?>
     <div class="container">
         <div class="row">
             <div class="col-lg-12">

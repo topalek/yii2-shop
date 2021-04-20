@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by Yatskanych Oleksandr
+ * Created by topalek
  *
  * @var $model \common\modules\shop\models\Order
  * @var $form  ActiveForm
@@ -11,96 +11,53 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
+$this->title = Yii::t('shop', 'Оформление заказа');
+$this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => '/catalog'];
+$this->params['breadcrumbs'][] = $this->title;
 $totalSum = 0;
+foreach ($model->products as $cartItem) {
+    $totalSum += $cartItem['price'] * $cartItem['qty'];
+}
 ?>
 <div class="order-page">
     <div class="row">
-        <div class="col-sm-12 empty-text-block hide text-center">
-            <h3><?= Yii::t('shop', 'Ваша корзина пуста') ?></h3>
-        </div>
-        <div class="col-sm-6 form-block">
-
+        <div class="col-lg-8">
             <h3><?= Yii::t('shop', 'Оформление заказа') ?></h3>
-
-            <div class="order-form">
-                <?php
-                $form = ActiveForm::begin(); ?>
-
-                <?= $form->field($model, 'name')->textInput() ?>
-
-                <?= $form->field($model, 'email')->textInput(['type' => 'email']) ?>
-
-                <?= $form->field($model, 'phone')->textInput(['type' => 'phone']) ?>
-
-                <?= $form->field($model, 'delivery_info')->textarea(
-                    ['placeholder' => Yii::t('shop', 'Город, отделение Новой Почты')]
-                ) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton(Yii::t('shop', 'Отправить'), ['class' => 'btn btn-default']) ?>
-                </div>
-
-                <?php
-                ActiveForm::end(); ?>
+            <div class="shopping__cart__table">
+                <?= $this->render('_cart_table', ['cartItems' => $model->products]) ?>
             </div>
         </div>
-
-        <div class="col-sm-5 col-sm-offset-1 items-block">
+        <div class="col-lg-4">
             <h3><?= Yii::t('shop', 'Ваш заказ') ?></h3>
-            <div class="items cart-items-list"
-                 data-url="<?= Url::to(['/shop/default/order', 'updateContainer' => true]) ?>">
-                <?php
-                foreach ($model->cartItems as $cartItem): ?>
+            <div class="cart__info">
+                <div class="order-form">
                     <?php
-                    $totalSum += $cartItem['price'] * $cartItem['qty'];
-                    $title = $cartItem['title_' . Yii::$app->language];
-                    $modification = ArrayHelper::getValue($cartItem, 'charTitle_' . Yii::$app->language);
-                    if ($modification) {
-                        $title .= '<br>(' . $modification . ')';
-                    }
-                    ?>
-                    <div class="item">
-                        <div>
-                            <div class="photo">
-                                <?= $cartItem['photo'] ?>
+                    $form = ActiveForm::begin(); ?>
+
+                    <?= $form->field($model, 'name')->textInput() ?>
+
+                    <?= $form->field($model, 'email')->textInput(['type' => 'email']) ?>
+
+                    <?= $form->field($model, 'phone')->textInput(['type' => 'phone']) ?>
+
+                    <?= $form->field($model, 'delivery_info')->textarea(
+                        ['placeholder' => Yii::t('shop', 'Город, отделение Новой Почты')]
+                    ) ?>
+                    <div class="cart__total">
+                        <div class="total-text">
+                            <span><?= Yii::t('shop', 'Итого:') ?></span>
+                            <div class="products-total">
+                                <span><?= $totalSum ?></span> грн.
                             </div>
                         </div>
-                        <div>
-                            <div class="title">
-                                <?= Html::a($title, [$cartItem['url']]) ?>
-                            </div>
-                            <div class="price">
-                                <span><?= $cartItem['price'] ?></span> грн.
-                            </div>
-                            <div class="counter">
-                                <i class="fa fa-minus minus-btn"></i>
-                                <?= Html::textInput(
-                                    "qty",
-                                    $cartItem['qty'],
-                                    [
-                                        'data-id'      => $cartItem['id'],
-                                        'data-url'     => Url::toRoute(['/shop/default/change-qty']),
-                                        'data-char-id' => ArrayHelper::getValue($cartItem, 'char_id'),
-                                    ]
-                                ) ?>
-                                <i class="fa fa-plus plus-btn"></i>
-                            </div>
-                            <?= Html::a(
-                                Yii::t('site', 'Удалить'),
-                                ['/shop/default/delete-cart-item', 'id' => $cartItem['id']],
-                                [
-                                    'class'        => 'delete-item-btn',
-                                    'data-char-id' => ArrayHelper::getValue($cartItem, 'char_id'),
-                                ]
-                            ) ?>
-                        </div>
+
+                        <?= Html::submitButton(Yii::t('shop', 'Заказать'), ['class' => 'primary-btn']) ?>
                     </div>
-                <?php
-                endforeach; ?>
-                <div class="item total text-right">
-                    <?= Yii::t('shop', 'Итого:') ?> <span><?= $totalSum ?></span> грн.
+                    <?php
+                    ActiveForm::end(); ?>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

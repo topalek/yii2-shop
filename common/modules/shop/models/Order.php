@@ -2,18 +2,18 @@
 
 namespace common\modules\shop\models;
 
+use common\components\BaseModel;
 use common\modules\params\models\Params;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\Html;
-use yii\helpers\Json;
 
 /**
  * This is the model class for table "shop_order".
  *
- * @property integer  $id
+ * @property integer $id
  * @property string   $name
  * @property string   $email
  * @property string   $phone
@@ -23,12 +23,11 @@ use yii\helpers\Json;
  * @property string   $updated_at
  * @property string   $created_at
  */
-class Order extends \yii\db\ActiveRecord
+class Order extends BaseModel
 {
     const STATUS_NEW = 0;
     const STATUS_IN_PROCESS = 1;
     const STATUS_CLOSED = 2;
-    public $cartItems = [];
 
     /**
      * @inheritdoc
@@ -85,25 +84,13 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave($insert)
-    {
-        $this->products = Json::encode($this->cartItems);
-        return parent::beforeSave($insert);
-    }
-
-    public function afterFind()
-    {
-        $this->cartItems = Json::decode($this->products);
-        parent::afterFind();
-    }
-
     public function sendOrder()
     {
         return Yii::$app->mailer->compose('new_order', ['model' => $this])
-                                ->setFrom([Params::getInfoEmail() => 'Магазин'])
-                                ->setTo(Params::getShopEmail())
-                                ->setSubject('Нове замовлення')
-                                ->send();
+            ->setFrom([Params::getInfoEmail() => 'Магазин'])
+            ->setTo(Params::getShopEmail())
+            ->setSubject('Нове замовлення')
+            ->send();
     }
 
     public function getStatusLabel()

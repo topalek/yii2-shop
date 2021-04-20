@@ -3,15 +3,15 @@
 -----------------------*/
 .shopping-cart {
   padding: 15px 0;
+}
 
-  .minus-btn, .plus-btn {
-    user-select: none;
-    cursor: pointer;
-  }
+.minus-btn, .plus-btn {
+  user-select: none;
+  cursor: pointer;
 }
 
 .shopping__cart__table {
-  margin-bottom: 30px;
+  margin: 30px 0;
 
   table {
     width: 100%;
@@ -150,8 +150,12 @@
   }
 }
 
-.cart__discount {
-  margin-bottom: 60px;
+.order-page {
+  padding: 30px 0;
+}
+
+.cart__info {
+  margin: 30px 0;
 
   h6 {
     color: $heading-color;
@@ -161,7 +165,8 @@
   }
 
   form {
-    position: relative;
+    display: flex;
+    flex-direction: column;
 
     input {
       font-size: 14px;
@@ -176,19 +181,8 @@
       }
     }
 
-    button {
-      font-size: 14px;
-      color: $white-color;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      background: $heading-color;
-      padding: 0 30px;
-      border: none;
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
+    textarea {
+      resize: none;
     }
   }
 }
@@ -197,13 +191,28 @@
   color: $heading-color;
   font-size: 18px;
   font-weight: bold;
-  text-transform: uppercase;
+  //text-transform: uppercase;
   margin-bottom: 15px;
 }
 
 .cart__total {
   background: #f3f2ee;
   padding: 35px 40px 40px;
+
+  .total-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #444444;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    .products-total {
+      color: $primary-color;
+      text-transform: initial;
+    }
+  }
 
   h6 {
     color: $heading-color;
@@ -230,8 +239,9 @@
   }
 
   .primary-btn {
-    display: block;
-    padding: 12px 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
     text-align: center;
     letter-spacing: 2px;
   }

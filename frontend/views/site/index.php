@@ -13,52 +13,21 @@ use yii\helpers\Html;
 $this->title = Yii::$app->name;
 ?>
 <!-- Banner Section Begin -->
-<section class="banner spad">
-    <div class="container">
-        <div class="categories">
-            <?php
-            foreach ($categories as $category) :?>
-                <div class="banner__item">
-                    <div class="banner__item__pic">
-                        <?= Html::img(dynamicImageUrl($category->getMainImgUrl(), 400, 400, 1),) ?>
-                    </div>
-                    <div class="banner__item__text">
-                        <h2><?= $category->getMlTitle() ?></h2>
-                        <?= Html::a(Yii::t('shop', 'За покупками'), [$category->getSeoUrl()]) ?>
-                    </div>
-                </div>
-            <?php
-            endforeach; ?>
-        </div>
-        <div class="row">
-            <div class="col-lg-7 offset-lg-4">
-
+<div class="categories">
+    <?php
+    foreach ($categories as $category) :?>
+        <div class="category__item">
+            <div class="category__item__pic">
+                <?= Html::img(dynamicImageUrl($category->getMainImgUrl(), 400, 400, 1),) ?>
             </div>
-            <div class="col-lg-5">
-                <div class="banner__item banner__item--middle">
-                    <div class="banner__item__pic">
-                        <img src="/img/category/category-2.jpg" alt="">
-                    </div>
-                    <div class="banner__item__text">
-                        <h2>Accessories</h2>
-                        <a href="#">Shop now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                <div class="banner__item banner__item--last">
-                    <div class="banner__item__pic">
-                        <img src="/img/category/category-3.jpg" alt="">
-                    </div>
-                    <div class="banner__item__text">
-                        <h2>Shoes Spring 2030</h2>
-                        <a href="#">Shop now</a>
-                    </div>
-                </div>
+            <div class="category__item__text">
+                <h2><?= $category->getMlTitle() ?></h2>
+                <?= Html::a(Yii::t('shop', 'За покупками'), [$category->getSeoUrl()]) ?>
             </div>
         </div>
-    </div>
-</section>
+    <?php
+    endforeach; ?>
+</div>
 <!-- Banner Section End -->
 
 <!-- Product Section Begin -->

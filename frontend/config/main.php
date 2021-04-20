@@ -57,7 +57,7 @@ return [
                 '/'                     => 'site/index',
                 'catalog'               => 'catalog/default/index',
                 'catalog/set-view-type' => 'catalog/default/set-view-type',
-                // '<action>'      => 'site/<action>',
+                'checkout'              => 'shop/default/order',
                 //                'site/<action>/<year:\d{4}>/<category>' => 'post/index',
                 // 'post/<id:\d+>' => 'post/view',
             ],

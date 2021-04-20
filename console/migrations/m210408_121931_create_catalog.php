@@ -113,9 +113,6 @@ class m210408_121931_create_catalog extends Migration
                 'product_id'           => $this->integer()->notNull(),
                 'property_id'          => $this->integer()->notNull(),
                 'property_category_id' => $this->integer()->notNull(),
-                'price'                => $this->decimal(8, 2)->comment('Цена'),
-                'default'              => $this->boolean()->defaultValue(0),
-                'photo'                => $this->string(),
                 'updated_at'           => $this->timestamp()->notNull()->defaultExpression(
                     'CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
                 )->comment('Дата обновления'),
