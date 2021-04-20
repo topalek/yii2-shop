@@ -149,7 +149,8 @@ class SiteController extends BaseAdminController
     public function actionImport()
     {
         $import = new Import(Yii::$app->runtimePath . '/import.xml');
-        dd($import->run());
-        return $this->render('import');
+        $import->run();
+        $msg = $import->importErrorText;
+        return $this->render('import', compact('msg'));
     }
 }

@@ -8,6 +8,5 @@
 
 /* @var $this \yii\web\View */
 
-use kartik\file\FileInput;
-
-echo FileInput::widget(['name' => 'importfile']);
+// echo FileInput::widget(['name' => 'importfile']);
+var_dump($msg);
