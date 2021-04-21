@@ -32,7 +32,7 @@ class AdminMenu extends Menu
             if ($item['url'] == $current_url) {
                 return true;
             }
-            if (count($currentUrlParts) > 1 && $currentUrlParts[0] == '') {
+            if (count($currentUrlParts) > 1 && $currentUrlParts[0] == '' && $currentUrlParts[1] == '') {
                 return true;
             }
         }

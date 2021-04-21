@@ -38,26 +38,31 @@
         border-bottom: 1px solid #f2f2f2;
 
         td {
-
-          &.product__cart__item {
-            width: 400px;
+          .product__cart__item {
+            display: flex;
+            padding: 0 15px;
 
             .product__cart__item__pic {
-              float: left;
               margin-right: 30px;
+              height: 100px;
+              width: 100px;
+              overflow: hidden;
+
+              img {
+                width: 100%;
+                object-fit: cover;
+              }
             }
 
             .product__cart__item__text {
               overflow: hidden;
               padding-top: 21px;
-
               h6 {
                 color: $heading-color;
                 font-size: 15px;
                 font-weight: 600;
                 margin-bottom: 10px;
               }
-
               h5 {
                 color: #0d0d0d;
                 font-weight: 700;
@@ -72,7 +77,6 @@
               height: 100%;
               display: flex;
               justify-content: center;
-
               .pro-qty-2 {
                 width: 80px;
 

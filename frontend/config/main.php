@@ -55,6 +55,7 @@ return [
                 'sitemap.xml'           => 'seo/default/site-map',
                 'sitemap'               => 'seo/default/site-map',
                 '/'                     => 'site/index',
+                'search'                => 'site/search',
                 'catalog'               => 'catalog/default/index',
                 'catalog/set-view-type' => 'catalog/default/set-view-type',
                 'checkout'              => 'shop/default/order',

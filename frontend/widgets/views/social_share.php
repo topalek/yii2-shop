@@ -50,6 +50,17 @@ $shareUrl = urldecode($pageAbsoluteUrl);
             </li>
             <li>
                 <?= Html::a(
+                    '<i class="fa fa-vk"></i>',
+                    'javascript:(0)',
+                    [
+                        'title'   => Yii::t('social', 'Поделиться в {network}', ['network' => 'Vkontakte']),
+                        'target'  => '_blank',
+                        'onclick' => "shareVk('$shareUrl'); return false;",
+                    ]
+                ) ?>
+            </li>
+            <li>
+                <?= Html::a(
                     '<i class="fa fa-google"></i>',
                     'javascript:(0)',
                     [
@@ -79,6 +90,9 @@ $this->registerJs(
     <<<JS
 function shareFb(url) {
     window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, 'facebook-share-dialog', "width=626,height=436")
+}
+function shareVk(url) {
+    window.open('https://vk.com/share.php?url=' + url + '&title='+$title+'&image=$imgUrl")
 }
 function shareGoogle(url) {
     window.open('https://plus.google.com/share?url=' + url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');

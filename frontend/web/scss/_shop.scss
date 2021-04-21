@@ -353,4 +353,44 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 15px;
+
+  .summary, .product__pagination {
+    grid-column: 1/4;
+  }
+
+  .product__pagination {
+    align-self: center;
+  }
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+
+}
+
+.catalog-product-view {
+  padding-top: 30px;
+
+  .social-share-block {
+    max-width: 200px;
+    margin-top: 20px;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+      list-style: none;
+    }
+  }
+}
+
+.search {
+  padding: 20px 0;
+
+  .search-title {
+    margin-bottom: 20px;
+  }
 }

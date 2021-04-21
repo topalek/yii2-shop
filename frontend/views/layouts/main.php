@@ -164,7 +164,7 @@ $this->beginBody() ?>
 
 <!-- Search Begin -->
 <div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="h-100 d-flex align-items-center jcc">
         <div class="search-close-switch">+</div>
         <?= Html::beginForm(['/site/search'], 'get', ['class' => 'search-model-form']) ?>
         <?= Html::input(
@@ -178,9 +178,6 @@ $this->beginBody() ?>
         ) ?>
         <?php
         Html::endForm() ?>
-        <!--        <form class="search-model-form">-->
-        <!--            <input type="text" id="search-input" placeholder="Search here.....">-->
-        <!--        </form>-->
     </div>
 </div>
 <?php

@@ -140,21 +140,6 @@ class BaseModel extends ActiveRecord
     }
 
     /**
-     * @return string
-     */
-    public function modelUploadsUrl()
-    {
-        $basePath = '/uploads/';
-        if (php_sapi_name() == "cli") // check if php run from console
-        {
-            $baseUrl = $basePath;
-        } else {
-            $baseUrl = Yii::$app->request->baseUrl;
-        }
-        return $baseUrl . $this->moduleUploadsDir() . '/' . $this->id . '/';
-    }
-
-    /**
      * @param $table
      *
      * @return bool|string
@@ -183,6 +168,21 @@ class BaseModel extends ActiveRecord
             isFrontendApp() ? $url : Yii::$app->params['frontendUrl'] . $url,
             ['class' => 'img-responsive', 'style' => 'max-height:170px']
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function modelUploadsUrl()
+    {
+        $basePath = '/uploads/';
+        if (php_sapi_name() == "cli") // check if php run from console
+        {
+            $baseUrl = $basePath;
+        } else {
+            $baseUrl = Yii::$app->request->baseUrl;
+        }
+        return $baseUrl . $this->moduleUploadsDir() . '/' . $this->id . '/';
     }
 
     public function getStatusName()
@@ -287,25 +287,9 @@ class BaseModel extends ActiveRecord
         );
     }
 
-    public function getMlTitle($lang = null, $attribute = null)
-    {
-        return $this->getMlAttribute($lang, 'title');
-    }
-
     public function getMlShortContent($lang = null, $attribute = null)
     {
         return $this->getMlAttribute($lang, 'short_content');
-    }
-
-    /**
-     * @param null $lang
-     * @param null $attribute
-     *
-     * @return mixed
-     */
-    public function getMlContent($lang = null, $attribute = null)
-    {
-        return $this->getMlAttribute($lang, 'content');
     }
 
     /**
@@ -328,20 +312,15 @@ class BaseModel extends ActiveRecord
         return $this->$content ?? '';
     }
 
-    public function getMainImgUrl()
+    /**
+     * @param null $lang
+     * @param null $attribute
+     *
+     * @return mixed
+     */
+    public function getMlContent($lang = null, $attribute = null)
     {
-        if (!$this->main_img) {
-            return '';
-        }
-        $url = $this::modelUploadsUrl() . $this->main_img;
-        if (!isFrontendApp()) {
-            if (strpos($this->main_img, 'http') !== false) {
-                $url = $this->main_img;
-            } else {
-                $url = Yii::$app->params['frontendUrl'] . $url;
-            }
-        }
-        return $url;
+        return $this->getMlAttribute($lang, 'content');
     }
 
     public function getMainImg($options = [])
@@ -353,5 +332,25 @@ class BaseModel extends ActiveRecord
         $options = ArrayHelper::merge($options, $defaultOptions);
         $path = $this->getMainImgUrl();
         return Html::img($path, $options);
+    }
+
+    public function getMlTitle($lang = null, $attribute = null)
+    {
+        return $this->getMlAttribute($lang, 'title');
+    }
+
+    public function getMainImgUrl()
+    {
+        if (!$this->main_img) {
+            return '';
+        }
+        if (strpos($this->main_img, 'http') !== false) {
+            return $this->main_img;
+        }
+        $url = $this::modelUploadsUrl() . $this->main_img;
+        if (!isFrontendApp()) {
+            $url = Yii::$app->params['frontendUrl'] . $url;
+        }
+        return $url;
     }
 }

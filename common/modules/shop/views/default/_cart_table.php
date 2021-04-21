@@ -32,19 +32,23 @@ $totalSum = 0;
         $title = $cartItem['title_' . Yii::$app->language];
         ?>
         <tr class="cart__product__item">
-            <td class="product__cart__item">
-                <div class="product__cart__item__pic">
-                    <?= Html::img(
-                        dynamicImageUrl($cartItem['photo'], 100),
-                        [
-                            'class' => 'img-responsive',
-                        ]
-                    ) ?>
+            <td>
+                <div class="product__cart__item">
+                    <div class="product__cart__item__pic">
+                        <?= Html::img(
+                            strpos($cartItem['photo'], 'http') == false ?
+                                $cartItem['photo'] : dynamicImageUrl($cartItem['photo'], 100),
+                            [
+                                'class' => 'img-responsive',
+                            ]
+                        ) ?>
+                    </div>
+                    <div class="product__cart__item__text">
+                        <h6> <?= Html::a($title, [$cartItem['url']]) ?></h6>
+                        <h5><span><?= $cartItem['price'] ?></span> грн.</h5>
+                    </div>
                 </div>
-                <div class="product__cart__item__text">
-                    <h6> <?= Html::a($title, [$cartItem['url']]) ?></h6>
-                    <h5><span><?= $cartItem['price'] ?></span> грн.</h5>
-                </div>
+
             </td>
             <td class="quantity__item">
                 <div class="quantity">

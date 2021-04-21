@@ -52,7 +52,6 @@ class Import
     private $_categories = [];
     private $_products = [];
     private $_xmlProducts = [];
-    private array $readImportFileErrors;
     private $_params;
     private $formattedParamsArray;
 
@@ -64,6 +63,8 @@ class Import
 
     public function run()
     {
+        $this->importProperties();
+        die;
         Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
         Yii::$app->db->createCommand()->truncateTable(Category::tableName())->execute();
         Yii::$app->db->createCommand()->truncateTable(Product::tableName())->execute();
@@ -73,8 +74,8 @@ class Import
         Yii::$app->db->createCommand()->truncateTable(Property::tableName())->execute();
         Yii::$app->db->createCommand()->checkIntegrity(true)->execute();
         if ($this->importCategories() && $this->importProducts()) {
-            if ($this->importChars()) {
-                if ($this->importCharValues()) {
+            if ($this->importPropertyCategories()) {
+                if ($this->importProperties()) {
                     // $this->refreshShopItemChar();
                 }
             }
@@ -296,7 +297,7 @@ class Import
         return $this->_xmlProducts;
     }
 
-    public function importChars()
+    public function importPropertyCategories()
     {
         $newChars = $this->getXmlCharsArray();
 
@@ -310,9 +311,9 @@ class Import
                 }
                 $propCategory->save();
             }
-            $this->importErrorText = 'empty Property Categories';
             return true;
         }
+        $this->importErrorText = 'empty Property Categories';
         return false;
     }
 
@@ -387,7 +388,7 @@ class Import
         $this->_params = $params;
     }
 
-    public function importCharValues()
+    public function importProperties()
     {
         $formattedArrayParams = $this->getFormattedArrayParams();
         if (!empty($formattedArrayParams)) {

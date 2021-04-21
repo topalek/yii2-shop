@@ -10,7 +10,7 @@ use yii\helpers\Html;
  * @var $properties      \common\modules\catalog\models\ProductProperty[]
  */
 
-$this->title = $model->getMlTitle();
+$this->title = Html::decode($model->getMlTitle());
 $this->params['breadcrumbs'][] = ['label' => Yii::t('site', 'Каталог'), 'url' => ['/catalog/default/index']];
 
 if ($model->category->parent) {
@@ -40,59 +40,22 @@ $this->registerJsFile(
     <div class="catalog-product-view">
 
         <div class="row">
-            <div class="col-sm-4 main-img-block" data-thumb="<?= $model->getMainImgUrl() ?>"
-                 data-full-img="<?= $model->getMainImgUrl() ?>">
-                <?= Html::img(
-                    $model->getMainImgUrl(),
-                    [
-                        'alt'             => $model->getMlTitle(),
-                        'class'           => 'img-responsive main-image',
-                        'data-zoom-image' => $model->getMainImgUrl(),
-                    ]
-                ) ?>
-            </div>
-            <div class="col-sm-8 about">
-                <h1><?= Html::encode($this->title) ?></h1>
-
-                <div class="price" data-price="<?= $model->price ?>">
-                    <span><?= asMoney($model->price) ?></span> грн.
+            <div class="col-sm-4">
+                <div class="main-img-block" data-thumb="<?= $model->getMainImgUrl() ?>"
+                     data-full-img="<?= $model->getMainImgUrl() ?>">
+                    <?= Html::a(
+                        Html::img(
+                            $model->getMainImgUrl(),
+                            [
+                                'class'           => 'img-responsive main-image',
+                                'data-zoom-image' => $model->getMainImgUrl(),
+                                'alt'             => $model->getMlTitle(),
+                            ]
+                        ),
+                        $model->getMainImgUrl(),
+                        ['class' => 'fancy-box', 'rel' => 'cat']
+                    ); ?>
                 </div>
-
-                <div class="description">
-                    <?= $model->getMlContent() ?>
-                </div>
-
-                <?php
-                if ($properties): ?>
-                    <ul class="property-list">
-                        <?php
-                        $prevCatId = null;
-                        $openNew = false;
-                        foreach ($properties as $key => $property) {
-                            if ($property->property_category_id != $prevCatId) {
-                                echo Html::beginTag('li');
-                                echo Html::tag('strong', $property->propertyCategory->getMlTitle()) . ':';
-                            }
-
-
-                            echo Html::tag(
-                                'span',
-                                $property->property->getMlTitle(),
-                                [
-                                    'class' => ($property->id == $defaultProperty->id) ? 'active' : '',
-                                ]
-                            );
-
-                            if (!isset($properties[$key + 1]) || $properties[$key + 1]->property_category_id != $property->property_category_id) {
-                                echo Html::endTag('li');
-                            }
-
-                            $prevCatId = $property->property_category_id;
-                            $openNew = false;
-                        } ?>
-                    </ul>
-                <?php
-                endif; ?>
                 <?php
                 if ($model->additional_images): ?>
                     <div class="row">
@@ -107,21 +70,60 @@ $this->registerJsFile(
                     </div>
                 <?php
                 endif; ?>
-                <?= Html::a(
-                    Yii::t('shop', 'Купить'),
-                    ['/shop/default/add-to-cart'],
-                    ['class' => 'add-to-cart-btn primary-btn', 'data-item-id' => $model->id]
-                ) ?>
+            </div>
+            <div class="col-sm-8">
+                <div class="about">
+                    <h1 class="product-title"><?= Html::encode($this->title) ?></h1>
+                    <div class="product-info">
+                        <div class="props">
+                            <?php
+                            if ($properties): ?>
+                                <ul class="property-list">
+                                    <?php
+                                    $prevCatId = null;
+                                    $openNew = false;
+                                    foreach ($properties as $key => $property) {
+                                        if ($property->property_category_id != $prevCatId) {
+                                            echo Html::beginTag('li');
+                                            echo Html::tag('strong', $property->propertyCategory->getMlTitle()) . ':';
+                                        }
 
-                <?= frontend\widgets\SocialShareWidget::widget(
-                    [
-                        'title'     => $model->getMlTitle(),
-                        'desc'      => getShortText($model->getMlContent(), 250, true),
-                        'imgUrl'    => $model->modelUploadsUrl() . $model->main_img,
-                        'imgWidth'  => 600,
-                        'imgHeight' => 800,
-                    ]
-                ) ?>
+
+                                        echo Html::tag(
+                                            'span',
+                                            $property->property->getMlTitle(),
+                                            [
+                                                'class' => ($property->id == $defaultProperty->id) ? 'active' : '',
+                                            ]
+                                        );
+
+                                        if (!isset($properties[$key + 1]) || $properties[$key + 1]->property_category_id != $property->property_category_id) {
+                                            echo Html::endTag('li');
+                                        }
+
+                                        $prevCatId = $property->property_category_id;
+                                        $openNew = false;
+                                    } ?>
+                                </ul>
+                            <?php
+                            endif; ?>
+                        </div>
+
+                        <div class="product-actions">
+                            <div class="price" data-price="<?= $model->price ?>">
+                                <span><?= asMoney($model->price) ?></span> грн.
+                            </div>
+                            <?= Html::a(
+                                Yii::t('shop', 'Купить'),
+                                ['/shop/default/add-to-cart', 'id' => $model->id],
+                                ['class' => 'add-to-cart primary-btn']
+                            ) ?>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <?= $model->getMlContent() ?>
+                    </div>
+                </div>
             </div>
         </div>
 

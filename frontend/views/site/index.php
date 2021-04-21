@@ -40,12 +40,10 @@ $this->title = Yii::$app->name;
                 <h2 class="text-center">Best Sellers</h2>
             </div>
         </div>
-        <div class="row">
+        <div class="products-grid">
             <?php
             foreach ($products as $product) :?>
-                <div class="col-lg-3 col-md-6 col-sm-6 product-item">
-                    <?= $this->render('@common/modules/shop/views/default/_product_item', ['model' => $product]) ?>
-                </div>
+                <?= $this->render('@common/modules/shop/views/default/_product_item', ['model' => $product]) ?>
             <?php
             endforeach; ?>
 

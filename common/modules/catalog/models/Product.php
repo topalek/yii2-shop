@@ -279,7 +279,7 @@ class Product extends BaseModel
      */
     public function getMlContent($lang = null, $attribute = 'description')
     {
-        return parent::getMlContent($lang, $attribute);
+        return parent::getMlAttribute($lang, $attribute);
     }
 
     /**
