@@ -10,6 +10,7 @@ use common\models\forms\LoginForm;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -148,9 +149,18 @@ class SiteController extends BaseAdminController
 
     public function actionImport()
     {
-        $import = new Import(Yii::$app->runtimePath . '/import.xml');
-        $import->run();
-        $msg = $import->importErrorText;
+        $msg = 'Выберите файл для импорта';
+        if ($this->request->isPost) {
+            $file = UploadedFile::getInstanceByName('importfile');
+            if ($file) {
+                $importFilePath = Yii::$app->runtimePath . '/import.xml';
+                $file->saveAs($importFilePath);
+                $import = new Import($importFilePath);
+                $import->run();
+                $msg = $import->importErrorText;
+            }
+        }
+
         return $this->render('import', compact('msg'));
     }
 }

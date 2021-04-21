@@ -85,10 +85,8 @@ $this->registerJsFile(
                                     foreach ($properties as $key => $property) {
                                         if ($property->property_category_id != $prevCatId) {
                                             echo Html::beginTag('li');
-                                            echo Html::tag('strong', $property->propertyCategory->getMlTitle()) . ':';
+                                            echo Html::tag('strong', $property->propertyCategory->getMlTitle() . ':');
                                         }
-
-
                                         echo Html::tag(
                                             'span',
                                             $property->property->getMlTitle(),
@@ -96,11 +94,9 @@ $this->registerJsFile(
                                                 'class' => ($property->id == $defaultProperty->id) ? 'active' : '',
                                             ]
                                         );
-
                                         if (!isset($properties[$key + 1]) || $properties[$key + 1]->property_category_id != $property->property_category_id) {
                                             echo Html::endTag('li');
                                         }
-
                                         $prevCatId = $property->property_category_id;
                                         $openNew = false;
                                     } ?>
@@ -110,6 +106,9 @@ $this->registerJsFile(
                         </div>
 
                         <div class="product-actions">
+                            <div class="article">
+                                <?= Yii::t('shop', 'Код товара:') ?> <strong><?= $model->article ?></strong>
+                            </div>
                             <div class="price" data-price="<?= $model->price ?>">
                                 <span><?= asMoney($model->price) ?></span> грн.
                             </div>

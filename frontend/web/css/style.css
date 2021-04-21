@@ -983,10 +983,18 @@ ol {
   font-size: 34px;
 }
 .catalog-product-view .about .product-info {
+  font-size: 16px;
   margin: 20px 0;
   padding: 30px;
   background-color: #ebebeb;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 30px;
+  justify-content: space-between;
+}
+.catalog-product-view .about .product-actions {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
 .catalog-product-view .about .price {
@@ -999,6 +1007,18 @@ ol {
 }
 .catalog-product-view .about .description {
   padding-top: 20px;
+}
+.catalog-product-view .about .property-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.catalog-product-view .about .property-list li {
+  display: flex;
+  justify-content: space-between;
+}
+.catalog-product-view .about .property-list li strong:first-letter {
+  text-transform: capitalize;
 }
 
 .filter__controls {
@@ -3330,7 +3350,7 @@ ol {
   }
 
   .slicknav_nav .slicknav_row,
-  .slicknav_nav a {
+.slicknav_nav a {
     padding: 7px 0;
     margin: 0;
     color: #111111;

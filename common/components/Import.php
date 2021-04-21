@@ -10,6 +10,7 @@ namespace common\components;
 
 use common\modules\catalog\models\Category;
 use common\modules\catalog\models\Product;
+use common\modules\catalog\models\ProductProperty;
 use common\modules\catalog\models\Property;
 use common\modules\catalog\models\PropertyCategory;
 use DOMDocument;
@@ -17,6 +18,7 @@ use XMLReader;
 use Yii;
 use yii\console\Exception;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 use yii\log\Logger;
 
 class Import
@@ -63,8 +65,7 @@ class Import
 
     public function run()
     {
-        $this->importProperties();
-        die;
+        $this->deleteAllImages();
         Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
         Yii::$app->db->createCommand()->truncateTable(Category::tableName())->execute();
         Yii::$app->db->createCommand()->truncateTable(Product::tableName())->execute();
@@ -76,10 +77,9 @@ class Import
         if ($this->importCategories() && $this->importProducts()) {
             if ($this->importPropertyCategories()) {
                 if ($this->importProperties()) {
-                    // $this->refreshShopItemChar();
+                    $this->importErrorText = 'Все импортировано';
                 }
             }
-
             $result = true;
         }
     }
@@ -92,7 +92,7 @@ class Import
                 $cat = new Category();
                 $cat->id = $catId;
                 $cat->title_ru = $newCategory['name'];
-                $cat->parent_id = $newCategory['parentId'];
+                $cat->parent_id = $newCategory['parentId'] ?? null;
                 if (!$cat->save(false)) {
                     $this->importErrorText = $cat->firstErrors;
                 }
@@ -101,19 +101,6 @@ class Import
         }
         $this->importErrorText = 'Отсутствуют категории';
         return false;
-    }
-
-    public function getCategoriesToAdd()
-    {
-        $categoriesToAdd = [];
-        if ($this->getXmlCategoryArray()) {
-            foreach ($this->getXmlCategoryArray() as $xmlCategory) {
-                if (!in_array($xmlCategory['name'], $this->getCategories())) {
-                    $categoriesToAdd[] = $xmlCategory;
-                }
-            }
-        }
-        return $categoriesToAdd;
     }
 
     public function getXmlCategoryArray()
@@ -340,78 +327,36 @@ class Import
         return $this->_params;
     }
 
-    public function setCharsRelation($params = '')
-    {
-        if ($params) {
-            $this->_params = $params;
-        }
-
-        $partnerChars = CharPartnerAlias::getList(true, ['title', 'char.title'], ['partner_id' => $this->partnerId]);
-        $charsValuesList = Char::getList(true, ['title', 'partner_char_values']);
-
-        $params = [];
-
-        foreach ($this->_params as $key => $values) {
-            foreach ($values as $char => $value) {
-                //TODO: Перевірити звідки у $value масив. Зараз не впливає ні на що. Все корректно працює
-                if (is_array($value)) {
-                    continue;
-                }
-                $newChar = ArrayHelper::getValue($partnerChars, $char, $char);
-                $charsValues = ArrayHelper::getValue($charsValuesList, $char);
-
-                if ($charsValues) {
-                    $charsValues = Json::decode($charsValues);
-                    if ($partner_char_values = ArrayHelper::getValue($charsValues, $this->partnerId)) {
-                        foreach ($partner_char_values as $newValue => $items) {
-                            if (is_array($items)) {
-                                foreach ($items as $item) {
-                                    if (mb_strtolower(trim($item)) == mb_strtolower($value)) {
-                                        $value = $newValue;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                if (mb_strtolower(trim($items)) == mb_strtolower($value)) {
-                                    $value = $newValue;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                $params[$key][$newChar] = $value;
-            }
-        }
-
-        $this->_params = $params;
-    }
-
     public function importProperties()
     {
         $formattedArrayParams = $this->getFormattedArrayParams();
         if (!empty($formattedArrayParams)) {
-            if (empty($this->getExistsCharValues())) {
-                foreach ($formattedArrayParams as $charCategoryId => $items) {
-                    foreach ($items as $charTitle => $shopItemXmlIds) {
+            foreach ($formattedArrayParams as $propCategoryId => $items) {
+                foreach ($items as $propTitle => $productIds) {
+                    $prop = new Property();
+                    $prop->title_ru = $propTitle;
+                    $prop->property_category_id = $propCategoryId;
+                    if (!$prop->save()) {
+                        $this->importErrorText = $prop->firstErrors;
+                        return false;
+                    }
+                    foreach ($productIds as $productId) {
+                        $prodProp = new ProductProperty();
+                        $prodProp->property_category_id = $propCategoryId;
+                        $prodProp->property_id = $prop->id;
+                        $prodProp->product_id = $productId;
+                        if (!$prodProp->save()) {
+                            $this->importErrorText = $prodProp->firstErrors;
+                            return false;
+                        }
                     }
                 }
-                // $addedCharsCount = $this->makeAndRunCharValueSql($formattedArrayParams);
-
             }
+
             return true;
         } else {
             return false;
         }
-    }
-
-    private function getProducts()
-    {
-        if (!$this->_products) {
-            $this->_products = Product::find()->select(['article', 'id'])->indexBy('id')->column();
-        }
-        return $this->_products;
     }
 
     private function getCategories()
@@ -420,33 +365,6 @@ class Import
             $this->_categories = Category::find()->select(['title_ru', 'id'])->indexBy('id')->column();
         }
         return $this->_categories;
-    }
-
-    private function fillProductCategory()
-    {
-        foreach ($this->getXmlProductsArray() as $i => $xmlProduct) {
-            if (array_key_exists($xmlProduct['categoryId'], $this->getXmlCategoryArray())) {
-                $xmlCat = ArrayHelper::getValue($this->getXmlCategoryArray(), $xmlProduct['categoryId']);
-                $xmlCategoryName = ArrayHelper::getValue($xmlCat, 'name');
-                $this->_xmlProducts[$i]['categoryId'] = $xmlCategoryName;
-                if (in_array($xmlCategoryName, $this->getCategories())) {
-                    $categoryId = array_keys($this->getCategories(), $xmlCategoryName);
-                    $categoryId = array_shift($categoryId);
-                    $this->_xmlProducts[$i]['categoryId'] = $categoryId;
-                }
-            }
-        }
-    }
-
-    private function getProductsToAdd()
-    {
-        $productsToAdd = [];
-        foreach ($this->getXmlProductsArray() as $xmlProduct) {
-            if (!in_array($xmlProduct['article'], $this->getProducts())) {
-                $productsToAdd[] = $xmlProduct;
-            }
-        }
-        return $productsToAdd;
     }
 
     private function clearParams($xmlProduct)
@@ -476,202 +394,28 @@ class Import
         if ($this->formattedParamsArray != null) {
             return $this->formattedParamsArray;
         }
-        $chars = $this->getXmlParamsArray();
+        $params = $this->getXmlParamsArray();
         $tmp = [];
-        $i = 0;
-        $total = 0;
-
-        $existsChars = $this->getExistsChars();
-        foreach ($chars as $shopItemXmlId => $itemChars) {
+        $existsPropCategories = $this->getExistsPropertyCategories();
+        foreach ($params as $productId => $itemChars) {
             foreach ($itemChars as $charTitle => $charValue) {
-                if (($charId = ArrayHelper::getValue($existsChars, mb_strtolower($charTitle))) != null) {
-                    $tmp[$charId][$charValue][] = $shopItemXmlId;
+                if (($charId = ArrayHelper::getValue($existsPropCategories, mb_strtolower($charTitle))) != null) {
+                    $tmp[$charId][$charValue][] = $productId;
                 }
             }
         }
-
         $this->formattedParamsArray = $tmp;
         unset($tmp);
         return $this->formattedParamsArray;
     }
 
-    public function getExistsChars()
+    public function getExistsPropertyCategories()
     {
         if (empty($this->existsCharsArray)) {
-            $this->existsCharsArray = PropertyCategory::find()->select(['title_ru', 'id'])->indexBy('id')->column();
+            $this->existsCharsArray = PropertyCategory::find()->select(['id', 'title_ru'])->indexBy('title_ru')->column(
+            );
         }
-
         return $this->existsCharsArray;
-    }
-
-    public function getExistsCharValues()
-    {
-        if (empty($this->existsCharValuesArray) || $refresh) {
-            $this->existsCharValuesArray = (new Query())
-                ->select(
-                    [
-                        'char_value.id',
-                        'char_value.title',
-                        'char_value_translate.value AS title_ru',
-                        'char_value.char_id',
-                    ]
-                )
-                ->from(CharValue::tableName())
-                ->leftJoin('char_value_translate', 'char_value_translate.model_id = char_value.id')
-                ->where(['char_value.char_id' => $this->charIds])
-                ->all();
-        }
-
-        return $this->existsCharValuesArray;
-    }
-
-    public function makeAndRunCharValueSql($data)
-    {
-        $sql = "";
-        $syncStatus = 0;
-        $i = 0;
-        $total = 0;
-
-        if ($sql) {
-            $this->printR(" printing char_value.sql\n");
-            $sqlFile = $this->importDir . 'char_value.sql';
-            file_put_contents($sqlFile, $sql . ";");
-            $this->runSql($sqlFile);
-        }
-
-        return $total;
-    }
-
-    public function getShopItemCharDataArray()
-    {
-        $this->printR("Get shop item char data array \n");
-        // $charsArray = [
-        //  'char_id' => [
-        //      char_value_title => char_value_id
-        //  ]
-        // ];
-        $charsArray = [];
-        foreach ($this->getExistsCharValues() as $items) {
-            $char_id = $items['id'];
-            $charsArray[$items['char_id']][$items['title']] = $char_id;
-            if ($items['title_ru']) {
-                $charsArray[$items['char_id']][$items['title_ru']] = $char_id;
-            }
-        }
-
-        $this->printR("\n Getting shop_item ids \n");
-        $shopItems = ShopItem::find()->select(['xml_id', 'id'])
-                             ->where(
-                                 [
-                                     'original_partner_id' => $this->partnerId,
-                                     'status'              => ShopItem::STATUS_PUBLISHED,
-                                     'availability'        => ShopItem::AVAILABLE,
-                                 ]
-                             )
-                             ->asArray()
-                             ->all();
-        $shopItems = ArrayHelper::map($shopItems, 'id', 'xml_id');
-        $shopItemCharDataArray = [];
-        $i = 0;
-        foreach ($this->getFormattedArrayParams() as $charId => $items) {
-            foreach ($items as $charTitle => $shopItemXmlId) {
-                if (array_key_exists($charId, $charsArray)) {
-                    $charValueId = 0;
-                    $quoteCharTitle = Yii::$app->db->quoteValue($charTitle);
-                    if (array_key_exists($quoteCharTitle, $charsArray[$charId])) {
-                        $charValueId = $charsArray[$charId][$charTitle];
-                    }
-                    if (array_key_exists($charTitle, $charsArray[$charId])) {
-                        $charValueId = $charsArray[$charId][$charTitle];
-                    }
-                    if ($charValueId != 0) {
-                        $shopItemsIdsArray = array_flip(array_intersect($shopItems, $shopItemXmlId));
-                        if (!empty($shopItemsIdsArray)) {
-                            $shopItemCharDataArray[$charValueId] = $shopItemsIdsArray;
-                            $i++;
-                        }
-                    }
-                }
-            }
-        }
-        return $shopItemCharDataArray;
-    }
-
-    public function makeAndRunShopItemCharSql($data)
-    {
-        $sql = "SET NAMES utf8 COLLATE utf8_general_ci;";
-        $sql .= "\n INSERT IGNORE INTO `shop_item_char` (char_value_id,shop_item_id,sync_status) VALUES ";
-        $i = 0;
-        $total = 0;
-        foreach ($data as $charId => $shopItems) {
-            foreach ($shopItems as $shopItemXmlId => $shopItemId) {
-                $values = "($charId,$shopItemId,0)";
-                if ($i == 1500) {
-                    $sql .= ";\n INSERT IGNORE INTO `shop_item_char` (char_value_id,shop_item_id,sync_status) VALUES $values, ";
-                    $i = 0;
-                } else {
-                    if ($i > 0) {
-                        $sql .= ",";
-                    }
-                    $sql .= $values;
-                    $i++;
-                }
-                $total++;
-            }
-        }
-
-        $this->printR(" printing shop_item_char.sql\n");
-
-        $sqlFile = $this->importDir . 'shop_item_char.sql';
-        file_put_contents($sqlFile, $sql);
-        $this->runSql($sqlFile);
-        return $total;
-    }
-
-    public function getCharsToAdd($oldChars)
-    {
-        $this->printR("\n Comparing params \n");
-        $charsToAdd = [];
-        $formatted = $this->getFormattedArrayParams();
-        $i = 0;
-        $existsCharsTitlesArray = [];
-        foreach ($this->getExistsCharValues() as $data) {
-            $existsCharsTitlesArray[$data['char_id']][] = $data['title'];
-            if ($data['title_ru']) {
-                $existsCharsTitlesArray[$data['char_id']][] = $data['title_ru'];
-            }
-            $i++;
-        }
-
-        $xmlCharTitles = [];
-        foreach ($formatted as $charId => $data) {
-            foreach ($data as $charTitle => $shopItemsIds) {
-                $xmlCharTitles[$charId][] = $charTitle;
-                $i++;
-            }
-        }
-
-        $category_chars = [];
-        foreach ($xmlCharTitles as $charId => $charTitles) {
-            if (array_key_exists($charId, $existsCharsTitlesArray)) {
-                if ($tmp = array_diff($charTitles, $existsCharsTitlesArray[$charId])) {
-                    $category_chars[$charId] = $tmp;
-                    $i++;
-                }
-            } else {
-                $category_chars[$charId] = $charTitles;
-            }
-        }
-
-
-        foreach ($category_chars as $charId => $charTitles) {
-            foreach ($charTitles as $charTitle) {
-                $charsToAdd[$charId][$charTitle] = $formatted[$charId][$charTitle];
-                $i++;
-            }
-        }
-
-        return $charsToAdd;
     }
 
     public function getParamsArray()
@@ -686,8 +430,14 @@ class Import
         }
     }
 
-    private function printR(string $string)
+    private function deleteAllImages()
     {
-        print_r($string);
+        $dirArray = [
+            Category::moduleUploadsPath(),
+            Product::moduleUploadsPath(),
+        ];
+        foreach ($dirArray as $dir) {
+            FileHelper::removeDirectory($dir);
+        }
     }
 }

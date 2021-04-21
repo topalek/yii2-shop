@@ -287,9 +287,9 @@ class BaseModel extends ActiveRecord
         );
     }
 
-    public function getMlShortContent($lang = null, $attribute = null)
+    public function getMlShortContent($lang = null, $attribute = 'description')
     {
-        return $this->getMlAttribute($lang, 'short_content');
+        return getShortText(strip_tags($this->getMlAttribute($lang, $attribute)), 300);
     }
 
     /**

@@ -41,9 +41,12 @@ use yii\widgets\ActiveForm;
                     Widget::class,
                     [
                         'options' => [
-                            //                    'lang'        => 'ua',
                             'imageUpload'         => Url::to(
-                                ['/admin/default/upload-imperavi', 'module' => $model->getModelName()]
+                                [
+                                    '/site/upload-imperavi',
+                                    'model_name' => $model->getModelName(),
+                                    'model_id'   => $model->id,
+                                ]
                             ),
                             'minHeight'           => '350px',
                             'uploadImageFields'   => [
@@ -54,7 +57,7 @@ use yii\widgets\ActiveForm;
                             ],
                             'imageDeleteCallback' => "function(url,image){
                             $.ajax({
-                                url: '/admin/default/delete-imperavi-img?modeule=category',
+                                url: '/site/delete-imperavi-img?model=product',
                                 type: 'post',
                                 data: {imgUrl:$(image).attr('src'), _csrf: yii.getCsrfToken()}
                             });

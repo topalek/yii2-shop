@@ -86,12 +86,12 @@ class BaseAdminController extends Controller
         return $maxOrder;
     }
 
-    public function actionImperaviUpload($model_name)
+    public function actionImperaviUpload($model_name, $model_id)
     {
         $pic = UploadedFile::getInstanceByName('file');
         $model_name = strtolower($model_name);
         if ($pic->type == 'image/png' || $pic->type == 'image/jpg' || $pic->type == 'image/gif' || $pic->type == 'image/jpeg' || $pic->type == 'image/pjpeg') {
-            $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web/uploads/$model_name/";
+            $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web/uploads/$model_name/$model_id/";
             $imperavi_path = $path . 'imperavi/';
             $name = md5(time()) . '.jpg';
 
@@ -105,7 +105,7 @@ class BaseAdminController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
 
             if ($pic->saveAs($imperavi_path . $name)) {
-                return ['filelink' => "/uploads/$model_name/imperavi/" . $name];
+                return ['filelink' => "/uploads/$model_name/$model_id/imperavi/" . $name];
             } else {
                 return ['error' => true];
             }

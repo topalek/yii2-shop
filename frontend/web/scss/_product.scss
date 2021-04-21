@@ -15,10 +15,19 @@
 
   .about {
     .product-info {
+      font-size: 16px;
       margin: 20px 0;
       padding: 30px;
       background-color: $border;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-gap: 30px;
+      justify-content: space-between;
+    }
+
+    .product-actions {
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
     }
 
@@ -33,6 +42,21 @@
 
     .description {
       padding-top: 20px;
+    }
+
+    .property-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+
+        strong:first-letter {
+          text-transform: capitalize;
+        }
+      }
     }
   }
 }

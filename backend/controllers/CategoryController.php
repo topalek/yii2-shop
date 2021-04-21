@@ -127,10 +127,13 @@ class CategoryController extends BaseAdminController
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imgFile = UploadedFile::getInstance($model, 'imgFile');
-            if ($model->imgFile && $model->validate()) {
-                $imgName = SeoBehavior::generateSlug($model->title_ru) . '.' . $model->imgFile->extension;
-                $model->main_img = $imgName;
-                $model->imgFile->saveAs($model->modelUploadsPath() . $imgName);
+            if ($model->validate()) {
+                if ($model->imgFile) {
+                    $imgName = SeoBehavior::generateSlug($model->title_ru) . '.' . $model->imgFile->extension;
+                    $model->main_img = $imgName;
+                    $model->imgFile->saveAs($model->modelUploadsPath() . $imgName);
+                }
+
                 $model->save();
                 Yii::$app->session->setFlash('humane', 'Сохранено');
             }

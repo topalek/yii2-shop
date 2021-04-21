@@ -1,5 +1,7 @@
 <?php
 
+
+use common\modules\catalog\models\Category;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -29,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'id',
                 // 'title_uk',
-                'title_ru',
+                'title_ru:html',
                 //            'title_en',
                 //             'description_uk:ntext',
-                'description_ru:ntext',
+//                'MlShortContent:ntext',
                 // 'description_en:ntext',
                 // 'price',
                 // 'main_img',
@@ -41,6 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value'     => function ($model) {
                         return $model->category->title_ru;
                     },
+                    'filter'    => Category::getList(),
                 ],
                 // 'status',
                 // 'updated_at',

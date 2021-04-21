@@ -55,7 +55,7 @@ class DefaultController extends BaseController
      */
     protected function findCategory($id)
     {
-        if (($model = Category::find()->with(['propertyCategories', 'seo'])->where(['catalog_category.id' => $id])->one(
+        if (($model = Category::find()->with(['propertyCategories', 'seo'])->where(['category.id' => $id])->one(
             )) !== null) {
             return $model;
         } else {
