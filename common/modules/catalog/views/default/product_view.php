@@ -80,25 +80,24 @@ $this->registerJsFile(
                             if ($properties): ?>
                                 <ul class="property-list">
                                     <?php
-                                    $prevCatId = null;
-                                    $openNew = false;
+
                                     foreach ($properties as $key => $property) {
-                                        if ($property->property_category_id != $prevCatId) {
-                                            echo Html::beginTag('li');
-                                            echo Html::tag('strong', $property->propertyCategory->getMlTitle() . ':');
-                                        }
+                                        echo Html::beginTag('li');
+                                        $propCat = $property->propertyCategory->getMlTitle(
+                                        ) ? $property->propertyCategory->getMlTitle(
+                                        ) : $property->propertyCategory->getMlTitle('ru');
+                                        var_dump($property->property->getMlTitle('uk'));
+                                        $propTitle = $property->property->getMlTitle(
+                                        ) ? $property->property->getMlTitle() : $property->property->getMlTitle('ru');
+                                        echo Html::tag('strong', $propCat . ':');
                                         echo Html::tag(
                                             'span',
-                                            $property->property->getMlTitle(),
+                                            $propTitle,
                                             [
                                                 'class' => ($property->id == $defaultProperty->id) ? 'active' : '',
                                             ]
                                         );
-                                        if (!isset($properties[$key + 1]) || $properties[$key + 1]->property_category_id != $property->property_category_id) {
-                                            echo Html::endTag('li');
-                                        }
-                                        $prevCatId = $property->property_category_id;
-                                        $openNew = false;
+                                        echo Html::endTag('li');
                                     } ?>
                                 </ul>
                             <?php
