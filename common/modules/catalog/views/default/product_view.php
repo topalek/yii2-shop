@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 $images = [];
 
 $propertyData = [];
-
+//dd(Property::findOne(1));
+dd($model->properties);
 $this->registerCssFile(Yii::$app->request->baseUrl . '/js/fancybox/jquery.fancybox.css');
 $this->registerJsFile(
     Yii::$app->request->baseUrl . '/js/fancybox/jquery.fancybox.js',

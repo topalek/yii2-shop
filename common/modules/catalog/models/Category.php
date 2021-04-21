@@ -41,7 +41,7 @@ class Category extends BaseModel
 
     public static function roots()
     {
-        return Category::find()->where(['parent_id' => 0])->all();
+        return Category::find()->where(['parent_id' => null])->all();
     }
 
     /**
@@ -51,21 +51,6 @@ class Category extends BaseModel
     public static function find()
     {
         return new CategoryQuery(get_called_class());
-    }
-
-    /**
-     * @param null $image
-     *
-     * @return string
-     * @throws \yii\base\Exception
-     */
-    public static function mainImgTempPath($image = null)
-    {
-        $path = self::moduleUploadsPath();
-        if ($image !== null) {
-            $path .= '/' . $image;
-        }
-        return $path;
     }
 
     public function isRoot(): bool
@@ -137,60 +122,9 @@ class Category extends BaseModel
                     'view_action'   => 'catalog/default/category-view',
                     'view_category' => 'catalog/category',
                 ],
-//                'search'         => [
-//                    'class' => SearchBehavior::class,
-//                ],
             ]
         );
     }
-
-    /**
-     * @param null $image
-     *
-     * @return bool|string
-     */
-    public function mainImgPath($image = null)
-    {
-        $path = $this->modelUploadsPath();
-        if ($image !== null) {
-            $path .= '/' . $image;
-        }
-        return $path;
-    }
-
-    public function getSearchScope()
-    {
-        return [
-            'select' => [
-                'category.title_uk',
-                'category.title_ru',
-                'category.title_en',
-                'category.description_uk',
-                'category.description_ru',
-                'category.description_en',
-                'category.id',
-                'category.main_img',
-            ],
-            'with'   => 'seo',
-        ];
-    }
-
-    public function getIndexFields()
-    {
-        return [
-            ['name' => 'model_name', 'value' => 'category', 'type' => SearchBehavior::FIELD_UNINDEXED],
-            ['name' => 'model_id', 'value' => $this->id, 'type' => SearchBehavior::FIELD_UNINDEXED],
-            ['name' => 'title_uk', 'value' => $this->title_uk],
-            ['name' => 'title_ru', 'value' => $this->title_ru],
-            ['name' => 'title_en', 'value' => $this->title_en],
-            ['name' => 'content_uk', 'value' => strip_tags($this->description_uk)],
-            ['name' => 'content_ru', 'value' => strip_tags($this->description_ru)],
-            ['name' => 'content_en', 'value' => strip_tags($this->description_en)],
-            ['name' => 'url', 'value' => $this->getSeoUrl(), 'type' => SearchBehavior::FIELD_KEYWORD],
-            ['name' => 'img', 'value' => $this->getMainImg()],
-        ];
-    }
-
 
     /**
      * @return \yii\db\ActiveQuery
@@ -211,7 +145,7 @@ class Category extends BaseModel
     public function getPropertyCategories()
     {
         return $this->hasMany(PropertyCategory::class, ['id' => 'property_category_id'])
-            ->viaTable('property_category_catalog_category', ['category_id' => 'id']);
+            ->viaTable('{{%property_category_catalog_category}}', ['category_id' => 'id']);
     }
 
     public function transactions()

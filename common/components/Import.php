@@ -13,6 +13,7 @@ use common\modules\catalog\models\Product;
 use common\modules\catalog\models\ProductProperty;
 use common\modules\catalog\models\Property;
 use common\modules\catalog\models\PropertyCategory;
+use common\modules\seo\models\Seo;
 use DOMDocument;
 use XMLReader;
 use Yii;
@@ -67,6 +68,7 @@ class Import
     {
         $this->deleteAllImages();
         Yii::$app->db->createCommand()->checkIntegrity(false)->execute();
+        Seo::deleteAll(['>', 'id', 1]);
         Yii::$app->db->createCommand()->truncateTable(Category::tableName())->execute();
         Yii::$app->db->createCommand()->truncateTable(Product::tableName())->execute();
         Yii::$app->db->createCommand()->truncateTable(PropertyCategory::tableName())->execute();
@@ -92,7 +94,7 @@ class Import
                 $cat = new Category();
                 $cat->id = $catId;
                 $cat->title_ru = $newCategory['name'];
-                $cat->parent_id = $newCategory['parentId'] ?? null;
+                $cat->parent_id = $newCategory['parentId'] != 0 ? $newCategory['parentId'] : null;
                 if (!$cat->save(false)) {
                     $this->importErrorText = $cat->firstErrors;
                 }

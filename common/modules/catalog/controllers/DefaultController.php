@@ -62,7 +62,9 @@ class DefaultController extends BaseController
 
     public function actionProductView($id)
     {
+        /**@var $model Product */
         $model = $this->findItem($id);
+        dd($model->properties);
         $formattedProperties = [];
         $defaultProperty = null;
         $properties = $model->properties;

@@ -12,27 +12,27 @@ use yii\helpers\Url;
 /**
  * This is the model class for table "product".
  *
- * @property integer         $id
- * @property string          $title_uk
- * @property string          $title_ru
- * @property string          $title_en
- * @property string          $description_uk
- * @property string          $description_ru
- * @property string          $description_en
- * @property int             $price
- * @property string          $main_img
- * @property string[]        $additional_images
- * @property integer         $category_id
- * @property string          $article
- * @property integer         $status
- * @property integer         $stock
- * @property integer         $order_count
- * @property integer         $new
- * @property string          $updated_at
- * @property string          $created_at
+ * @property integer    $id
+ * @property string     $title_uk
+ * @property string     $title_ru
+ * @property string     $title_en
+ * @property string     $description_uk
+ * @property string     $description_ru
+ * @property string     $description_en
+ * @property int        $price
+ * @property string     $main_img
+ * @property string[]   $additional_images
+ * @property integer    $category_id
+ * @property string     $article
+ * @property integer    $status
+ * @property integer    $stock
+ * @property integer    $order_count
+ * @property integer    $new
+ * @property string     $updated_at
+ * @property string     $created_at
  *
- * @property Category        $category
- * @property ProductProperty $properties
+ * @property Category   $category
+ * @property Property[] $properties
  */
 class Product extends BaseModel
 {
@@ -61,8 +61,8 @@ class Product extends BaseModel
             function () use ($id) {
                 return self::find()
                     ->with(['properties', 'properties.property', 'properties.propertyCategory', 'category'])
-                           ->where(['product.id' => $id])
-                           ->one();
+                    ->where(['product.id' => $id])
+                    ->one();
             }
         );
     }
@@ -72,20 +72,6 @@ class Product extends BaseModel
         return new ProductQuery(get_called_class());
     }
 
-    /**
-     * @param null $image
-     *
-     * @return string
-     * @throws \yii\base\Exception
-     */
-    public static function mainImgTempPath($image = null)
-    {
-        $path = self::moduleUploadsPath();
-        if ($image !== null) {
-            $path .= '/' . $image;
-        }
-        return $path;
-    }
 
     /**
      * @inheritdoc
@@ -150,20 +136,6 @@ class Product extends BaseModel
         );
     }
 
-    /**
-     * @param null $image
-     *
-     * @return bool|string
-     */
-    public function mainImgPath($image = null)
-    {
-        $path = $this->modelUploadsPath();
-        if ($image !== null) {
-            $path .= '/' . $image;
-        }
-        return $path;
-    }
-
     public function beforeSave($insert)
     {
         return parent::beforeSave($insert);
@@ -173,21 +145,6 @@ class Product extends BaseModel
     {
         Yii::$app->cache->delete('catalogItem' . $this->id);
         parent::afterSave($insert, $changedAttributes);
-    }
-
-
-    public function getAdditionalImgsUrl()
-    {
-        $imgList = [];
-        if ($this->additional_images) {
-            $imgList = array_map(
-                function ($item) {
-                    return isFrontendApp() ? $item : Yii::$app->params['frontendUrl'] . $item;
-                },
-                $this->additional_images
-            );
-        }
-        return [...$imgList];
     }
 
     public function initialPreviewConfig()
@@ -203,6 +160,23 @@ class Product extends BaseModel
             ];
         }
         return $config;
+    }
+
+    public function getAdditionalImgsUrl()
+    {
+        $imgList = [];
+        if ($this->additional_images) {
+            $imgList = array_map(
+                function ($item) {
+                    if (strpos($item, 'http') != false) {
+                        return $item;
+                    }
+                    return isFrontendApp() ? $item : Yii::$app->params['frontendUrl'] . $item;
+                },
+                $this->additional_images
+            );
+        }
+        return [...$imgList];
     }
 
     public function saveImg()
@@ -268,7 +242,10 @@ class Product extends BaseModel
      */
     public function getProperties()
     {
-        return $this->hasMany(ProductProperty::class, ['product_id' => 'id']);
+        return $this->hasMany(Property::class, ['id' => 'property_id'])->viaTable(
+            ProductProperty::tableName(),
+            ['product_id' => 'id']
+        );
     }
 
     /**
