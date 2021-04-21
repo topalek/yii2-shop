@@ -20,11 +20,13 @@ use yii\widgets\ActiveForm;
 <?php
 $form = ActiveForm::begin(
     [
-        'id'     => 'product-property-form',
+        'id' => 'product-property-form',
         'action' => ($model->isNewRecord) ? Url::toRoute(
             ['/product/add-property', 'product_id' => $model->product_id]
         ) :
-            Url::toRoute(['/product/update-property', 'id' => $model->id, 'product_id' => $model->product_id]),
+            Url::toRoute(
+                ['/product/update-property', 'property_id' => $model->property_id, 'product_id' => $model->product_id]
+            ),
     ]
 ) ?>
 <div class="modal-header">
@@ -72,7 +74,7 @@ $form = ActiveForm::begin(
 
 </div>
 <div class="modal-footer text-center">
-    <?= Html::button('Отмена', ['class' => 'btn btn-default cancel-form']) ?>
+    <?= Html::a('Отмена', ['update', 'id' => $product->id], ['class' => 'btn btn-default cancel-form']) ?>
     <?= Html::submitButton(
         ($model->isNewRecord) ? 'Добавить' : 'Сохранить',
         ['class' => 'btn btn-success']

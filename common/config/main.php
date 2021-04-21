@@ -2,7 +2,6 @@
 
 use common\components\BaseUrlManager;
 use common\modules\catalog\CatalogModule;
-use common\modules\image\ImageModule;
 
 return [
     'aliases'    => [
@@ -16,9 +15,6 @@ return [
         ],
         'htmlBlock' => [
             'class' => common\modules\htmlBlock\Module::class,
-        ],
-        'image'     => [
-            'class' => ImageModule::class,
         ],
         'page'      => [
             'class' => common\modules\page\Module::class,
@@ -38,9 +34,6 @@ return [
         'user'      => [
             'class' => common\modules\user\UserModule::class,
         ],
-//        'search'    => [
-//            'class' => 'app\modules\search\SearchModule',
-//        ],
     ],
     'components' => [
         'db'           => [

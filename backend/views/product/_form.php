@@ -201,21 +201,25 @@ use yii\widgets\ActiveForm;
                             <?php
                             foreach ($model->properties as $property) :?>
                                 <tr class="product-property" data-id="<?= $property->id ?>">
-                                    <td><?= $property->propertyCategory->getMLTitle() ?></td>
-                                    <td><?= $property->property->getMLTitle() ?></td>
+                                    <td><?= $property->category->getMLTitle() ?></td>
+                                    <td><?= $property->getMLTitle() ?></td>
                                     <td class="actions">
                                         <?= Html::a(
                                             '<i class="fa fa-pencil"></i>',
                                             [
                                                 '/product/update-property',
-                                                'id' => $property->id,
-                                                'product_id' => $model->id,
+                                                'property_id' => $property->id,
+                                                'product_id'  => $model->id,
                                             ],
                                             ['class' => 'update-property']
                                         ) ?>
                                         <?= Html::a(
                                             '<i class="fa fa-times"></i>',
-                                            ['/product/delete-property', 'id' => $property->id],
+                                            [
+                                                '/product/delete-property',
+                                                'property_id' => $property->id,
+                                                'product_id'  => $model->id,
+                                            ],
                                             ['class' => 'delete-property']
                                         ) ?>
                                     </td>

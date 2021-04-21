@@ -109,7 +109,6 @@ class m210408_121931_create_catalog extends Migration
         $this->createTable(
             '{{%product_property}}',
             [
-                'id'                   => $this->primaryKey(),
                 'product_id'           => $this->integer()->notNull(),
                 'property_id'          => $this->integer()->notNull(),
                 'property_category_id' => $this->integer()->notNull(),
@@ -155,6 +154,7 @@ class m210408_121931_create_catalog extends Migration
             '{{%property_category}}',
             'id'
         );
+        $this->addPrimaryKey('pk-product-property', '{{%product_property}}', ['product_id', 'property_id']);
         $this->addForeignKey(
             'fk_product_properties',
             '{{%product_property}}',

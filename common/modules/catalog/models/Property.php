@@ -15,6 +15,7 @@ use common\components\BaseModel;
  * @property string           $updated_at
  * @property string           $created_at
  *
+ * @property-read mixed       $products
  * @property PropertyCategory $category
  */
 class Property extends BaseModel

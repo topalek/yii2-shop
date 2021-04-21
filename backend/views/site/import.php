@@ -14,8 +14,12 @@ use frontend\helpers\Html;
 use kartik\widgets\FileInput;
 
 ?>
-<h3>
-    <?= $msg; ?>
+<h3><?php
+    if (is_array($msg)) {
+        print_r($msg);
+    } else {
+        echo $msg;
+    } ?>
 </h3>
 <?= Html::beginForm(
     '',

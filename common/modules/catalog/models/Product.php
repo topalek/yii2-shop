@@ -12,27 +12,28 @@ use yii\helpers\Url;
 /**
  * This is the model class for table "product".
  *
- * @property integer    $id
- * @property string     $title_uk
- * @property string     $title_ru
- * @property string     $title_en
- * @property string     $description_uk
- * @property string     $description_ru
- * @property string     $description_en
- * @property int        $price
- * @property string     $main_img
- * @property string[]   $additional_images
- * @property integer    $category_id
- * @property string     $article
- * @property integer    $status
- * @property integer    $stock
- * @property integer    $order_count
- * @property integer    $new
- * @property string     $updated_at
- * @property string     $created_at
+ * @property integer      $id
+ * @property string       $title_uk
+ * @property string       $title_ru
+ * @property string       $title_en
+ * @property string       $description_uk
+ * @property string       $description_ru
+ * @property string       $description_en
+ * @property int          $price
+ * @property string       $main_img
+ * @property string[]     $additional_images
+ * @property integer      $category_id
+ * @property string       $article
+ * @property integer      $status
+ * @property integer      $stock
+ * @property integer      $order_count
+ * @property integer      $new
+ * @property string       $updated_at
+ * @property string       $created_at
  *
- * @property Category   $category
- * @property Property[] $properties
+ * @property Category     $category
+ * @property-read array[] $additionalImgsUrl
+ * @property Property[]   $properties
  */
 class Product extends BaseModel
 {
@@ -136,17 +137,6 @@ class Product extends BaseModel
         );
     }
 
-    public function beforeSave($insert)
-    {
-        return parent::beforeSave($insert);
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        Yii::$app->cache->delete('catalogItem' . $this->id);
-        parent::afterSave($insert, $changedAttributes);
-    }
-
     public function initialPreviewConfig()
     {
         $config = [];
@@ -168,7 +158,7 @@ class Product extends BaseModel
         if ($this->additional_images) {
             $imgList = array_map(
                 function ($item) {
-                    if (strpos($item, 'http') != false) {
+                    if (strpos($item, 'http') !== false) {
                         return $item;
                     }
                     return isFrontendApp() ? $item : Yii::$app->params['frontendUrl'] . $item;
@@ -260,25 +250,11 @@ class Product extends BaseModel
     }
 
     /**
-     * @return array
-     */
-    public function buildNestedBreadcrumbs()
-    {
-        $result = [];
-        foreach ($this->category->parents()->all() as $root) {
-            $result[] = ['label' => $root->getMlTitle(), 'url' => $root->getSeoUrl()];
-        }
-        $result[] = ['label' => $this->category->getMlTitle(), 'url' => $this->category->getSeoUrl()];
-        return $result;
-    }
-
-    /**
      * @return bool
      */
     public function beforeDelete()
     {
         ProductProperty::deleteAll(['product_id' => $this->id]);
-        Yii::$app->cache->delete('catalogItem' . $this->id);
         return parent::beforeDelete();
     }
 

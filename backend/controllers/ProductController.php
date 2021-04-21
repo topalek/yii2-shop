@@ -223,9 +223,11 @@ class ProductController extends BaseAdminController
     }
 
 
-    public function actionUpdateProperty($id, $product_id)
+    public function actionUpdateProperty($property_id, $product_id)
     {
-        $model = ProductProperty::find()->where(['id' => $id])->limit(1)->one();
+        $model = ProductProperty::find()->where(['property_id' => $property_id, 'product_id' => $product_id])->limit(
+            1
+        )->one();
         $product = Product::findOne($product_id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $product_id]);
@@ -233,9 +235,11 @@ class ProductController extends BaseAdminController
         return $this->render('property_form', ['model' => $model, 'product' => $product]);
     }
 
-    public function actionDeleteProperty($id)
+    public function actionDeleteProperty($property_id, $product_id)
     {
-        $model = ProductProperty::find()->where(['id' => $id])->limit(1)->one();
+        $model = ProductProperty::find()->where(['property_id' => $property_id, 'product_id' => $product_id])->limit(
+            1
+        )->one();
         $model->delete();
     }
 

@@ -348,7 +348,7 @@ class Import
                         $prodProp->property_id = $prop->id;
                         $prodProp->product_id = $productId;
                         if (!$prodProp->save()) {
-                            $this->importErrorText = $prodProp->firstErrors;
+                            $this->importErrorText = $prodProp->errors;
                             return false;
                         }
                     }

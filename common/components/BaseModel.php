@@ -156,14 +156,13 @@ class BaseModel extends ActiveRecord
         return $maxOrder;
     }
 
-    public function getImages($width = null, $height = null, $escapeMain = false)
-    {
-        return Image::getModelImages($this->id, $this->getModelName(), $width, $height, $escapeMain);
-    }
 
     public function imgPreview()
     {
         $url = $this->modelUploadsUrl() . $this->main_img;
+        if (strpos($this->main_img, 'http') !== false) {
+            $url = $this->main_img;
+        }
         return Html::img(
             isFrontendApp() ? $url : Yii::$app->params['frontendUrl'] . $url,
             ['class' => 'img-responsive', 'style' => 'max-height:170px']
@@ -226,23 +225,6 @@ class BaseModel extends ActiveRecord
             return $url;
         } else {
             return null;
-        }
-    }
-
-    public function beforeDelete()
-    {
-//        if ($this->autoCache)
-//            Yii::$app->cache->delete($this->defaultCacheId($this->id));
-//        FileHelper::removeDirectory($this->modelUploadsPath());
-
-        return parent::beforeDelete();
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-        if ($this->autoCache) {
-            Yii::$app->cache->set($this->defaultCacheId($this->id), $this, self::DEFAULT_CACHE_DURATION);
         }
     }
 
