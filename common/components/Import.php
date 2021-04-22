@@ -90,15 +90,20 @@ class Import
     {
         $categoriesToAdd = $this->getXmlCategoryArray();
         if (!empty($categoriesToAdd)) {
+            $transaction = Yii::$app->db->beginTransaction();
             foreach ($categoriesToAdd as $catId => $newCategory) {
                 $cat = new Category();
                 $cat->id = $catId;
                 $cat->title_ru = $newCategory['name'];
                 $cat->parent_id = $newCategory['parentId'] != 0 ? $newCategory['parentId'] : null;
-                if (!$cat->save(false)) {
-                    $this->importErrorText = $cat->firstErrors;
+                if (!$cat->save()) {
+                    $this->importErrorText = $cat->errors;
                 }
             }
+            if (!empty($this->importErrorText)) {
+                $transaction->rollBack();
+            }
+            $transaction->commit();
             return true;
         }
         $this->importErrorText = 'Отсутствуют категории';
@@ -242,6 +247,7 @@ class Import
         // $this->fillProductCategory();
         $productsToAdd = $this->getXmlProductsArray();
         if (!empty($productsToAdd)) {
+            $transaction = Yii::$app->db->beginTransaction();
             foreach ($productsToAdd as $addProduct) {
                 $newProduct = new Product();
                 $newProduct->id = $addProduct['id'];
@@ -259,9 +265,13 @@ class Import
                     $newProduct->additional_images = $addProduct['image'];
                 }
                 if (!$newProduct->save(false)) {
-                    $this->importErrorText = $newProduct->firstErrors;
+                    $this->importErrorText = $newProduct->errors;
                 }
             }
+            if (!empty($this->importErrorText)) {
+                $transaction->rollBack();
+            }
+            $transaction->commit();
             return true;
         }
         $this->importErrorText = 'Empty products';
@@ -291,6 +301,7 @@ class Import
         $newChars = $this->getXmlCharsArray();
 
         if (!empty($newChars)) {
+            $transaction = Yii::$app->db->beginTransaction();
             $newChars = array_unique($newChars);
             foreach ($newChars as $newChar) {
                 $propCategory = new PropertyCategory();
@@ -300,6 +311,10 @@ class Import
                 }
                 $propCategory->save();
             }
+            if (!empty($this->importErrorText)) {
+                $transaction->rollBack();
+            }
+            $transaction->commit();
             return true;
         }
         $this->importErrorText = 'empty Property Categories';
@@ -333,13 +348,14 @@ class Import
     {
         $formattedArrayParams = $this->getFormattedArrayParams();
         if (!empty($formattedArrayParams)) {
+            $transaction = Yii::$app->db->beginTransaction();
             foreach ($formattedArrayParams as $propCategoryId => $items) {
                 foreach ($items as $propTitle => $productIds) {
                     $prop = new Property();
                     $prop->title_ru = $propTitle;
                     $prop->property_category_id = $propCategoryId;
                     if (!$prop->save()) {
-                        $this->importErrorText = $prop->firstErrors;
+                        $this->importErrorText = $prop->errors;
                         return false;
                     }
                     foreach ($productIds as $productId) {
@@ -354,7 +370,10 @@ class Import
                     }
                 }
             }
-
+            if (!empty($this->importErrorText)) {
+                $transaction->rollBack();
+            }
+            $transaction->commit();
             return true;
         } else {
             return false;

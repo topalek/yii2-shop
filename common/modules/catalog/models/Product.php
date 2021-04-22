@@ -12,28 +12,29 @@ use yii\helpers\Url;
 /**
  * This is the model class for table "product".
  *
- * @property integer      $id
- * @property string       $title_uk
- * @property string       $title_ru
- * @property string       $title_en
- * @property string       $description_uk
- * @property string       $description_ru
- * @property string       $description_en
- * @property int          $price
- * @property string       $main_img
- * @property string[]     $additional_images
- * @property integer      $category_id
- * @property string       $article
- * @property integer      $status
- * @property integer      $stock
- * @property integer      $order_count
- * @property integer      $new
- * @property string       $updated_at
- * @property string       $created_at
+ * @property int               $id
+ * @property string|null       $title_uk          Название ru
+ * @property string            $title_ru          Название uk
+ * @property string|null       $title_en          Название en
+ * @property string|null       $description_uk    Описание ru
+ * @property string|null       $description_ru    Описание uk
+ * @property string|null       $description_en    Описание en
+ * @property float|null        $price             Цена
+ * @property string|null       $main_img          Изображение
+ * @property string|null       $additional_images Дополнительные изображения
+ * @property int               $category_id       Категория
+ * @property string|null       $article           Артикул
+ * @property int|null          $stock             Количество
+ * @property int|null          $order_count       Количество заказов
+ * @property int|null          $new               Новинка
+ * @property int               $status            Статус
+ * @property string            $updated_at        Дата обновления
+ * @property string            $created_at        Дата создания
  *
- * @property Category     $category
- * @property-read array[] $additionalImgsUrl
- * @property Property[]   $properties
+ * @property Category          $category
+ * @property ProductProperty[] $productProperties
+ * @property-read array[]      $additionalImgsUrl
+ * @property Property[]        $properties
  */
 class Product extends BaseModel
 {
@@ -61,7 +62,7 @@ class Product extends BaseModel
             'product' . $id,
             function () use ($id) {
                 return self::find()
-                    ->with(['properties', 'properties.property', 'properties.propertyCategory', 'category'])
+                    ->with(['properties', 'productProperties', 'category'])
                     ->where(['product.id' => $id])
                     ->one();
             }
@@ -236,6 +237,16 @@ class Product extends BaseModel
             ProductProperty::tableName(),
             ['product_id' => 'id']
         );
+    }
+
+    /**
+     * Gets query for [[ProductProperties]].
+     *
+     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
+     */
+    public function getProductProperties()
+    {
+        return $this->hasMany(ProductProperty::class, ['product_id' => 'id']);
     }
 
     /**

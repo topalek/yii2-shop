@@ -176,15 +176,4 @@ class Seo extends BaseModel
             'keywords'    => $this->getMlKeywords(),
         ];
     }
-
-    public function getMlDescription($lang = null, $attr = null)
-    {
-        return $this->getMlAttribute($lang, 'description');
-    }
-
-    public function getMlKeywords($lang = null, $attr = null)
-    {
-        return $this->getMlAttribute($lang, 'keywords');
-    }
-
 }

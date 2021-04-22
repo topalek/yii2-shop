@@ -280,7 +280,7 @@ class BaseModel extends ActiveRecord
      *
      * @return mixed
      */
-    public function getMlAttribute($lang = null, $attribute)
+    protected function getMlAttribute($lang = null, $attribute)
     {
         if (!$lang) {
             $lang = Yii::$app->language;
@@ -291,7 +291,8 @@ class BaseModel extends ActiveRecord
         }
 
         $content = $attribute . '_' . $lang;
-        return $this->$content ?? '';
+        $contentDefault = $attribute . '_ru';
+        return $this->$content ?? $this->$contentDefault;
     }
 
     /**
@@ -300,9 +301,14 @@ class BaseModel extends ActiveRecord
      *
      * @return mixed
      */
-    public function getMlContent($lang = null, $attribute = null)
+    public function getMlContent($lang = null, $attribute = 'description')
     {
-        return $this->getMlAttribute($lang, 'content');
+        return $this->getMlAttribute($lang, $attribute);
+    }
+
+    public function getMlKeywords($lang = null, $attribute = 'keywords')
+    {
+        return $this->getMlAttribute($lang, $attribute);
     }
 
     public function getMainImg($options = [])
@@ -316,9 +322,9 @@ class BaseModel extends ActiveRecord
         return Html::img($path, $options);
     }
 
-    public function getMlTitle($lang = null, $attribute = null)
+    public function getMlTitle($lang = null, $attribute = 'title')
     {
-        return $this->getMlAttribute($lang, 'title');
+        return $this->getMlAttribute($lang, $attribute);
     }
 
     public function getMainImgUrl()

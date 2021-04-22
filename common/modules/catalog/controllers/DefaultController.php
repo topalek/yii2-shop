@@ -6,24 +6,28 @@ use common\components\BaseController;
 use common\modules\catalog\models\Category;
 use common\modules\catalog\models\Product;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class DefaultController extends BaseController
 {
-    public function actionIndex($page = 1)
+    public function actionIndex()
     {
-        $perPage = 12;
-        $offset = $page - 1;
         $categories = Category::roots();
-        $productCount = Product::find()->active()->count();
-        $products = Product::find()->with(['category'])->active()->limit($perPage)->offset($offset)->all();
+        $dataProvider = new ActiveDataProvider(
+            [
+                'query'      => Product::find()->active(),
+                'pagination' => [
+                    'pageSize' => 12,
+                ],
+            ]
+        );
 
         return $this->render(
             'index',
             compact(
                 'categories',
-                'productCount',
-                'products',
+                'dataProvider',
             )
         );
     }
@@ -35,7 +39,7 @@ class DefaultController extends BaseController
         return $this->render(
             'category_view',
             [
-                'model'    => $model,
+                'model' => $model,
             ]
         );
     }
@@ -64,33 +68,10 @@ class DefaultController extends BaseController
     {
         /**@var $model Product */
         $model = $this->findItem($id);
-        dd($model->properties);
-        $formattedProperties = [];
-        $defaultProperty = null;
-        $properties = $model->properties;
-        if ($properties) {
-            $tmp = [];
-            foreach ($properties as $property) {
-                if ($property->default) {
-                    $defaultProperty = $property;
-                }
-                $tmp[$property->property_category_id][] = $property;
-            }
-            foreach ($tmp as $category) {
-                foreach ($category as $item) {
-                    $formattedProperties[] = $item;
-                }
-            }
-            if ($defaultProperty == null) {
-                $defaultProperty = $formattedProperties[0];
-            }
-        }
         return $this->render(
             'product_view',
             [
-                'model'           => $model,
-                'properties'      => $formattedProperties,
-                'defaultProperty' => $defaultProperty,
+                'model' => $model,
             ]
         );
     }

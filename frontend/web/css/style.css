@@ -1042,33 +1042,84 @@ ol {
 }
 
 .product__item {
-  overflow: hidden;
-  margin-bottom: 40px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 0 0 0 blue;
+    transition: all ease-in-out 0.2s;
 }
+
 .product__item .product__item__pic {
-  opacity: 1;
-  transition: all ease-in-out 0.25s;
+    opacity: 1;
+    transition: all ease-in-out 0.25s;
 }
+
+.product__item .product-info {
+    padding: 0 10px 10px;
+}
+
+.product__item .product-info .product-title_card {
+    color: #111111;
+    transition: color ease-in-out 0.2s;
+    padding: 10px 0;
+    height: 44px;
+    overflow: hidden;
+    display: flex;
+    text-overflow: ellipsis;
+}
+
+.product__item .product-info .product-title_card:hover {
+    color: #0c2b4b;
+    text-decoration: underline;
+}
+
+.product__item .price-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product__item .price-box .price {
+    font-weight: bold;
+    color: #e53637;
+}
+
+.product__item .price-box .add-to-cart {
+    color: #ffffff;
+    transition: color ease-in-out 0.2s;
+}
+
+.product__item .price-box .add-to-cart:hover {
+    color: #0c2b4b;
+}
+
 .product__item.sale .product__item__pic .label {
-  color: #ffffff;
-  background: #111111;
+    color: #ffffff;
+    background: #111111;
 }
+
 .product__item.sale .product-info a {
-  color: #111111;
-  text-decoration: none;
-  display: flex;
+    color: #111111;
+    text-decoration: none;
+    display: flex;
 }
+
 .product__item.sale .product-info a:hover, .product__item.sale .product-info a:active, .product__item.sale .product-info a:focus {
   color: rgba(17, 17, 17, 0.2);
 }
 .product__item.sale .product__item__text .rating i {
   color: #f7941d;
 }
+
 .product__item.sale .product__item__text .rating i:nth-last-child(1) {
-  color: #b7b7b7;
+    color: #b7b7b7;
 }
+
+.product__item:hover {
+    box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.5);
+}
+
 .product__item:hover .product__item__pic {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 .product__item:hover .product__item__pic .product__hover {
   right: 20px;

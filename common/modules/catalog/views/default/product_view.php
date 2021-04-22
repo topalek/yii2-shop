@@ -5,9 +5,6 @@ use yii\helpers\Html;
 /**
  * @var $this            yii\web\View
  * @var $model           common\modules\catalog\models\Product
- * @var $property        \common\modules\catalog\models\ProductProperty
- * @var $defaultProperty \common\modules\catalog\models\ProductProperty
- * @var $properties      \common\modules\catalog\models\ProductProperty[]
  */
 
 $this->title = Html::decode($model->getMlTitle());
@@ -22,11 +19,6 @@ if ($model->category->parent) {
 $this->params['breadcrumbs'][] = ['label' => $model->category->getMlTitle(), 'url' => $model->category->getSeoUrl()];
 $this->params['breadcrumbs'][] = $this->title;
 
-$images = [];
-
-$propertyData = [];
-//dd(Property::findOne(1));
-dd($model->properties);
 $this->registerCssFile(Yii::$app->request->baseUrl . '/js/fancybox/jquery.fancybox.css');
 $this->registerJsFile(
     Yii::$app->request->baseUrl . '/js/fancybox/jquery.fancybox.js',
@@ -78,28 +70,17 @@ $this->registerJsFile(
                     <div class="product-info">
                         <div class="props">
                             <?php
-                            if ($properties): ?>
+                            if ($model->properties): ?>
                                 <ul class="property-list">
                                     <?php
 
-                                    foreach ($properties as $key => $property) {
-                                        echo Html::beginTag('li');
-                                        $propCat = $property->propertyCategory->getMlTitle(
-                                        ) ? $property->propertyCategory->getMlTitle(
-                                        ) : $property->propertyCategory->getMlTitle('ru');
-                                        var_dump($property->property->getMlTitle('uk'));
-                                        $propTitle = $property->property->getMlTitle(
-                                        ) ? $property->property->getMlTitle() : $property->property->getMlTitle('ru');
-                                        echo Html::tag('strong', $propCat . ':');
-                                        echo Html::tag(
-                                            'span',
-                                            $propTitle,
-                                            [
-                                                'class' => ($property->id == $defaultProperty->id) ? 'active' : '',
-                                            ]
-                                        );
-                                        echo Html::endTag('li');
-                                    } ?>
+                                    foreach ($model->properties as $key => $property):?>
+                                        <li>
+                                            <strong><?= $property->category->getMlTitle() ?>: </strong>
+                                            <span><?= $property->getMlTitle() ?></span>
+                                        </li>
+                                    <?php
+                                    endforeach; ?>
                                 </ul>
                             <?php
                             endif; ?>

@@ -16,15 +16,17 @@ use yii\helpers\Html;
          style="background-image: url('<?= $model->getMainImgUrl() ?>')">
     </div>
     <div class="product-info">
-        <h6><?= Html::a($model->getMlTitle(), $model->getSeoUrl()) ?></h6>
-        <h5><?= Yii::$app->formatter->asCurrency($model->price, 'UAH') ?></h5>
-        <?= Html::a(
-            '+ Add To Cart',
-            ['/shop/default/add-to-cart', 'id' => $model->id],
-            [
-                //                    'data-method' => 'post',
-                'class' => 'add-to-cart',
-            ]
-        ) ?>
+        <h6><?= Html::a($model->getMlTitle(), $model->getSeoUrl(), ['class' => 'product-title_card']) ?></h6>
+        <div class="price-box">
+            <h5 class="price"><?= Yii::$app->formatter->asCurrency($model->price, 'UAH') ?></h5>
+            <?= Html::a(
+                '<i class="fa fa-shopping-cart" aria-hidden="true"></i>',
+                ['/shop/default/add-to-cart', 'id' => $model->id],
+                [
+                    'class' => 'add-to-cart btn btn-primary',
+                    'title' => Yii::t('shop', 'В корзину'),
+                ]
+            ) ?>
+        </div>
     </div>
 </div>

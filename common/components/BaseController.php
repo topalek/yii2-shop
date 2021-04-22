@@ -46,9 +46,9 @@ class BaseController extends Controller
         $seo = Seo::findByExternalLink($url);
 
         if ($seo != null) {
-            $this->title = $seo->mlTitle;
-            $this->description = $seo->mlDescription;
-            $this->keywords = $seo->mlKeywords;
+            $this->title = $seo->getMlTitle();
+            $this->description = $seo->getMlContent();
+            $this->keywords = $seo->getMlKeywords();
         }
 
         Yii::$app->response->cookies->add(
