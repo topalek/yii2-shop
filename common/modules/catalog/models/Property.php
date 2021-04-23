@@ -73,7 +73,7 @@ class Property extends BaseModel
 
     public function getProducts()
     {
-        return $this->hasMany(Product::class, ['product_id' => 'id'])->viaTable(
+        return $this->hasMany(Product::class, ['id' => 'product_id'])->viaTable(
             ProductProperty::tableName(),
             ['property_id' => 'id']
         );

@@ -9,8 +9,11 @@
 namespace common\components;
 
 use common\modules\params\models\Params;
+use Throwable;
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
@@ -144,5 +147,32 @@ class BaseAdminController extends Controller
             }
         }
         return Json::encode($result);
+    }
+
+    /**
+     * @return array|bool
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public function actionSwitchState()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        /* @var $class ActiveRecord */
+        $class = Yii::$app->request->get('class');
+        $fieldName = Yii::$app->request->get('fieldName');
+        $model = $class::findOne(Yii::$app->request->get('id'));
+
+        if ($model->$fieldName == 1) {
+            $model->$fieldName = 0;
+        } else {
+            $model->$fieldName = 1;
+        }
+
+        if ($model->update(false, [$fieldName])) {
+            return true;
+        } else {
+            return ['message' => 'Произошла ошибка'];
+        }
     }
 }

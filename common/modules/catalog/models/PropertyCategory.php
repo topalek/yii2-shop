@@ -9,14 +9,16 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "property_category".
  *
- * @property integer                           $id
+ * @property int                               $id
  * @property string                            $title_uk
  * @property string                            $title_ru
  * @property string                            $title_en
+ * @property bool                              $in_filters
  * @property string                            $updated_at
  * @property string                            $created_at
  *
  * @property Property[]                        $properties
+ * @property-read string                       $catalogCategoryList
  * @property PropertyCategoryCatalogCategory[] $catalogCategories
  */
 class PropertyCategory extends BaseModel
@@ -39,7 +41,8 @@ class PropertyCategory extends BaseModel
         return [
             [['title_ru'], 'required'],
             ['catalogCategoryIds', 'each', 'rule' => ['integer']],
-            [['updated_at', 'created_at'], 'safe'],
+            [['updated_at', 'created_at', 'in_filters'], 'safe'],
+            [['in_filters'], 'boolean'],
             [['title_uk', 'title_ru', 'title_en'], 'string', 'max' => 255],
         ];
     }
@@ -54,6 +57,7 @@ class PropertyCategory extends BaseModel
             'title_uk'           => 'Название (uk)',
             'title_ru'           => 'Название (ru)',
             'title_en'           => 'Название (en)',
+            'in_filters'         => 'Использовать в фильтрах',
             'catalogCategoryIds' => 'Категория в каталоге',
             'updated_at'         => 'Дата обновления',
             'created_at'         => 'Дата создания',
@@ -177,5 +181,10 @@ class PropertyCategory extends BaseModel
             $result .= $catalogCategory->catalogCategory->title_ru;
         }
         return $result;
+    }
+
+    public static function find()
+    {
+        return new PropertyCategoryQuery(get_called_class());
     }
 }

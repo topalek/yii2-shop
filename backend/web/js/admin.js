@@ -38,3 +38,24 @@ $(document).ready(function () {
         });
     }
 });
+$(document).on('click', '.grid-view .switch-state-btn', function () {
+    let element = $(this);
+    if (element.attr('disabled') === 'disabled') {
+        return false;
+    }
+    $.get($(this).data('url'), {
+        id: $(this).data('id'),
+        fieldName: $(this).data('field'),
+        class: $(this).data('class')
+    }, function (response) {
+        if (response === true) {
+            if ($(element).hasClass('fa-check-square-o')) {
+                $(element).removeClass('fa-check-square-o').addClass('fa-square-o');
+            } else {
+                $(element).addClass('fa-check-square-o').removeClass('fa-square-o');
+            }
+        } else {
+            humane.log(response.message, {timeout: 2500});
+        }
+    });
+});

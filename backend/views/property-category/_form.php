@@ -3,6 +3,7 @@
 use common\modules\catalog\models\Category;
 use common\modules\translate\models\Translate;
 use kartik\select2\Select2;
+use kartik\widgets\SwitchInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -34,6 +35,16 @@ use yii\widgets\ActiveForm;
             'options' => [
                 'multiple'    => true,
                 'placeholder' => 'Выберите категорию...',
+            ],
+        ]
+    ) ?>
+    <?= $form->field($model, 'in_filters')->widget(
+        SwitchInput::class,
+        [
+            'pluginOptions' => [
+                'size'    => 'small',
+                'onText'  => 'Да',
+                'offText' => 'Нет',
             ],
         ]
     ) ?>

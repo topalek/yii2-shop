@@ -1,5 +1,6 @@
 <?php
 
+use common\components\SwitchColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -25,8 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             'filterModel'  => $searchModel,
             'columns'      => [
-                ['class' => 'yii\grid\SerialColumn'],
-
                 'id',
                 'title_ru',
                 [
@@ -36,7 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $data->catalogCategoryList;
                     },
                 ],
-
+                [
+                    'class'     => SwitchColumn::class,
+                    'attribute' => 'in_filters',
+                ],
                 [
                     'class'    => 'yii\grid\ActionColumn',
                     'template' => '{update}{delete}',

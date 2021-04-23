@@ -31,10 +31,9 @@ class SideNavMenu extends Menu
 
     public function init()
     {
-        Yii::$app->request->setQueryParams(['prop' => 123]);
-
         $category = Category::roots();
         $catitems = [];
+        $path = Yii::$app->request->resolve();
 
         foreach ($category as $cat) {
             $catitems[] = [
@@ -42,14 +41,22 @@ class SideNavMenu extends Menu
                 'label' => $cat->getMlTitle(),
             ];
         }
-        $propCat = PropertyCategory::find()->all();
+        $propCat = PropertyCategory::find()->with('properties')->forFilters()->all();
         $propCatitems = [];
 
-        foreach ($propCat as $cat) {
-            $propCatitems[] = [
-                'url'   => "?prop=" . $cat->id,
+        /**@var $cat PropertyCategory */
+        foreach ($propCat as $i => $cat) {
+            $propCatitems[$i] = [
                 'label' => $cat->getMlTitle(),
             ];
+            if ($cat->properties) {
+                foreach ($cat->properties as $prop) {
+                    $propCatitems[$i]['items'][] = [
+                        'label' => $prop->getMlTitle(),
+                        'url'   => "id=" . $prop->id,
+                    ];
+                }
+            }
         }
         $this->items = [
             [
@@ -57,12 +64,8 @@ class SideNavMenu extends Menu
                 'items'  => $catitems,
                 'active' => true,
             ],
-            [
-                'label'  => \Yii::t('shop', 'Характеристики'),
-                'items'  => $propCatitems,
-                'active' => true,
-            ],
         ];
+        $this->items = [...$this->items, ...$propCatitems];
     }
 
     protected function isItemActive($item)

@@ -58,14 +58,15 @@ class PropertyCategorySearch extends PropertyCategory
         $query->andFilterWhere(
             [
                 'id'         => $this->id,
+                'in_filters' => $this->in_filters,
                 'updated_at' => $this->updated_at,
                 'created_at' => $this->created_at,
             ]
         );
 
         $query->andFilterWhere(['like', 'title_uk', $this->title_uk])
-              ->andFilterWhere(['like', 'title_ru', $this->title_ru])
-              ->andFilterWhere(['like', 'title_en', $this->title_en]);
+            ->andFilterWhere(['like', 'title_ru', $this->title_ru])
+            ->andFilterWhere(['like', 'title_en', $this->title_en]);
 
         return $dataProvider;
     }
