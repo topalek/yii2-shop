@@ -41,7 +41,7 @@ class Category extends BaseModel
 
     public static function roots()
     {
-        return Category::find()->where(['parent_id' => null])->all();
+        return Category::find()->with('seo')->where(['parent_id' => null])->all();
     }
 
     /**

@@ -13,6 +13,7 @@
 /* @var $dataProvider ActiveDataProvider */
 
 
+use frontend\widgets\SideNavMenu;
 use yii\data\ActiveDataProvider;
 use yii\widgets\ListView;
 
@@ -26,20 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-3">
                 <div class="shop__sidebar">
-                    <div class="sidebar-block">
-                        <h3 class="sidebar-block_title"><?= Yii::t('shop', 'Категории') ?></h3>
-                        <div class="sidebar-block_items">
-                            <ul class="nice-scroll" tabindex="1"
-                                style="overflow-y: hidden; outline: none;">
-                                <?php
-                                foreach ($categories as $category):?>
-                                    <li><a href="<?= $category->getSeoUrl() ?>"><?= $category->getMlTitle() ?></a></li>
-                                <?php
-                                endforeach; ?>
-                            </ul>
-                        </div>
-                    </div>
-
+                    <?= SideNavMenu::widget() ?>
                 </div>
             </div>
             <div class="col-lg-9">

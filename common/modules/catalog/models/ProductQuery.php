@@ -16,6 +16,12 @@ class ProductQuery extends \yii\db\ActiveQuery
         return $this;
     }
 
+    public function category($category_id)
+    {
+        $this->andWhere(['category_id' => $category_id]);
+        return $this;
+    }
+
     public function popular()
     {
         $this->orderBy('order_count DESC');

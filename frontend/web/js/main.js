@@ -156,3 +156,12 @@ function insertModal(content) {
         $('.modals').remove();
     });
 }
+
+/*-----------------------
+sidebar-menu-widget
+--------------------------- */
+$('.sidebar-menu-widget-title').on('click', e => {
+    let liTitle = $(e.target).parent();
+    liTitle.toggleClass('active');
+    liTitle.children('.submenu').slideToggle();
+})

@@ -13,7 +13,6 @@ class DefaultController extends BaseController
 {
     public function actionIndex()
     {
-        $categories = Category::roots();
         $dataProvider = new ActiveDataProvider(
             [
                 'query'      => Product::find()->active(),
@@ -26,7 +25,6 @@ class DefaultController extends BaseController
         return $this->render(
             'index',
             compact(
-                'categories',
                 'dataProvider',
             )
         );
@@ -35,11 +33,20 @@ class DefaultController extends BaseController
     public function actionCategoryView($id)
     {
         $model = $this->findCategory($id);
+        $dataProvider = new ActiveDataProvider(
+            [
+                'query'      => Product::find()->active()->category($id),
+                'pagination' => [
+                    'pageSize' => 12,
+                ],
+            ]
+        );
 
         return $this->render(
             'category_view',
             [
-                'model' => $model,
+                'model'        => $model,
+                'dataProvider' => $dataProvider,
             ]
         );
     }
