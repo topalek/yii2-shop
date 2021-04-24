@@ -4,69 +4,8 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "0429362cc5d7f2515b31fc93a9be73d9",
+  "content-hash": "5328696e0c22926c5da554181a3fbea2",
   "packages": [
-    {
-      "name": "2amigos/yii2-ckeditor-widget",
-      "version": "2.1.0",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/2amigos/yii2-ckeditor-widget.git",
-        "reference": "2ba96ec670d0745b5616d2aa94d720cc7288bc08"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/2amigos/yii2-ckeditor-widget/zipball/2ba96ec670d0745b5616d2aa94d720cc7288bc08",
-        "reference": "2ba96ec670d0745b5616d2aa94d720cc7288bc08",
-        "shasum": ""
-      },
-      "require": {
-        "ckeditor/ckeditor": "~4.7.0+full",
-        "yiisoft/yii2": "^2.0"
-      },
-      "require-dev": {
-        "phpunit/phpunit": "4.*"
-      },
-      "type": "yii2-extension",
-      "extra": {
-        "branch-alias": {
-          "dev-master": "1.0-dev"
-        }
-      },
-      "autoload": {
-        "psr-4": {
-          "dosamigos\\ckeditor\\": "src"
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "BSD-3-Clause"
-      ],
-      "authors": [
-        {
-          "name": "2amigOS! Consulting Group",
-          "email": "hola@2amigos.us",
-          "homepage": "http://2amigos.us",
-          "role": "Developer"
-        }
-      ],
-      "description": "CKEditor widget for Yii2.",
-      "homepage": "http://yiiwheels.com/extension/ckeditor-widget",
-      "keywords": [
-        "2amigos",
-        "CKEditor",
-        "extension",
-        "widget",
-        "yii",
-        "yii 2",
-        "yii2"
-      ],
-      "support": {
-        "issues": "https://github.com/2amigos/yii2-ckeditor-widget/issues",
-        "source": "https://github.com/2amigos/yii2-ckeditor-widget"
-      },
-      "time": "2017-06-12T18:51:26+00:00"
-    },
     {
       "name": "almasaeed2010/adminlte",
       "version": "v2.4.18",
@@ -115,65 +54,6 @@
       "time": "2019-08-29T08:20:20+00:00"
     },
     {
-      "name": "asofter/yii2-imperavi-redactor",
-      "version": "dev-master",
-      "target-dir": "yii/imperavi",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/asofter/yii2-imperavi-redactor.git",
-        "reference": "4abea87c7808a6de36bebdfcd76e9f682cbb620d"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/asofter/yii2-imperavi-redactor/zipball/4abea87c7808a6de36bebdfcd76e9f682cbb620d",
-        "reference": "4abea87c7808a6de36bebdfcd76e9f682cbb620d",
-        "shasum": ""
-      },
-      "require": {
-        "yiisoft/yii2": "*"
-      },
-      "default-branch": true,
-      "type": "yii2-extension",
-      "autoload": {
-        "psr-0": {
-          "yii\\imperavi\\": ""
-        }
-      },
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "BSD-3-Clause"
-      ],
-      "authors": [
-        {
-          "name": "Veaceslav Medvedev",
-          "email": "slavcopost@gmail.com"
-        },
-        {
-          "name": "Alexander Makarov",
-          "email": "sam@rmcreative.ru",
-          "homepage": "http://rmcreative.ru/"
-        },
-        {
-          "name": "Alexander Yaremchuk",
-          "email": "alwex10@gmail.com"
-        }
-      ],
-      "description": "Imperavi Redactor WYSIWYG widget (OEM-licensed for Yii 2)",
-      "keywords": [
-        "imperavi",
-        "imperavi redactor",
-        "yii"
-      ],
-      "support": {
-        "forum": "http://www.yiiframework.com/forum/",
-        "irc": "irc://irc.freenode.net/yii",
-        "issues": "https://github.com/asofter/yii2-imperavi-redactor/issues",
-        "source": "https://github.com/yiisoft/yii2",
-        "wiki": "http://www.yiiframework.com/wiki/"
-      },
-      "time": "2020-05-05T15:14:01+00:00"
-    },
-    {
       "name": "bower-asset/bootstrap",
       "version": "v3.4.1",
       "source": {
@@ -199,7 +79,7 @@
       "version": "3.3.11",
       "source": {
         "type": "git",
-        "url": "https://github.com/RobinHerbots/Inputmask.git",
+        "url": "git@github.com:RobinHerbots/Inputmask.git",
         "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
       },
       "dist": {
@@ -380,53 +260,6 @@
         "source": "https://github.com/cebe/yii2-gravatar"
       },
       "time": "2013-12-10T17:49:58+00:00"
-    },
-    {
-      "name": "ckeditor/ckeditor",
-      "version": "4.7.3",
-      "source": {
-        "type": "git",
-        "url": "https://github.com/ckeditor/ckeditor-releases.git",
-        "reference": "97b8f412f6b36985c734daf0717e81009a885dba"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/ckeditor/ckeditor-releases/zipball/97b8f412f6b36985c734daf0717e81009a885dba",
-        "reference": "97b8f412f6b36985c734daf0717e81009a885dba",
-        "shasum": ""
-      },
-      "type": "library",
-      "notification-url": "https://packagist.org/downloads/",
-      "license": [
-        "GPL-2.0+",
-        "LGPL-2.1+",
-        "MPL-1.1+"
-      ],
-      "authors": [
-        {
-          "name": "CKSource",
-          "homepage": "http://cksource.com"
-        }
-      ],
-      "description": "JavaScript WYSIWYG web text editor.",
-      "homepage": "http://ckeditor.com",
-      "keywords": [
-        "CKEditor",
-        "editor",
-        "fckeditor",
-        "html",
-        "javascript",
-        "richtext",
-        "text",
-        "wysiwyg"
-      ],
-      "support": {
-        "forum": "http://ckeditor.com/forums",
-        "issues": "http://dev.ckeditor.com",
-        "source": "http://github.com/ckeditor/ckeditor-dev",
-        "wiki": "http://docs.ckeditor.com"
-      },
-      "time": "2017-09-13T13:09:47+00:00"
     },
     {
       "name": "dmstr/yii2-adminlte-asset",
@@ -2733,6 +2566,65 @@
       "time": "2021-01-07T16:49:33+00:00"
     },
     {
+      "name": "vova07/yii2-imperavi-widget",
+      "version": "2.0.11",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/vova07/yii2-imperavi-widget.git",
+        "reference": "c4fe4a9f64a4c53d9686c80b8744e2c1366184e5"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/vova07/yii2-imperavi-widget/zipball/c4fe4a9f64a4c53d9686c80b8744e2c1366184e5",
+        "reference": "c4fe4a9f64a4c53d9686c80b8744e2c1366184e5",
+        "shasum": ""
+      },
+      "require": {
+        "yiisoft/yii2": "*"
+      },
+      "require-dev": {
+        "mikey179/vfsstream": "~1",
+        "phpunit/phpunit": "4.*",
+        "scrutinizer/ocular": "~1.1"
+      },
+      "type": "yii2-extension",
+      "autoload": {
+        "psr-4": {
+          "vova07\\imperavi\\": "src",
+          "vova07\\imperavi\\tests\\": "tests"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "authors": [
+        {
+          "name": "Crudu Vasile",
+          "email": "bazillio07@yandex.ru",
+          "homepage": "https://github.com/vova07",
+          "role": "Developer"
+        }
+      ],
+      "description": "The imperavi redactor widget for Yii 2 framework.",
+      "homepage": "https://github.com/vova07/yii2-imperavi-widget",
+      "keywords": [
+        "Redactor",
+        "extension",
+        "imperavi",
+        "widget",
+        "wysiwyg",
+        "yii",
+        "yii 2",
+        "yii2"
+      ],
+      "support": {
+        "issues": "https://github.com/vova07/yii2-imperavi-widget/issues?state=open",
+        "source": "https://github.com/vova07/yii2-imperavi-widget"
+      },
+      "time": "2019-03-26T11:39:06+00:00"
+    },
+    {
       "name": "yiisoft/yii2",
       "version": "2.0.41.1",
       "source": {
@@ -2859,12 +2751,12 @@
       "source": {
         "type": "git",
         "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-        "reference": "c45bf125671f3f6237a605241486a6dd35b142a7"
+        "reference": "d90d116f0c1790e33032dae636e445e6c370ec03"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/c45bf125671f3f6237a605241486a6dd35b142a7",
-        "reference": "c45bf125671f3f6237a605241486a6dd35b142a7",
+        "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/d90d116f0c1790e33032dae636e445e6c370ec03",
+        "reference": "d90d116f0c1790e33032dae636e445e6c370ec03",
         "shasum": ""
       },
       "require": {
@@ -2946,7 +2838,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2020-10-30T19:50:24+00:00"
+      "time": "2021-04-18T14:44:04+00:00"
     },
     {
       "name": "yiisoft/yii2-composer",
@@ -3298,16 +3190,16 @@
     },
     {
       "name": "codeception/lib-innerbrowser",
-      "version": "1.4.2",
+      "version": "1.5.0",
       "source": {
         "type": "git",
         "url": "https://github.com/Codeception/lib-innerbrowser.git",
-        "reference": "4ffb91c18e4cacd073ff2914c07e5ccaf5efe449"
+        "reference": "4b0d89b37fe454e060a610a85280a87ab4f534f1"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/Codeception/lib-innerbrowser/zipball/4ffb91c18e4cacd073ff2914c07e5ccaf5efe449",
-        "reference": "4ffb91c18e4cacd073ff2914c07e5ccaf5efe449",
+        "url": "https://api.github.com/repos/Codeception/lib-innerbrowser/zipball/4b0d89b37fe454e060a610a85280a87ab4f534f1",
+        "reference": "4b0d89b37fe454e060a610a85280a87ab4f534f1",
         "shasum": ""
       },
       "require": {
@@ -3352,9 +3244,9 @@
       ],
       "support": {
         "issues": "https://github.com/Codeception/lib-innerbrowser/issues",
-        "source": "https://github.com/Codeception/lib-innerbrowser/tree/1.4.2"
+        "source": "https://github.com/Codeception/lib-innerbrowser/tree/1.5.0"
       },
-      "time": "2021-04-06T05:26:49+00:00"
+      "time": "2021-04-23T06:18:29+00:00"
     },
     {
       "name": "codeception/module-asserts",
@@ -5895,16 +5787,16 @@
     },
     {
       "name": "symfony/deprecation-contracts",
-      "version": "v2.2.0",
+      "version": "v2.4.0",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/deprecation-contracts.git",
-        "reference": "5fa56b4074d1ae755beb55617ddafe6f5d78f665"
+        "reference": "5f38c8804a9e97d23e0c8d63341088cd8a22d627"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/5fa56b4074d1ae755beb55617ddafe6f5d78f665",
-        "reference": "5fa56b4074d1ae755beb55617ddafe6f5d78f665",
+        "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/5f38c8804a9e97d23e0c8d63341088cd8a22d627",
+        "reference": "5f38c8804a9e97d23e0c8d63341088cd8a22d627",
         "shasum": ""
       },
       "require": {
@@ -5913,7 +5805,7 @@
       "type": "library",
       "extra": {
         "branch-alias": {
-          "dev-master": "2.2-dev"
+          "dev-main": "2.4-dev"
         },
         "thanks": {
           "name": "symfony/contracts",
@@ -5942,7 +5834,7 @@
       "description": "A generic function and convention to trigger deprecation notices",
       "homepage": "https://symfony.com",
       "support": {
-        "source": "https://github.com/symfony/deprecation-contracts/tree/master"
+        "source": "https://github.com/symfony/deprecation-contracts/tree/v2.4.0"
       },
       "funding": [
         {
@@ -5958,7 +5850,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2020-09-07T11:33:47+00:00"
+      "time": "2021-03-23T23:28:01+00:00"
     },
     {
       "name": "symfony/dom-crawler",
@@ -6120,16 +6012,16 @@
     },
     {
       "name": "symfony/event-dispatcher-contracts",
-      "version": "v2.2.0",
+      "version": "v2.4.0",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-        "reference": "0ba7d54483095a198fa51781bc608d17e84dffa2"
+        "reference": "69fee1ad2332a7cbab3aca13591953da9cdb7a11"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/0ba7d54483095a198fa51781bc608d17e84dffa2",
-        "reference": "0ba7d54483095a198fa51781bc608d17e84dffa2",
+        "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/69fee1ad2332a7cbab3aca13591953da9cdb7a11",
+        "reference": "69fee1ad2332a7cbab3aca13591953da9cdb7a11",
         "shasum": ""
       },
       "require": {
@@ -6142,7 +6034,7 @@
       "type": "library",
       "extra": {
         "branch-alias": {
-          "dev-master": "2.2-dev"
+          "dev-main": "2.4-dev"
         },
         "thanks": {
           "name": "symfony/contracts",
@@ -6179,7 +6071,7 @@
         "standards"
       ],
       "support": {
-        "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v2.2.0"
+        "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v2.4.0"
       },
       "funding": [
         {
@@ -6195,7 +6087,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2020-09-07T11:33:47+00:00"
+      "time": "2021-03-23T23:28:01+00:00"
     },
     {
       "name": "symfony/finder",
@@ -6582,21 +6474,21 @@
     },
     {
       "name": "symfony/service-contracts",
-      "version": "v2.2.0",
+      "version": "v2.4.0",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/service-contracts.git",
-        "reference": "d15da7ba4957ffb8f1747218be9e1a121fd298a1"
+        "reference": "f040a30e04b57fbcc9c6cbcf4dbaa96bd318b9bb"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/service-contracts/zipball/d15da7ba4957ffb8f1747218be9e1a121fd298a1",
-        "reference": "d15da7ba4957ffb8f1747218be9e1a121fd298a1",
+        "url": "https://api.github.com/repos/symfony/service-contracts/zipball/f040a30e04b57fbcc9c6cbcf4dbaa96bd318b9bb",
+        "reference": "f040a30e04b57fbcc9c6cbcf4dbaa96bd318b9bb",
         "shasum": ""
       },
       "require": {
         "php": ">=7.2.5",
-        "psr/container": "^1.0"
+        "psr/container": "^1.1"
       },
       "suggest": {
         "symfony/service-implementation": ""
@@ -6604,7 +6496,7 @@
       "type": "library",
       "extra": {
         "branch-alias": {
-          "dev-master": "2.2-dev"
+          "dev-main": "2.4-dev"
         },
         "thanks": {
           "name": "symfony/contracts",
@@ -6641,7 +6533,7 @@
         "standards"
       ],
       "support": {
-        "source": "https://github.com/symfony/service-contracts/tree/master"
+        "source": "https://github.com/symfony/service-contracts/tree/v2.4.0"
       },
       "funding": [
         {
@@ -6657,7 +6549,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2020-09-07T11:33:47+00:00"
+      "time": "2021-04-01T10:43:52+00:00"
     },
     {
       "name": "symfony/string",
@@ -7160,7 +7052,6 @@
   "minimum-stability": "stable",
   "stability-flags": {
     "yiisoft/yii2-bootstrap": 20,
-    "asofter/yii2-imperavi-redactor": 20,
     "kartik-v/yii2-widgets": 20,
     "kartik-v/yii2-widget-fileinput": 20,
     "kartik-v/yii2-widget-select2": 20
@@ -7168,7 +7059,9 @@
   "prefer-stable": false,
   "prefer-lowest": false,
   "platform": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "ext-dom": "*",
+    "ext-xmlreader": "*"
   },
   "platform-dev": [],
   "plugin-api-version": "2.0.0"

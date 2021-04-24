@@ -66,39 +66,18 @@ class DefaultController extends BaseController
     public function actionProductView($id)
     {
         $model = $this->findItem($id);
-        $formattedProperties = [];
-        $defaultProperty = null;
-        $properties = $model->properties;
-        if ($properties) {
-            $tmp = [];
-            foreach ($properties as $property) {
-                if ($property->default) {
-                    $defaultProperty = $property;
-                }
-                $tmp[$property->property_category_id][] = $property;
-            }
-            foreach ($tmp as $category) {
-                foreach ($category as $item) {
-                    $formattedProperties[] = $item;
-                }
-            }
-            if ($defaultProperty == null) {
-                $defaultProperty = $formattedProperties[0];
-            }
-        }
+
         return $this->render(
             'product_view',
             [
                 'model'           => $model,
-                'properties'      => $formattedProperties,
-                'defaultProperty' => $defaultProperty,
             ]
         );
     }
 
     protected function findItem($id)
     {
-        if (($model = Product::findById($id)) !== null) {
+        if (($model = Product::find()->with(['properties', 'category'])->where(['id' => $id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('site', 'Страница не существует или была удалена.'));

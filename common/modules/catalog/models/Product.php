@@ -269,4 +269,10 @@ class Product extends BaseModel
         return parent::beforeDelete();
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        Yii::$app->cache->set('product' . $this->id, $this);
+        parent::afterSave($insert, $changedAttributes);
+    }
+
 }

@@ -85,7 +85,7 @@ class DefaultController extends BaseController
 
     protected function findItem($id)
     {
-        if (($model = Product::findById($id)) !== null) {
+        if (($model = Product::find()->with(['properties', 'category'])->where(['id' => $id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException(Yii::t('site', 'Страница не существует или была удалена.'));

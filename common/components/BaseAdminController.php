@@ -117,12 +117,39 @@ class BaseAdminController extends Controller
         }
     }
 
+    public function actionImagesGet($model_name, $model_id)
+    {
+        $options = ['only' => ['*.jpg', '*.jpeg', '*.png', '*.gif', '*.ico']];
+        $model_name = strtolower($model_name);
+        $path = str_replace('backend', 'frontend', Yii::$app->basePath) . "/web/uploads/$model_name/$model_id/";
+        $url = Yii::$app->params['frontendUrl'] . "/uploads/$model_name/$model_id/imperavi/";
+        $imperavi_path = $path . 'imperavi';
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $files = [];
+
+        foreach (FileHelper::findFiles($imperavi_path, $options) as $path) {
+            $file = basename($path);
+            $files[] = [
+                'id'    => $file,
+                'title' => $file,
+                'thumb' => $url . $file,
+                'image' => $url . $file,
+            ];
+        }
+
+        return $files;
+    }
+
     public function actionDeleteImperaviImg()
     {
         if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
             $imgUrl = Yii::$app->request->post('imgUrl');
             if ($imgUrl) {
-                @unlink(str_replace('backend', 'frontend', Yii::$app->basePath) . '/..' . $imgUrl);
+                // $imgFile = str_replace('backend', 'frontend', Yii::$app->basePath) . '/web' . $imgUrl;
+                // print_r($imgFile);
+                @unlink($imgUrl);
+                return true;
             }
         } else {
             throw new NotFoundHttpException('Станица не существует.');
@@ -174,5 +201,10 @@ class BaseAdminController extends Controller
         } else {
             return ['message' => 'Произошла ошибка'];
         }
+    }
+
+    public function actionTest()
+    {
+        return __CLASS__;
     }
 }

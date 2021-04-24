@@ -7,9 +7,9 @@ use kartik\money\MaskMoney;
 use kartik\select2\Select2;
 use kartik\widgets\FileInput;
 use kartik\widgets\SwitchInput;
+use vova07\imperavi\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\imperavi\Widget;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -40,35 +40,39 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'description_' . $lang)->widget(
                     Widget::class,
                     [
-                        'options' => [
-                            'imageUpload'         => Url::to(
+                        'settings' => [
+                            'lang'        => 'ru',
+                            'minHeight'   => '350px',
+                            'imageUpload' => Url::to(
                                 [
-                                    '/site/upload-imperavi',
+                                    'imperavi-upload',
                                     'model_name' => $model->getModelName(),
                                     'model_id'   => $model->id,
                                 ]
                             ),
-                            'minHeight'           => '350px',
-                            'uploadImageFields'   => [
-                                Yii::$app->request->csrfParam => Yii::$app->request->getCsrfToken(),
+
+                            'imageDeleteCallback' => new \yii\web\JsExpression(
+                                'function (url, image) { 
+                                 $.ajax({
+                                    url: "delete-imperavi-img?model=product",
+                                    type: "post",
+                                    data: {imgUrl:$(image).attr("src"), _csrf: yii.getCsrfToken()}
+                                });
+                             }'
+                            ),
+                            'imageManagerJson'    => Url::to(
+                                [
+                                    'images-get',
+                                    'model_name' => $model->getModelName(),
+                                    'model_id'   => $model->id,
+                                ]
+                            ),
+                            'plugins'             => [
+                                'fullscreen',
+                                'fontcolor',
+                                'fontsize',
+                                'imagemanager',
                             ],
-                            'uploadFileFields'    => [
-                                Yii::$app->request->csrfParam => Yii::$app->request->getCsrfToken(),
-                            ],
-                            'imageDeleteCallback' => "function(url,image){
-                            $.ajax({
-                                url: '/site/delete-imperavi-img?model=product',
-                                type: 'post',
-                                data: {imgUrl:$(image).attr('src'), _csrf: yii.getCsrfToken()}
-                            });
-                        }",
-                        ],
-                        'plugins' => [
-                            'fullscreen',
-                            'clips',
-                            'fontcolor',
-                            'fontfamily',
-                            'fontsize',
                         ],
                     ]
                 ) ?>

@@ -44,7 +44,7 @@ class ProductController extends BaseAdminController
     public function actionIndex()
     {
         $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->adminSearch(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render(
             'index',
@@ -137,20 +137,22 @@ class ProductController extends BaseAdminController
             $model->load($request->post());
             $model->originalImgFile = UploadedFile::getInstance($model, 'originalImgFile');
             $model->imgFiles = UploadedFile::getInstances($model, 'imgFiles');
+
+            if ($model->save()) {
+                $model->saveImg();
+                Yii::$app->session->setFlash('success', 'Сохранено');
+                return $this->redirect(['update', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('danger', $model->errors);
+            }
         }
 
-        if ($request->isPost && $model->save()) {
-            $model->saveImg();
-            Yii::$app->session->setFlash('humane', 'Сохранено');
-            return $this->redirect(['update', 'id' => $model->id]);
-        } else {
-            return $this->render(
-                'update',
-                [
-                    'model' => $model,
-                ]
-            );
-        }
+        return $this->render(
+            'update',
+            [
+                'model' => $model,
+            ]
+        );
     }
 
     /**

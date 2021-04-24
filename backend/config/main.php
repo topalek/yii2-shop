@@ -14,7 +14,7 @@ return [
     'bootstrap'           => ['log'],
     'language'            => 'ru',
     'modules'             => [
-
+        'redactor' => 'yii\redactor\RedactorModule',
     ],
     'components'          => [
         'request'      => [
