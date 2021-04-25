@@ -15,7 +15,7 @@ class DefaultController extends BaseController
     {
         $dataProvider = new ActiveDataProvider(
             [
-                'query'      => Product::find()->active(),
+                'query'      => Product::find()->active()->with('seo'),
                 'pagination' => [
                     'pageSize' => 12,
                 ],
@@ -35,7 +35,7 @@ class DefaultController extends BaseController
         $model = $this->findCategory($id);
         $dataProvider = new ActiveDataProvider(
             [
-                'query'      => Product::find()->active()->category($id),
+                'query'      => Product::find()->active()->category($id)->with('seo'),
                 'pagination' => [
                     'pageSize' => 12,
                 ],
