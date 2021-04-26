@@ -10,11 +10,12 @@ use yii\helpers\Html;
 $subCategories = $model->children();
 $parent = $model->parent;
 $class = ($subCategories) ? 'has-sub-category open ' : '';
+$paddingLeft = 0;
 if ($parent) {
     $class .= 'sub-category-for-' . $parent->id;
+    $paddingLeft = 25;
 }
 
-$paddingLeft = 25;
 if ($paddingLeft == 0) {
     $paddingLeft = '10';
 }

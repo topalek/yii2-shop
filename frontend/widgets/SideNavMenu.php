@@ -9,7 +9,6 @@ namespace frontend\widgets;
 
 
 use common\modules\catalog\models\Category;
-use common\modules\catalog\models\PropertyCategory;
 use Yii;
 use yii\widgets\Menu;
 
@@ -31,33 +30,18 @@ class SideNavMenu extends Menu
 
     public function init()
     {
-        $category = Category::roots();
+        $categories = Category::roots();
         $catitems = [];
-        $path = Yii::$app->request->resolve();
 
-        foreach ($category as $cat) {
-            $catitems[] = [
-                'url'   => $cat->seoUrl,
-                'label' => $cat->getMlTitle(),
+        foreach ($categories as $cat) {
+            $catitems[$cat->id] = [
+                'url'       => $cat->seoUrl,
+                'id'        => $cat->id,
+                'parent_id' => $cat->parent_id,
+                'label'     => $cat->getMlTitle(),
             ];
         }
-        $propCat = PropertyCategory::find()->with('properties')->forFilters()->all();
-        $propCatitems = [];
 
-        /**@var $cat PropertyCategory */
-        foreach ($propCat as $i => $cat) {
-            $propCatitems[$i] = [
-                'label' => $cat->getMlTitle(),
-            ];
-            if ($cat->properties) {
-                foreach ($cat->properties as $prop) {
-                    $propCatitems[$i]['items'][] = [
-                        'label' => $prop->getMlTitle(),
-                        'url'   => "id=" . $prop->id,
-                    ];
-                }
-            }
-        }
         $this->items = [
             [
                 'label'  => \Yii::t('shop', 'Категории'),
@@ -65,7 +49,6 @@ class SideNavMenu extends Menu
                 'active' => true,
             ],
         ];
-        $this->items = [...$this->items, ...$propCatitems];
     }
 
     protected function isItemActive($item)
@@ -115,5 +98,16 @@ class SideNavMenu extends Menu
         return false;
     }
 
-
+    private function buildTree($categories)
+    {
+        $tree = [];
+        foreach ($categories as $id => &$category) {
+            if (!$category['parent_id']) {
+                $tree[$id] = &$category;
+            } else {
+                $categories[$category['parent_id']]['items'][$id] = &$category;
+            }
+        }
+        return $tree;
+    }
 }

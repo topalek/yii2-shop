@@ -42,7 +42,7 @@ class CategoryController extends BaseAdminController
         return $this->render(
             'index',
             [
-                'roots' => Category::roots()
+                'roots' => Category::roots(),
             ]
         );
     }
@@ -93,24 +93,24 @@ class CategoryController extends BaseAdminController
     public function actionCreate($parent = null)
     {
         $model = new Category();
-        $model->setScenario('create');
+//        $model->setScenario('create');
         $model->parent_id = $parent;
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imgFile = UploadedFile::getInstance($model, 'imgFile');
-            if ($model->imgFile && $model->validate()) {
-                $model->save();
+            if ($model->save()) {
                 Yii::$app->session->setFlash('humane', 'Сохранено');
+                return $this->redirect(['update', 'id' => $model->id]);
+            } else {
+                Yii::$app->session->setFlash('danger', print_r($model->errors, 1));
             }
-            return $this->redirect(['update', 'id' => $model->id]);
-        } else {
-            return $this->render(
-                'create',
-                [
-                    'model' => $model,
-                ]
-            );
         }
+        return $this->render(
+            'create',
+            [
+                'model' => $model,
+            ]
+        );
     }
 
     /**

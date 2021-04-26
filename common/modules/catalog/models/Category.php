@@ -221,6 +221,6 @@ class Category extends BaseModel
      */
     public function getParent()
     {
-        return $this->hasOne(self::class, ['parent_id' => 'id']);
+        return $this->hasOne(self::class, ['id' => 'parent_id']);
     }
 }
