@@ -78,13 +78,18 @@ class ProductSearch extends Product
         }
         $query->joinWith('seo');
 
-        $dataProvider = new ActiveDataProvider(
+        return new ActiveDataProvider(
             [
-                'query' => $query,
+                'query'      => $query,
+                'pagination' => [
+                    'pageSize' => 9,
+                    'route'    => Category::findOne($categoryId)->getSeoUrl(),
+                    'params'   => [
+                        'page' => Yii::$app->request->get('page'),
+                    ],
+                ],
             ]
         );
-
-        return $dataProvider;
     }
 
 
@@ -114,7 +119,7 @@ class ProductSearch extends Product
         );
 
         $query = Product::find();
-        $query->with(['seo']);
+        $query->with(['seo', 'category']);
         $query->leftJoin('product_property', 'product_property.product_id=product.id');
         $query->groupBy('product.id');
         $dataProvider = new ActiveDataProvider(

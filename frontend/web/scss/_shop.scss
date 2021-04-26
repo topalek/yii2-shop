@@ -387,6 +387,10 @@
   }
 }
 
+.catalog-category-view {
+  padding: 30px 0;
+}
+
 .search {
   padding: 20px 0;
 
@@ -475,7 +479,6 @@
     font-size: 16px;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
     border: 1px solid $light-gray;
     padding: 0 10px 10px;
     margin-bottom: 10px;
@@ -486,6 +489,7 @@
       display: flex;
       text-transform: uppercase;
       font-weight: bold;
+      cursor: pointer;
 
       &:after {
         display: block;
@@ -519,11 +523,18 @@
         margin: 2px;
         border: 1px solid $light-gray;
         border-radius: 3px;
+        cursor: pointer;
 
         &.active {
           background-color: $primary-color;
           color: $white-color;
           border: 1px solid transparent;
+        }
+
+        &.disabled {
+          color: $para-color;
+          background-color: $light-gray-2;
+          cursor: not-allowed;
         }
       }
     }

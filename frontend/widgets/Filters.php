@@ -24,6 +24,10 @@ class Filters extends Menu
      * @var array|PropertyCategory[]|mixed
      */
     private $filterCategories;
+    /**
+     * @var array|PropertyCategory[]|mixed
+     */
+    private $activeProperties;
 
     public function init()
     {
@@ -31,11 +35,17 @@ class Filters extends Menu
             'tag'   => 'div',
             'class' => 'filter-container',
         ];
+
         $this->filterCategories = PropertyCategory::find()->forFilters()->with('properties')->all();
         $route = Yii::$app->request->resolve();
         $route = array_pop($route);
         $this->categoryId = ArrayHelper::getValue($route, 'id');
         $this->filters = explode(',', ArrayHelper::getValue($route, 'filter'));
+        $sql = "select property_id from {{%product_property}} where product_id in (select id from product where category_id= {$this->categoryId})";
+        $this->activeProperties = Yii::$app->db->createCommand($sql)->queryAll();
+        if ($this->activeProperties) {
+            $this->activeProperties = ArrayHelper::getColumn($this->activeProperties, 'property_id');
+        }
         $items = [];
         foreach ($this->filterCategories as $filterCategory) {
             $items[$filterCategory->id] = [
@@ -86,6 +96,7 @@ class Filters extends Menu
         $propIds = ArrayHelper::getColumn($item['items'], 'id');
         $isActive = array_intersect($this->filters, $propIds);
         $isActive = !empty($isActive);
+        $isActive = true;
 
         $html = Html::tag(
             'div',
@@ -105,11 +116,18 @@ class Filters extends Menu
         );
         /** @var Property $prop */
         foreach ($item['items'] as $prop) {
+            $class = 'filter';
+            if (in_array($prop->id, $this->filters)) {
+                $class .= ' active';
+            }
+            if (!in_array($prop->id, $this->activeProperties)) {
+                $class .= ' disabled';
+            }
             $html .= Html::tag(
                 'span',
                 $prop->getMlTitle(),
                 [
-                    'class'          => in_array($prop->id, $this->filters) ? 'filter active' : 'filter',
+                    'class'          => $class,
                     'data-filter-id' => $prop->id,
                 ]
             );

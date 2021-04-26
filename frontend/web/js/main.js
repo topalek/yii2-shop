@@ -187,7 +187,7 @@ function buildUrl() {
     return url;
 }
 
-$('.filter').on('click', e => {
+$('.filter:not(".disabled")').on('click', e => {
     let filter = $(e.target);
     filter.toggleClass('active');
     window.location.href = buildUrl();
