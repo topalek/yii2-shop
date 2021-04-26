@@ -398,11 +398,11 @@ class Import
                     unset($params[$paramTitle]);
                 } elseif ($paramTitle == 'Детский возраст') {
                     unset($params[$paramTitle]);
-                    $params['возраст'] = $param;
+                    $params['возраст'] = trim(mb_strtolower($param));
                 } else {
                     unset($params[$paramTitle]);
                     $title = trim(mb_strtolower($paramTitle));
-                    $params[$title] = $param;
+                    $params[$title] = trim(mb_strtolower($param));
                 }
             }
         }
