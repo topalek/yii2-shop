@@ -5,6 +5,7 @@ namespace common\modules\catalog\controllers;
 use common\components\BaseController;
 use common\modules\catalog\models\Category;
 use common\modules\catalog\models\Product;
+use common\modules\catalog\models\ProductSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
@@ -30,17 +31,11 @@ class DefaultController extends BaseController
         );
     }
 
-    public function actionCategoryView($id)
+    public function actionCategoryView($id, $filter = null)
     {
         $model = $this->findCategory($id);
-        $dataProvider = new ActiveDataProvider(
-            [
-                'query'      => Product::find()->active()->category($id)->with('seo'),
-                'pagination' => [
-                    'pageSize' => 12,
-                ],
-            ]
-        );
+        $searchModel = new ProductSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render(
             'category_view',

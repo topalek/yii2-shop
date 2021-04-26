@@ -5,6 +5,7 @@ namespace common\modules\catalog\models;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\Sort;
+use yii\helpers\ArrayHelper;
 
 /**
  * ProductSearch represents the model behind the search form about `common\modules\catalog\models\Product`.
@@ -52,38 +53,36 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
+        $categoryId = ArrayHelper::getValue($params, 'id');
+        $filter = ArrayHelper::getValue($params, 'filter');
+
+
         $query = Product::find();
-        $query->joinWith('seo');
 
         if (!Yii::$app->request->get('sort')) {
             $query->orderBy('id DESC');
         }
+        $query->andFilterWhere(
+            [
+                'category_id' => $categoryId,
+            ]
+        );
+        if ($filter) {
+            $filter = explode(',', $filter);
+            $query->joinWith('properties');
+            $query->andFilterWhere(
+                [
+                    '{{%product_property}}.property_id' => $filter,
+                ]
+            );
+        }
+        $query->joinWith('seo');
 
         $dataProvider = new ActiveDataProvider(
             [
                 'query' => $query,
             ]
         );
-
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        $query->andFilterWhere(
-            [
-                'price'       => $this->price,
-                'category_id' => $this->category_id,
-                'status'      => $this->status,
-                'updated_at'  => $this->updated_at,
-                'created_at'  => $this->created_at,
-            ]
-        );
-
-        $query->andFilterWhere(['like', 'title_ru', $this->title_ru]);
 
         return $dataProvider;
     }

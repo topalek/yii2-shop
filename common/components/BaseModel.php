@@ -319,7 +319,10 @@ class BaseModel extends ActiveRecord
         ];
         $options = ArrayHelper::merge($options, $defaultOptions);
         $path = $this->getMainImgUrl();
-        return Html::img($path, $options);
+        if ($path) {
+            return Html::img($path, $options);
+        }
+        return '';
     }
 
     public function getMlTitle($lang = null, $attribute = 'title')

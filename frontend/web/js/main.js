@@ -165,3 +165,30 @@ $('.sidebar-menu-widget-title').on('click', e => {
     liTitle.toggleClass('active');
     liTitle.children('.submenu').slideToggle();
 })
+/*-----------------------
+    Filters
+--------------------------- */
+$('.filter-box-title').on('click', e => {
+    let title = $(e.target);
+    title.toggleClass('active');
+    title.next('.filter-box-body').slideToggle();
+})
+
+function buildUrl() {
+    let filters = $('.filter.active');
+    let ids = [];
+    let url = window.location.href.split('?').shift();
+    if (filters.length > 0) {
+        filters.each((i, item) => {
+            ids.push($(item).data('filter-id'));
+        });
+        url = url + '?filter=' + ids.join(',');
+    }
+    return url;
+}
+
+$('.filter').on('click', e => {
+    let filter = $(e.target);
+    filter.toggleClass('active');
+    window.location.href = buildUrl();
+})
