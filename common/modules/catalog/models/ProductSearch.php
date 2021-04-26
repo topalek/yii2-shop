@@ -62,11 +62,14 @@ class ProductSearch extends Product
         if (!Yii::$app->request->get('sort')) {
             $query->orderBy('id DESC');
         }
-        $query->andFilterWhere(
-            [
-                'category_id' => $categoryId,
-            ]
-        );
+        if ($categoryId) {
+            $query->andFilterWhere(
+                [
+                    'category_id' => $categoryId,
+                ]
+            );
+        }
+
         if ($filter) {
             $filter = explode(',', $filter);
             $query->joinWith('properties');
@@ -83,7 +86,7 @@ class ProductSearch extends Product
                 'query'      => $query,
                 'pagination' => [
                     'pageSize' => 9,
-                    'route'    => Category::findOne($categoryId)->getSeoUrl(),
+                    'route'    => $categoryId ? Category::findOne($categoryId)->getSeoUrl() : '',
                     'params'   => [
                         'page' => Yii::$app->request->get('page'),
                     ],

@@ -13,6 +13,7 @@
 /* @var $dataProvider ActiveDataProvider */
 
 
+use frontend\widgets\Filters;
 use frontend\widgets\SideNavMenu;
 use yii\data\ActiveDataProvider;
 use yii\widgets\ListView;
@@ -28,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-lg-3">
                 <div class="shop__sidebar">
                     <?= SideNavMenu::widget() ?>
+                    <?= Filters::widget() ?>
                 </div>
             </div>
             <div class="col-lg-9">

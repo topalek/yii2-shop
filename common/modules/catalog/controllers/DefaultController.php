@@ -7,21 +7,14 @@ use common\modules\catalog\models\Category;
 use common\modules\catalog\models\Product;
 use common\modules\catalog\models\ProductSearch;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class DefaultController extends BaseController
 {
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider(
-            [
-                'query'      => Product::find()->active()->with('seo'),
-                'pagination' => [
-                    'pageSize' => 12,
-                ],
-            ]
-        );
+        $searchModel = new ProductSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render(
             'index',
