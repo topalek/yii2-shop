@@ -20,7 +20,7 @@ $this->title = Yii::$app->name;
             <?php
             if ($category->getMainImgUrl()): ?>
                 <div class="category__item__pic">
-                    <?= Html::img(dynamicImageUrl($category->getMainImgUrl(), 400, 400, 1),) ?>
+                    <?= Html::img(dynamicImageUrl($category->getMainImgUrl(), 200, 200, 1),) ?>
                 </div>
             <?php
             endif; ?>

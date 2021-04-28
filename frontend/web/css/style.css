@@ -64,12 +64,12 @@ h6 {
 }
 
 p {
-    font-size: 16px;
-    font-family: "Nunito", sans-serif;
-    color: #3d3d3d;
-    font-weight: 400;
-    line-height: 25px;
-    margin: 0 0 15px 0;
+  font-size: 16px;
+  font-family: "Nunito", sans-serif;
+  color: #3d3d3d;
+  font-weight: 400;
+  line-height: 25px;
+  margin: 0 0 15px 0;
 }
 
 img {
@@ -782,36 +782,42 @@ ol {
   gap: 15px;
 }
 .categories .category__item {
-    display: flex;
-    align-items: center;
-    background-color: #ebebeb;
+  display: flex;
+  align-items: center;
+  background-color: #ebebeb;
+  justify-content: space-evenly;
 }
 .categories .category__item:nth-child(2n+1) {
-    grid-column: 3/5;
-    justify-content: flex-end;
+  grid-column: 2/5;
 }
+
 .categories .category__item:nth-child(2n+1) .category__item__pic {
-  order: 2;
+  order: 1;
 }
+
 .categories .category__item:nth-child(2n+1) .category__item__text {
-  order: 1;
-}
-.categories .category__item:nth-child(2n) {
-  grid-column: 2/4;
-  justify-content: flex-start;
-}
-.categories .category__item__pic {
-  order: 1;
-}
-.categories .category__item__text {
   order: 2;
 }
+
+.categories .category__item:nth-child(2n) {
+  grid-column: 2/5;
+}
+
+.categories .category__item__pic {
+  order: 2;
+}
+
+.categories .category__item__text {
+  order: 1;
+}
+
 .categories .category__item__text a {
   display: inline-block;
   color: #111111;
   padding: 3px 0;
   position: relative;
 }
+
 .categories .category__item__text a:after {
   position: absolute;
   left: 0;
@@ -1729,36 +1735,34 @@ ol {
   cursor: pointer;
 }
 .filter-container .filter-box-body .filter.active {
-    background-color: #e53637;
-    color: #ffffff;
-    border: 1px solid transparent;
+  background-color: #e53637;
+  color: #ffffff;
+  border: 1px solid transparent;
 }
-
 .filter-container .filter-box-body .filter.disabled {
-    color: #5C5C5C;
-    background-color: #ececec;
-    cursor: not-allowed;
+  color: #5C5C5C;
+  background-color: #ececec;
+  cursor: not-allowed;
 }
 
 .order-success {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-
 .order-success .success-img {
-    margin: 40px 0;
+  margin: 40px 0;
 }
 
 /*---------------------
   Shop
 -----------------------*/
 .product__details__pic {
-    text-align: center;
-    background: #f3f2ee;
-    padding: 40px 0 60px;
-    margin-bottom: 100px;
+  text-align: center;
+  background: #f3f2ee;
+  padding: 40px 0 60px;
+  margin-bottom: 100px;
 }
 .product__details__pic .nav-tabs {
   border-bottom: none;

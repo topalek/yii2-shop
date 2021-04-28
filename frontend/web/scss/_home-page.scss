@@ -63,31 +63,30 @@
     display: flex;
     align-items: center;
     background-color: $border;
+    justify-content: space-evenly;
 
     &:nth-child(2n+1) {
-      grid-column: 3 / 5;
-      justify-content: flex-end;
+      grid-column: 2 / 5;
 
       .category__item__pic {
-        order: 2;
+        order: 1;
       }
 
       .category__item__text {
-        order: 1;
+        order: 2;
       }
     }
 
     &:nth-child(2n) {
-      grid-column: 2 / 4;
-      justify-content: flex-start;
+      grid-column: 2 / 5;
     }
 
     &__pic {
-      order: 1;
+      order: 2;
     }
 
     &__text {
-      order: 2;
+      order: 1;
 
       a {
         display: inline-block;
