@@ -166,6 +166,9 @@ class DefaultController extends BaseController
 
         if ($model->load($request->post()) && $model->save()) {
             if ($model->sendOrder()) {
+                foreach ($cart->products as $productId => $product) {
+                    Product::findOne($productId)->updateCounters(['order_count' => $product['qty']]);
+                }
                 $cart->products = [];
                 $cart->update(false, ['products']);
                 Yii::$app->session->setFlash('orderSuccess', true);

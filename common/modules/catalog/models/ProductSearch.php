@@ -116,7 +116,6 @@ class ProductSearch extends Product
                         'label'   => Yii::t('catalog', 'Цена'),
                     ],
                 ],
-                'route'      => $this->category->getSeoUrl(),
                 'params'     => [],
             ]
         );
@@ -128,13 +127,6 @@ class ProductSearch extends Product
         $dataProvider = new ActiveDataProvider(
             [
                 'query'      => $query,
-                'pagination' => [
-                    'pageSize' => ($viewType == Product::VIEW_TYPE_BLOCK) ? 12 : 8,
-                    'route'    => $this->category->getSeoUrl(),
-                    'params'   => [
-                        'page' => Yii::$app->request->get('page'),
-                    ],
-                ],
             ]
         );
 

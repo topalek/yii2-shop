@@ -1,8 +1,8 @@
 <?php
 /**
- * Created by Yatskanych Oleksandr.
+ * Created by topalek.
  *
- * @var $model \app\modules\shop\models\ShopOrder
+ * @var $model \common\modules\shop\models\Order
  */
 
 use yii\helpers\ArrayHelper;
@@ -13,7 +13,7 @@ $totalPrice = 0;
 ?>
 
 <p>
-    <?= Html::a('Посмотреть в админ панели', Url::toRoute(['/shop/order-admin/view', 'id' => $model->id], true)) ?>
+    <?= Html::a('Посмотреть в админ панели', Url::toRoute(['/shop/order/view', 'id' => $model->id], true)) ?>
 </p>
 
 <p>
@@ -27,7 +27,7 @@ $totalPrice = 0;
 <div>
     <strong>Заказ</strong> <br>
     <?php
-    foreach ($model->cartItems as $cartItem): $totalPrice += $cartItem['price'] * $cartItem['qty']; ?>
+    foreach ($model->products as $cartItem): $totalPrice += $cartItem['price'] * $cartItem['qty']; ?>
         <div style="padding-bottom: 20px; border-bottom: 1px solid #e3e3e3;">
             <strong>Название:</strong> <?= Html::a($cartItem['title_uk'], Url::to($cartItem['url'], true)) ?> <br>
             <strong>Цена:</strong> <?= $cartItem['price'] ?>

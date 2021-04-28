@@ -6,10 +6,9 @@
  * @var $form  ActiveForm
  */
 
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\widgets\MaskedInput;
 
 $this->title = Yii::t('shop', 'Оформление заказа');
 $this->params['breadcrumbs'][] = ['label' => 'Каталог', 'url' => '/catalog'];
@@ -38,7 +37,12 @@ foreach ($model->products as $cartItem) {
 
                     <?= $form->field($model, 'email')->textInput(['type' => 'email']) ?>
 
-                    <?= $form->field($model, 'phone')->textInput(['type' => 'phone']) ?>
+                    <?= $form->field($model, 'phone')->widget(
+                        MaskedInput::class,
+                        [
+                            'mask' => '+38 (099) 999-99-99',
+                        ]
+                    ) ?>
 
                     <?= $form->field($model, 'delivery_info')->textarea(
                         ['placeholder' => Yii::t('shop', 'Город, отделение Новой Почты')]

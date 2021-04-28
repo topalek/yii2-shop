@@ -1,6 +1,7 @@
 <?php
 
 
+use common\components\SwitchColumn;
 use common\modules\catalog\models\Category;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -27,8 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             'filterModel'  => $searchModel,
             'columns'      => [
-                ['class' => 'yii\grid\SerialColumn'],
-
                 'id',
                 // 'title_uk',
                 'title_ru:html',
@@ -45,21 +44,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                     'filter'    => Category::getList(),
                 ],
-                // 'status',
+                [
+                    'class'     => SwitchColumn::class,
+                    'attribute' => 'status',
+                    'filter'    => [1 => 'Опубликован', 0 => 'Нет'],
+                ],
+//                 'status',
                 // 'updated_at',
                 // 'created_at',
-
                 [
-                    'class'   => 'yii\grid\ActionColumn',
-                    'buttons' => [
-                        'view' => function ($index, $model) {
-                            return Html::a(
-                                '<span class="glyphicon glyphicon-eye-open"></span>',
-                                $model->getSeoUrl(),
-                                ['target' => '_blank', 'title' => 'Перегляд']
-                            );
-                        },
-                    ],
+                    'class' => 'yii\grid\ActionColumn',
                 ],
             ],
         ]

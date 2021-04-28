@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -58,20 +57,15 @@ $totalSum = 0;
             </thead>
             <tbody>
             <?php
-            foreach ($model->cartItems as $cartItem): $totalSum += $cartItem['price'] * $cartItem['qty']; ?>
+            foreach ($model->products as $cartItem): $totalSum += $cartItem['price'] * $cartItem['qty']; ?>
                 <tr>
                     <td>
-                        <?= $cartItem['photo'] ?>
+                        <?= Html::img($cartItem['photo'], ['style' => "width:50px;height:50px;object-fit:cover;"]) ?>
                         <?= Html::a(
-                            $cartItem['title_uk'],
+                            $cartItem['title_ru'],
                             ['/product/update', 'id' => $cartItem['id']]
                         ) ?>
-                        <?php
-                        $modification = ArrayHelper::getValue($cartItem, 'charTitle_ru');
-                        if ($modification) {
-                            echo " ($modification)";
-                        }
-                        ?>
+
                     </td>
                     <td style="text-align: center;">
                         <?= $cartItem['qty'] ?>

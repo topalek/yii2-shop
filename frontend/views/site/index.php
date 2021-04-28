@@ -17,12 +17,17 @@ $this->title = Yii::$app->name;
     <?php
     foreach ($categories as $category) :?>
         <div class="category__item">
-            <div class="category__item__pic">
-                <?= Html::img(dynamicImageUrl($category->getMainImgUrl(), 400, 400, 1),) ?>
-            </div>
+            <?php
+            if ($category->getMainImgUrl()): ?>
+                <div class="category__item__pic">
+                    <?= Html::img(dynamicImageUrl($category->getMainImgUrl(), 400, 400, 1),) ?>
+                </div>
+            <?php
+            endif; ?>
             <div class="category__item__text">
-                <h2><?= $category->getMlTitle() ?></h2>
-                <?= Html::a(Yii::t('shop', 'За покупками'), [$category->getSeoUrl()]) ?>
+                <h2>
+                    <?= Html::a(Yii::t('shop', $category->getMlTitle()), [$category->getSeoUrl()]) ?>
+                </h2>
             </div>
         </div>
     <?php

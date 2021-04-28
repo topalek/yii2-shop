@@ -541,4 +541,15 @@
   }
 }
 
+.order-success {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .success-img {
+    margin: 40px 0;
+  }
+}
+
 

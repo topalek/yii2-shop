@@ -6,8 +6,8 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\modules\catalog\models\Product */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Catalog Items', 'url' => ['index']];
+$this->title = Html::decode($model->getMlTitle());
+$this->params['breadcrumbs'][] = ['label' => 'Продукты', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catalog-item-view">
@@ -15,9 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Назад', ['index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(
-            'Delete',
+            'Удалить',
             ['delete', 'id' => $model->id],
             [
                 'class' => 'btn btn-danger',
@@ -34,16 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'model'      => $model,
             'attributes' => [
                 'id',
-                'title_uk',
-                'title_ru',
-                'title_en',
-                'description_uk:ntext',
-                'description_ru:ntext',
-                'description_en:ntext',
+                'title_uk:html',
+                'title_ru:html',
+                'title_en:html',
+                'description_uk:html',
+                'description_ru:html',
+                'description_en:html',
                 'price',
-                'main_img',
-                'catalog_category_id',
+                'category_id',
                 'status',
+                'article',
+                'stock',
+                'order_count',
                 'updated_at',
                 'created_at',
             ],

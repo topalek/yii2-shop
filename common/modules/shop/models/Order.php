@@ -14,14 +14,14 @@ use yii\helpers\Html;
  * This is the model class for table "shop_order".
  *
  * @property integer $id
- * @property string   $name
- * @property string   $email
- * @property string   $phone
- * @property string   $delivery_info
- * @property string[] $products
- * @property integer  $status
- * @property string   $updated_at
- * @property string   $created_at
+ * @property string  $name
+ * @property string  $email
+ * @property string  $phone
+ * @property string  $delivery_info
+ * @property array   $products
+ * @property integer $status
+ * @property string  $updated_at
+ * @property string  $created_at
  */
 class Order extends BaseModel
 {
@@ -45,8 +45,7 @@ class Order extends BaseModel
         return [
             [['name', 'phone'], 'required'],
             [['delivery_info'], 'string'],
-            [['updated_at', 'created_at'], 'safe'],
-            ['products', 'each', 'rule' => ['string']],
+            [['updated_at', 'products', 'created_at'], 'safe'],
             ['status', 'integer'],
             [['name', 'email', 'phone'], 'string', 'max' => 255],
         ];
@@ -86,10 +85,20 @@ class Order extends BaseModel
 
     public function sendOrder()
     {
+        $email = 'order@' . Yii::$app->request->getHostName();
+        if ($this->email) {
+            Yii::$app->mailer->compose('user_order', ['model' => $this])->setFrom(
+                [$email ?? Yii::$app->params['senderEmail'] => 'Магазин']
+            )
+                ->setTo($this->email)
+                ->setSubject('Ваш заказ')
+                ->send();
+        }
+
         return Yii::$app->mailer->compose('new_order', ['model' => $this])
-            ->setFrom([Params::getInfoEmail() => 'Магазин'])
-            ->setTo(Params::getShopEmail())
-            ->setSubject('Нове замовлення')
+            ->setFrom([$email ?? Yii::$app->params['senderEmail'] => 'Магазин'])
+            ->setTo(Params::getShopEmail() ?? Yii::$app->params['supportEmail'])
+            ->setSubject('Новый заказ')
             ->send();
     }
 

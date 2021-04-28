@@ -44,7 +44,7 @@ class ProductController extends BaseAdminController
     public function actionIndex()
     {
         $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->adminSearch(Yii::$app->request->queryParams);
 
         return $this->render(
             'index',

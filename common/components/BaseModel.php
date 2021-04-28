@@ -8,7 +8,6 @@
 
 namespace common\components;
 
-use common\modules\image\models\Image;
 use common\modules\seo\models\Seo;
 use ReflectionClass;
 use Yii;

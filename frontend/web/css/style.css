@@ -64,12 +64,12 @@ h6 {
 }
 
 p {
-  font-size: 15px;
-  font-family: "Nunito", sans-serif;
-  color: #3d3d3d;
-  font-weight: 400;
-  line-height: 25px;
-  margin: 0 0 15px 0;
+    font-size: 16px;
+    font-family: "Nunito", sans-serif;
+    color: #3d3d3d;
+    font-weight: 400;
+    line-height: 25px;
+    margin: 0 0 15px 0;
 }
 
 img {
@@ -774,7 +774,6 @@ ol {
   Categories
 -----------------------*/
 .categories {
-  background: #f3f2ee;
   overflow: hidden;
   padding: 30px 0;
   margin-bottom: 30px;
@@ -783,12 +782,13 @@ ol {
   gap: 15px;
 }
 .categories .category__item {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    background-color: #ebebeb;
 }
 .categories .category__item:nth-child(2n+1) {
-  grid-column: 2/5;
-  justify-content: flex-end;
+    grid-column: 3/5;
+    justify-content: flex-end;
 }
 .categories .category__item:nth-child(2n+1) .category__item__pic {
   order: 2;
@@ -809,10 +809,6 @@ ol {
 .categories .category__item__text a {
   display: inline-block;
   color: #111111;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
   padding: 3px 0;
   position: relative;
 }
@@ -1733,24 +1729,36 @@ ol {
   cursor: pointer;
 }
 .filter-container .filter-box-body .filter.active {
-  background-color: #e53637;
-  color: #ffffff;
-  border: 1px solid transparent;
+    background-color: #e53637;
+    color: #ffffff;
+    border: 1px solid transparent;
 }
+
 .filter-container .filter-box-body .filter.disabled {
-  color: #5C5C5C;
-  background-color: #ececec;
-  cursor: not-allowed;
+    color: #5C5C5C;
+    background-color: #ececec;
+    cursor: not-allowed;
+}
+
+.order-success {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-success .success-img {
+    margin: 40px 0;
 }
 
 /*---------------------
   Shop
 -----------------------*/
 .product__details__pic {
-  text-align: center;
-  background: #f3f2ee;
-  padding: 40px 0 60px;
-  margin-bottom: 100px;
+    text-align: center;
+    background: #f3f2ee;
+    padding: 40px 0 60px;
+    margin-bottom: 100px;
 }
 .product__details__pic .nav-tabs {
   border-bottom: none;

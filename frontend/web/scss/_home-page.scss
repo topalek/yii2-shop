@@ -52,7 +52,6 @@
   Categories
 -----------------------*/
 .categories {
-  background: #f3f2ee;
   overflow: hidden;
   padding: 30px 0;
   margin-bottom: 30px;
@@ -63,9 +62,10 @@
   .category__item {
     display: flex;
     align-items: center;
+    background-color: $border;
 
     &:nth-child(2n+1) {
-      grid-column: 2 / 5;
+      grid-column: 3 / 5;
       justify-content: flex-end;
 
       .category__item__pic {
@@ -92,10 +92,10 @@
       a {
         display: inline-block;
         color: $heading-color;
-        font-size: 13px;
-        font-weight: 700;
-        letter-spacing: 4px;
-        text-transform: uppercase;
+        //font-size: 13px;
+        //font-weight: 700;
+        //letter-spacing: 4px;
+        //text-transform: uppercase;
         padding: 3px 0;
         position: relative;
 

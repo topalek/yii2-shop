@@ -33,3 +33,61 @@ use yii\widgets\ActiveForm;
     ActiveForm::end(); ?>
 
 </div>
+
+<div class="params-info">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">Дополнительные параметры</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table no-margin">
+                    <thead>
+                    <tr>
+                        <th>Название параметра</th>
+                        <th>Системное название</th>
+                        <th>Описание</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--                    <tr>
+                                            <td>
+                                                Email
+                                            </td>
+                                            <td><span class="label label-success">infoEmail</span></td>
+                                            <td>
+                                            </td>
+                                        </tr>-->
+                    <tr>
+                        <td>
+                            Email магазина
+                        </td>
+                        <td><span class="label label-success">shopEmail</span></td>
+                        <td>
+                            Email на который будут приходить письма о новых заказах
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Телефоны сайта
+                        </td>
+                        <td><span class="label label-success">sitePhones</span></td>
+                        <td>
+                            Телефоны указывать разделяя запятой.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer clearfix">
+        </div>
+        <!-- /.box-footer -->
+    </div>
+</div>

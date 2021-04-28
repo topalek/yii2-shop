@@ -12,7 +12,7 @@ $userImg = '/img/undraw_profile.svg';
 <header class="main-header">
 
     <?= Html::a(
-        '<span class="logo-mini">APP</span><span class="logo-lg">' . Yii::$app->name . '</span>',
+        '<span class="logo-mini">APP</span><span class="logo-lg">Админ панель</span>',
         Yii::$app->homeUrl,
         ['class' => 'logo']
     ) ?>

@@ -51,7 +51,7 @@ $(document).on('click', '.order-page .cart-items-list .delete-item-btn', functio
 });
 
 
-$(document).on('click', '#cart-modal .minus-btn, .order-page .items .minus-btn', function (e) {
+$(document).on('click', '#cart-modal .minus-btn, .order-page .minus-btn', function (e) {
     let input = $(this).parents('.cart__product__item').find('.price-input');
     let qty = parseInt(input.val());
     qty--;
@@ -61,7 +61,7 @@ $(document).on('click', '#cart-modal .minus-btn, .order-page .items .minus-btn',
     input.val(qty).trigger('change');
 });
 
-$(document).on('click', '#cart-modal .plus-btn, .order-page .items .plus-btn', function (e) {
+$(document).on('click', '#cart-modal .plus-btn, .order-page .plus-btn', function (e) {
     let input = $(this).parents('.cart__product__item').find('.price-input');
     let qty = parseInt(input.val()) + 1;
     if (qty < 1) {
