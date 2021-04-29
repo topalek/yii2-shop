@@ -71,13 +71,13 @@ use yii\helpers\Url;
     <div class="container">
         <div class="wrap">
             <div class="header__logo">
-                <?= Html::a(Html::img("/img/logo.png"), ['/']) ?>
+                <?= Html::a(Html::img("/img/logo.svg"), ['/']) ?>
             </div>
             <nav class="header__menu mobile-menu">
                 <?= MenuWidget::widget(
                     [
-                        'options' => ['class' => 'header-nav'],
-                        'items'   => $navItems,
+                        'options'         => ['class' => 'header-nav'],
+                        'items'           => $navItems,
                         'activateParents' => true,
                     ]
                 ) ?>

@@ -97,20 +97,46 @@ function getBaseUploadsUrl()
  *
  * @return string
  */
-function dynamicImageUrl($imageUrl, $width, $height = null, $crop = false): string
-{
+function dynamicImageUrl(
+    $imageUrl,
+    $width,
+    $height = null,
+    $crop = false,
+    $remoteMode = false,
+    $waterMark = false
+): string {
     if ($height == null) {
         $height = $width;
     }
-    $imageUrlParts = explode('/', $imageUrl);
+
     $data = 's' . $width . '_' . $height;
-    //    if(Params::useRemoteUploads()){
-    //        $data .= '__r';
-    //    }
     if ($crop) {
         $data .= '__c';
     }
-    $last = array_pop($imageUrlParts);
+
+    if ($remoteMode) {
+        $data .= '__r';
+    }
+
+    if ($waterMark) {
+        $data .= '__wm';
+    }
+
+    if ($remoteMode) {
+        $last = base64_encode($imageUrl) . '.webp';
+        $last = preg_replace_callback(
+            '/([A-Z])/',
+            function ($symbol) {
+                return '-' . strtolower($symbol[0]);
+            },
+            $last
+        );
+        $imageUrlParts = [''];
+    } else {
+        $imageUrlParts = explode('/', $imageUrl);
+        $last = array_pop($imageUrlParts);
+    }
+
     $imageUrlParts[] = 'thumbs';
     $imageUrlParts[] = $data;
     $imageUrlParts[] = $last;

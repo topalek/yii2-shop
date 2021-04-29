@@ -39,6 +39,20 @@ class Params extends BaseModel
     public static function getParamsList()
     {
         $params = [];
+
+        $data = self::find()->select(['sys_name', 'value'])->where(['status' => 1])->all();
+        if ($data != null) {
+            foreach ($data as $param) {
+                $params[$param->sys_name] = $param->value;
+            }
+        }
+
+        return $params;
+    }
+
+    public static function getParamsListOld()
+    {
+        $params = [];
         $data = Yii::$app->cache->get('system_params');
         if (!$data) {
             $data = self::find()->select(['sys_name', 'value'])->where(['status' => 1])->all();
@@ -87,14 +101,14 @@ class Params extends BaseModel
             'id'       => 'ID',
             'name'     => 'Название',
             'sys_name' => 'Системное название',
-            'value'    => 'Значення',
+            'value'    => 'Значение',
             'status'   => 'Активный',
         ];
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        self::updateParamsCache();
+        // self::updateParamsCache();
         parent::afterSave($insert, $changedAttributes);
     }
 
@@ -106,7 +120,7 @@ class Params extends BaseModel
 
     public function afterDelete()
     {
-        self::updateParamsCache();
+        // self::updateParamsCache();
         parent::afterDelete();
     }
 }

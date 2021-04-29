@@ -9,8 +9,6 @@ use common\components\BaseUrlManager;
 use common\modules\translate\models\Translate;
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use frontend\widgets\SitePhonesWidget;
-use yii\bootstrap\Nav;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
@@ -119,46 +117,7 @@ $this->beginBody() ?>
         </div>
     </div>
 
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__logo">
-                            <a href="#"><img src="/img/footer-logo.png" alt=""></a>
-                        </div>
-                        <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="/img/payment.png" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <!--                        <h6>Shopping</h6>-->
-                        <?= Nav::widget(['items' => $navItems, 'options' => ['class' => 'footer-nav']]) ?>
-                    </div>
-                </div>
-                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                    <div class="footer__widget">
-                        <?= SitePhonesWidget::widget(['containerOptions' => ['class' => 'footer-phone']]) ?>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="footer__copyright__text">
-                        <p>Copyright © <?= date('Y') ?> All rights reserved </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
+    <?= $this->render('parts/footer', compact('navItems', 'langList', 'currentLang')) ?>
 </div>
 
 

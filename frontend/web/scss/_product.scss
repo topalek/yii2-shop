@@ -8,6 +8,16 @@
 }
 
 .catalog-product-view {
+  .main-img-block {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+
+    .main-img {
+      grid-column: 1/6;
+    }
+  }
+
   .product-title {
     font-weight: bold;
     font-size: 34px;

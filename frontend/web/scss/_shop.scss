@@ -354,7 +354,36 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 15px;
 
-  .summary, .product__pagination {
+  .summary {
+    grid-column: 1/3;
+  }
+
+  .sort {
+    grid-column: 3/4;
+    display: flex;
+    justify-content: flex-end;
+
+    .sorter {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      justify-content: flex-end;
+
+      a {
+        color: $heading-color;
+        padding: 0 5px;
+
+        &:hover {
+          color: $heading-color;
+        }
+      }
+    }
+
+  }
+
+  .product__pagination {
     grid-column: 1/4;
   }
 

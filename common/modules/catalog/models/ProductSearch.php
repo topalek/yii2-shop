@@ -53,9 +53,28 @@ class ProductSearch extends Product
      */
     public function search($params)
     {
-        $categoryId = ArrayHelper::getValue($params, 'id');
+        $categoryId = ArrayHelper::remove($params, 'id');
         $filter = ArrayHelper::getValue($params, 'filter');
-
+        $lang = Yii::$app->language;
+        $this->sort = new Sort(
+            [
+                'attributes' => [
+                    /*                    'title' => [
+                                            'asc'     => ['title_' . $lang => SORT_ASC],
+                                            'desc'    => ['title_' . $lang => SORT_DESC],
+                                            'default' => SORT_ASC,
+                                            'label'   => Yii::t('catalog', 'Название'),
+                                        ],*/
+                    'price' => [
+                        'asc'     => ['price' => SORT_ASC],
+                        'desc'    => ['price' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label'   => Yii::t('catalog', 'Цена'),
+                    ],
+                ],
+                // 'params'     => [],
+            ]
+        );
 
         $query = Product::find();
 
@@ -80,16 +99,15 @@ class ProductSearch extends Product
             );
         }
         $query->joinWith('seo');
-
+        // dd(Yii::$app->request);
         return new ActiveDataProvider(
             [
                 'query'      => $query,
+                'sort'       => $this->sort,
                 'pagination' => [
                     'pageSize' => 9,
-                    'route'    => $categoryId ? Category::findOne($categoryId)->getSeoUrl() : '',
-                    'params'   => [
-                        'page' => Yii::$app->request->get('page'),
-                    ],
+                    // 'route' => Yii::$app->request->url,
+                    'params'   => !empty($filter) ? array_merge($_GET, ['filter' => implode(',', $filter)]) : $_GET,
                 ],
             ]
         );
@@ -99,26 +117,7 @@ class ProductSearch extends Product
     public function adminSearch($params)
     {
         $viewType = Yii::$app->session->get('viewType', 'block');
-        $lang = Yii::$app->language;
-        $this->sort = new Sort(
-            [
-                'attributes' => [
-                    'title' => [
-                        'asc'     => ['title_' . $lang => SORT_ASC],
-                        'desc'    => ['title_' . $lang => SORT_DESC],
-                        'default' => SORT_ASC,
-                        'label'   => Yii::t('catalog', 'Название'),
-                    ],
-                    'price' => [
-                        'asc'     => ['price' => SORT_ASC],
-                        'desc'    => ['price' => SORT_DESC],
-                        'default' => SORT_DESC,
-                        'label'   => Yii::t('catalog', 'Цена'),
-                    ],
-                ],
-                'params'     => [],
-            ]
-        );
+
 
         $query = Product::find();
         $query->with(['seo', 'category']);

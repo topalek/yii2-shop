@@ -49,6 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'dataProvider' => $dataProvider,
                     'itemView'     => '@common/modules/shop/views/default/_product_item',
+                    'layout'       => "{summary}\n<div class='sort'>" . Yii::t(
+                            'shop',
+                            'Сортировка:'
+                        ) . "{sorter}</div>\n{items}\n{pager}",
                     'options'      => [
                         'class' => "product-list",
                     ],

@@ -34,35 +34,40 @@ $this->registerJsFile(
 
         <div class="row">
             <div class="col-sm-4">
-                <div class="main-img-block" data-thumb="<?= $model->getMainImgUrl() ?>"
-                     data-full-img="<?= $model->getMainImgUrl() ?>">
-                    <?= Html::a(
-                        Html::img(
+                <div class="main-img-block">
+                    <div class="main-img" data-thumb="<?= $model->getMainImgUrl() ?>"
+                         data-full-img="<?= $model->getMainImgUrl() ?>">
+                        <?= Html::a(
+                            Html::img(
+                                $model->getMainImgUrl(),
+                                [
+                                    'class'           => 'img-responsive main-image',
+                                    'data-zoom-image' => $model->getMainImgUrl(),
+                                    'alt'             => $model->getMlTitle(),
+                                ]
+                            ),
                             $model->getMainImgUrl(),
-                            [
-                                'class'           => 'img-responsive main-image',
-                                'data-zoom-image' => $model->getMainImgUrl(),
-                                'alt'             => $model->getMlTitle(),
-                            ]
-                        ),
-                        $model->getMainImgUrl(),
-                        ['class' => 'fancy-box', 'rel' => 'cat']
-                    ); ?>
-                </div>
-                <?php
-                if ($model->additional_images): ?>
-                    <div class="row">
+                            ['class' => 'fancy-box', 'rel' => 'cat']
+                        ); ?>
+                    </div>
+                    <?php
+                    if ($model->additional_images): ?>
                         <?php
                         foreach ($model->additional_images as $image) {
                             echo Html::a(
-                                Html::img($image, ['class' => 'img-responsive', 'alt' => $model->getMlTitle()]),
+                                Html::img(
+                                    dynamicImageUrl($image, 80, 80, true, true),
+                                    ['class' => 'img-responsive', 'alt' => $model->getMlTitle()]
+                                ),
                                 $image,
-                                ['class' => 'fancy-box col-sm-3 col-xs-6 col-xxs-12', 'rel' => 'cat']
+                                ['class' => 'fancy-box', 'rel' => 'cat']
                             );
                         } ?>
-                    </div>
-                <?php
-                endif; ?>
+                    <?php
+                    endif; ?>
+                </div>
+
+
             </div>
             <div class="col-sm-8">
                 <div class="about">

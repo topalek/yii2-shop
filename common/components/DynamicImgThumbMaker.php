@@ -1,18 +1,9 @@
 <?php
 
-namespace common\components;
-
-use DateTime;
-
 class DynamicImgThumbMaker
 {
-    public const FULL_IMG_UPSIZE_VALUE = 1.02;
-    public const FULL_IMG_FONT_FILE = './ArialBold.ttf';
-    public const FULL_IMG_TEXT_EXTRA_WIDTH = 12;
-    public const FULL_IMG_TEXT_EXTRA_HEIGHT = 8;
-
-    public const JPG_QUALITY = 98;
-    public const WEBP_QUALITY = 98;
+    public const JPG_QUALITY = 100;
+    public const WEBP_QUALITY = 100;
 
     private $marketUri;
     private $localPath;
@@ -22,6 +13,7 @@ class DynamicImgThumbMaker
     private bool $needFinalResize = false;
     private bool $cropMode = false;
     private bool $remoteMode = false;
+    private bool $withWaterMark = false;
 
     private $currentSizeRule = null;
 
@@ -40,7 +32,7 @@ class DynamicImgThumbMaker
 
         preg_match('/thumbs\/(.+?)\//', $this->marketUri, $matches);
         if (!empty($matches)) {
-            $this->marketUri = str_replace($matches[0], '/', $this->marketUri);
+            $this->marketUri = str_replace($matches[0], '/', urldecode($this->marketUri));
             $params = $matches[1];
             $params = explode('__', $params);
             $sizeParams = $params[0];
@@ -51,21 +43,26 @@ class DynamicImgThumbMaker
             $this->currentSizeRule['finalHeight'] = $sizeParams[1];
             $this->needFinalResize = true;
             foreach ($params as $param) {
-                if ($param == 'c') {
-                    $this->cropMode = true;
-                }
-                if ($param == 'r') {
-                    $this->remoteMode = true;
-                    preg_match('/.*?\/(.+?)[.]webp/', $this->marketUri, $match);
-                    $match = preg_replace_callback(
-                        '/([-][a-z])/',
-                        function ($s) {
-                            return strtoupper(str_replace('-', '', $s[0]));
-                        },
-                        $match[1]
-                    );
-                    $this->marketUri = base64_decode($match);
-                    unset($match);
+                switch ($param) {
+                    case 'c':
+                        $this->cropMode = true;
+                        break;
+                    case 'r':
+                        $this->remoteMode = true;
+                        preg_match('/.*?\/(.+?)[.]webp/', $this->marketUri, $match);
+                        $match = preg_replace_callback(
+                            '/([-][a-z])/',
+                            function ($s) {
+                                return strtoupper(str_replace('-', '', $s[0]));
+                            },
+                            $match[1]
+                        );
+                        $this->marketUri = base64_decode($match);
+                        unset($match);
+                        break;
+                    case 'wm':
+                        $this->withWaterMark = true;
+                        break;
                 }
             }
 
@@ -81,9 +78,9 @@ class DynamicImgThumbMaker
         }
         $this->imgStr = file_get_contents($this->localPath);
 
-//        if ($this->needFinalResize === true) {
-//            $this->resizeImage($this->currentSizeRule['finalWidth'], $this->currentSizeRule['finalHeight']);
-//        }
+        //        if ($this->needFinalResize === true) {
+        //            $this->resizeImage($this->currentSizeRule['finalWidth'], $this->currentSizeRule['finalHeight']);
+        //        }
         if ($this->needJpg) {
             if (($imgInfo = getimagesizefromstring($this->imgStr)) === false) {
                 $this->sendAnswerCode(503, "Not an image");
@@ -212,8 +209,8 @@ class DynamicImgThumbMaker
         $dst = imagecreatetruecolor($requestedWidth, $requestedHeight);
         $bg = imagecolorallocate($dst, 255, 255, 255);
         imagefill($dst, 0, 0, $bg);
-        imagealphablending($dst, false);
-        imagesavealpha($dst, true);
+        //        imagealphablending($dst, false);
+        //        imagesavealpha($dst, true);
         imagecopyresampled(
             $dst,
             $this->imgResource,
@@ -227,6 +224,9 @@ class DynamicImgThumbMaker
             $srcHeight
         );
         $this->imgResource = $dst;
+        if ($this->withWaterMark) {
+            $this->imgResource = $this->addWaterMark($this->imgResource, $requestedWidth, $requestedHeight);
+        }
         return true;
     }
 
@@ -255,58 +255,63 @@ class DynamicImgThumbMaker
         }
     }
 
-    function upsizeAndSignImage($signText)
+    function addWaterMark($source, $sourceWidth, $sourceHeight)
     {
-        $imgInfo = getimagesizefromstring($this->imgStr);
-        $imgWidth = $imgInfo[0];
-        $imgHeight = $imgInfo[1];
+        $waterMark = imagecreatefrompng(__DIR__ . '/../../frontend/web/uploads/water_mark.png');
+        $waterMarkWidth = imagesx($waterMark);
+        $waterMarkHeight = imagesy($waterMark);
 
-        $fontSize = (int)($imgWidth * 0.016);
-        if ($fontSize > 30) {
-            $fontSize = 30;
-        } elseif ($fontSize < 12) {
-            $fontSize = 12;
-        }
-
-        $textBox = imagettfbbox($fontSize, 0, self::FULL_IMG_FONT_FILE, $signText);
-        $textWidth = max($textBox[2] - $textBox[0], $textBox[4] - $textBox[6]);
-        if ($textWidth > $imgWidth) {
-            if ($textWidth > ($imgWidth * 1.5)) {
-                $signText = wordwrap($signText, strlen($signText) / 3, "\n");
-            } else {
-                $signText = wordwrap($signText, strlen($signText) / 2, "\n");
-            }
-            $textBox = imagettfbbox($fontSize, 0, self::FULL_IMG_FONT_FILE, $signText);
-            $textWidth = max($textBox[2] - $textBox[0], $textBox[4] - $textBox[6]);
-        }
-        $textHeight = $textBox[1] - $textBox[7];
-
-        $targetWidth = $imgWidth * self::FULL_IMG_UPSIZE_VALUE;
-        if ($targetWidth < ($textWidth + self::FULL_IMG_TEXT_EXTRA_WIDTH)) {
-            $targetHeight = $imgHeight * (($textWidth + self::FULL_IMG_TEXT_EXTRA_WIDTH) / ($targetWidth / self::FULL_IMG_UPSIZE_VALUE));
-            $targetWidth = ($textWidth + self::FULL_IMG_TEXT_EXTRA_WIDTH);
-        } else {
-            $targetHeight = $imgHeight * self::FULL_IMG_UPSIZE_VALUE;
-        }
-
-        $this->createImageFromCurrentString($imgInfo[2]);
-        $dst = imagecreatetruecolor($targetWidth, $targetHeight + $textHeight + self::FULL_IMG_TEXT_EXTRA_HEIGHT);
-
-        imagefill($dst, 0, $targetHeight, imagecolorallocate($dst, 255, 255, 255));
-        imagecopyresampled($dst, $this->imgResource, 0, 0, 0, 0, $targetWidth, $targetHeight, $imgWidth, $imgHeight);
-
-        imagettftext(
-            $dst,
-            $fontSize,
+        $proportion = $waterMarkWidth / $waterMarkHeight;
+        $newWatermarkWidth = 0.15 * $sourceWidth; //6 percents from source width
+        $newWatermarkHeight = ceil($newWatermarkWidth / $proportion);
+        imagecopyresampled(
+            $source,
+            $waterMark,
+            5,
+            $sourceHeight - $newWatermarkHeight - 5,
             0,
-            ($targetWidth - $textWidth) / 2,
-            $targetHeight + $textHeight / 2 + self::FULL_IMG_TEXT_EXTRA_HEIGHT,
-            imagecolorallocate($dst, 0, 0, 0),
-            self::FULL_IMG_FONT_FILE,
-            $signText
+            0,
+            $newWatermarkWidth,
+            $newWatermarkHeight,
+            $waterMarkWidth,
+            $waterMarkHeight
         );
 
-        $this->imgResource = $dst;
+        //        if ($waterMarkWidth > $sourceWidth || $waterMarkHeight > $sourceHeight) {
+        //            $proportion = $waterMarkWidth / $waterMarkHeight;
+        //            if ($waterMarkWidth > $sourceWidth) {
+        //                $newWatermarkWidth = $sourceWidth;
+        //                $newWatermarkHeight = ceil($newWatermarkWidth / $proportion);
+        //            } else {
+        //                $newWatermarkHeight = $sourceHeight;
+        //                $newWatermarkWidth = ceil($newWatermarkHeight * $proportion);
+        //            }
+        //            imagecopyresampled(
+        //                $source,
+        //                $waterMark,
+        //                $sourceWidth - $newWatermarkWidth,
+        //                $sourceHeight - $newWatermarkHeight,
+        //                0,
+        //                0,
+        //                $newWatermarkWidth,
+        //                $newWatermarkHeight,
+        //                $waterMarkWidth,
+        //                $waterMarkHeight
+        //            );
+        //        } else {
+        //            imagecopy(
+        //                $source,
+        //                $waterMark,
+        //                $sourceWidth - $waterMarkWidth,
+        //                $sourceHeight - $waterMarkHeight,
+        //                0,
+        //                0,
+        //                $waterMarkWidth,
+        //                $waterMarkHeight
+        //            );
+        //        }
+
+        return $source;
     }
 }
 
