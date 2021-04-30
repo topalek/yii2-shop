@@ -1,4 +1,7 @@
 <?php
+namespace common\components;
+
+use DateTime;
 
 class DynamicImgThumbMaker
 {

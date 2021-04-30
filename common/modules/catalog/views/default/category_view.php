@@ -14,7 +14,6 @@
 use frontend\widgets\Filters;
 use frontend\widgets\SideNavMenu;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 use yii\widgets\ListView;
 
 $this->title = $model->getMlTitle();
@@ -25,16 +24,17 @@ if ($model->parent) {
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="catalog-category-view">
-
-    <div class="media about-category">
-        <div class="media-left">
-            <?= $model->getMainImg() ?? Html::img(
-                'https://via.placeholder.com/300x300.jpg?text=' . $model->getMlContent()
-            ) ?>
-        </div>
-        <div class="media-body">
-            <h1 class="media-heading"><?= $this->title ?></h1>
-            <p><?= $model->getMlContent() ?></p>
+    <div class="about-category">
+        <?php
+        if ($model->getMainImg()): ?>
+            <div class="category-img">
+                <?= $model->getMainImg() ?>
+            </div>
+        <?php
+        endif; ?>
+        <div class="category-text">
+            <h1 class="page-title"><?= $this->title ?></h1>
+            <p class="category-description"><?= $model->getMlContent() ?></p>
         </div>
     </div>
     <div class="row">

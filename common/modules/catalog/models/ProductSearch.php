@@ -56,6 +56,10 @@ class ProductSearch extends Product
         $categoryId = ArrayHelper::remove($params, 'id');
         $filter = ArrayHelper::getValue($params, 'filter');
         $lang = Yii::$app->language;
+//        dd([
+//            Yii::$app->request->pathInfo,
+//            $params
+//           ]);
         $this->sort = new Sort(
             [
                 'attributes' => [
@@ -72,7 +76,8 @@ class ProductSearch extends Product
                         'label'   => Yii::t('catalog', 'Цена'),
                     ],
                 ],
-                // 'params'     => [],
+                'route'      => Yii::$app->request->pathInfo,
+                'params'     => $params,
             ]
         );
 
@@ -82,7 +87,7 @@ class ProductSearch extends Product
             $query->orderBy('id DESC');
         }
         if ($categoryId) {
-            $query->andFilterWhere(
+            $query->filterWhere(
                 [
                     'category_id' => $categoryId,
                 ]
@@ -91,23 +96,36 @@ class ProductSearch extends Product
 
         if ($filter) {
             $filter = explode(',', $filter);
-            $query->joinWith('properties');
-            $query->andFilterWhere(
-                [
-                    '{{%product_property}}.property_id' => $filter,
-                ]
-            );
+            $query->leftJoin('{{%product_property}}', '{{%product_property}}.product_id={{%product}}.id');
+            foreach ($filter as $f) {
+                $query->andFilterWhere(
+                    [
+                        '{{%product_property}}.property_id' => $f,
+                    ]
+                );
+            }
         }
+//dd($query->createCommand()->rawSql);
         $query->joinWith('seo');
-        // dd(Yii::$app->request);
         return new ActiveDataProvider(
             [
                 'query'      => $query,
-                'sort'       => $this->sort,
+                'sort'       => [
+                    'attributes' => [
+                        'price' => [
+                            'asc'     => ['price' => SORT_ASC],
+                            'desc'    => ['price' => SORT_DESC],
+                            'default' => SORT_DESC,
+                            'label'   => Yii::t('catalog', 'Цена'),
+                        ],
+                    ],
+                    'route'      => Yii::$app->request->pathInfo,
+                    'params'     => $params,
+                ],
                 'pagination' => [
+                    'route'    => Yii::$app->request->pathInfo,
+                    'params'   => $params,
                     'pageSize' => 9,
-                    // 'route' => Yii::$app->request->url,
-                    'params'   => !empty($filter) ? array_merge($_GET, ['filter' => implode(',', $filter)]) : $_GET,
                 ],
             ]
         );
@@ -125,7 +143,7 @@ class ProductSearch extends Product
         $query->groupBy('product.id');
         $dataProvider = new ActiveDataProvider(
             [
-                'query'      => $query,
+                'query' => $query,
             ]
         );
 

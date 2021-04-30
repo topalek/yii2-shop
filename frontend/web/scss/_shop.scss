@@ -366,17 +366,35 @@
     .sorter {
       display: flex;
       list-style: none;
-      margin: 0;
+      margin: 0 0 0 20px;
       padding: 0;
-      width: 100%;
       justify-content: flex-end;
 
       a {
         color: $heading-color;
-        padding: 0 5px;
+        padding-right: 15px;
+        position: relative;
+
+        &:after {
+          position: absolute;
+          right: 0;
+          top: 0;
+          display: inline-flex;
+          font-family: 'FontAwesome';
+          width: 10px;
+          height: 100%;
+        }
 
         &:hover {
           color: $heading-color;
+        }
+
+        &.asc:after {
+          content: "\f0d8";
+        }
+
+        &.desc:after {
+          content: "\f0d7";
         }
       }
     }
@@ -399,6 +417,14 @@
 
 }
 
+.shop {
+  padding: 30px 0;
+}
+
+.page-title {
+  margin: 10px 0;
+}
+
 .catalog-product-view {
   padding-top: 30px;
 
@@ -418,6 +444,29 @@
 
 .catalog-category-view {
   padding: 30px 0;
+
+  .about-category {
+    display: flex;
+
+    .category-img {
+      margin-right: 15px;
+
+      img {
+        width: 150px;
+        max-width: 150px;
+        height: 150px;
+        object-fit: cover;
+      }
+
+    }
+
+    .category-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    margin-bottom: 20px;
+  }
 }
 
 .search {

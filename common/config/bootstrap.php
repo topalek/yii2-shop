@@ -105,6 +105,9 @@ function dynamicImageUrl(
     $remoteMode = false,
     $waterMark = false
 ): string {
+    if (!$imageUrl) {
+        return '';
+    }
     if ($height == null) {
         $height = $width;
     }

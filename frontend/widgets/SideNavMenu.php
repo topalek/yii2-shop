@@ -23,10 +23,6 @@ class SideNavMenu extends Menu
     public $itemOptions = [
         'class' => 'sidebar-menu-widget-title',
     ];
-    /**
-     * @var mixed
-     */
-    private $activeUrl;
 
     public function init()
     {
@@ -53,27 +49,28 @@ class SideNavMenu extends Menu
 
     protected function isItemActive($item)
     {
-        $url = trim(Yii::$app->request->url, '/');
-        if ($this->activeUrl) {
-            $url = $this->activeUrl;
-        }
-        $url = explode('/', $url);
+        $activeUrl = trim(Yii::$app->request->pathInfo, '/');
+        $url = explode('/', $activeUrl);
         $current_url = $url[0] . '/' . (isset($url[1]) ? $url[1] . '/' : '');
 
         if (isset($item['url']) && $current_url != '/') {
             $itemUrl = (is_array($item['url'])) ? $item['url'][0] : $item['url'];
-            $currentUrlParts = explode($itemUrl, Yii::$app->request->url);
+            $currentUrlParts = explode($itemUrl, Yii::$app->request->pathInfo);
             if ($item['url'] == $current_url) {
                 return true;
             }
             if (count($currentUrlParts) > 1 && $currentUrlParts[0] == '' && $currentUrlParts[1] == '') {
                 return true;
             }
+
+            if ($item['url'] == '/' . $activeUrl) {
+                return true;
+            }
         }
 
         if (isset($item['url']) && is_array($item['url']) && isset($item['url'][0])) {
             $route = $item['url'][0];
-            if ($route == $this->activeUrl) {
+            if ($route == $activeUrl) {
                 return true;
             }
             if ($route[0] !== '/' && Yii::$app->controller) {
